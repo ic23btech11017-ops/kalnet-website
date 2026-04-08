@@ -137,13 +137,14 @@ function App() {
 
             <Stack direction="row" gap={2} justifyContent="center" flexWrap="wrap" sx={{ mb: 5 }}>
               <Button href="https://www.kalnet.co/request-demo" variant="contained" size="large"
-                sx={{ px: 4.5, py: 1.6, fontSize: 15, bgcolor: '#0D7377', '&:hover': { bgcolor: '#14FFEC', color: '#000' } }}>
+                sx={{ px: 5, py: 1.8, fontSize: 16, bgcolor: '#0D7377', boxShadow: '0 4px 20px rgba(13,115,119,.4)',
+                '&:hover': { bgcolor: '#14FFEC', color: '#000', boxShadow: '0 8px 32px rgba(20,255,236,.35)', transform: 'translateY(-2px)' } }}>
                 Get a Demo
                 <ArrowRight size={16} style={{ marginLeft: 8 }} />
               </Button>
               <Button href="#modules" variant="outlined" size="large"
-                sx={{ px: 3.5, py: 1.6, fontSize: 15, color: 'rgba(255,255,255,.85)', borderColor: 'rgba(255,255,255,.2)', borderWidth: '1.5px',
-                '&:hover': { borderColor: 'rgba(255,255,255,.5)', bgcolor: 'rgba(255,255,255,.06)', borderWidth: '1.5px' } }}>
+                sx={{ px: 4, py: 1.8, fontSize: 16, color: '#fff', borderColor: 'rgba(255,255,255,.25)', borderWidth: 2,
+                '&:hover': { borderColor: '#14FFEC', color: '#14FFEC', bgcolor: 'rgba(20,255,236,.06)', borderWidth: 2 } }}>
                 Explore Platform
               </Button>
             </Stack>
@@ -177,21 +178,25 @@ function App() {
           </Box>
           <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr', md: 'repeat(3, 1fr)' }, gap: 3 }}>
             {[
-              { title: 'CRM System', desc: 'Manage leads, customers, and sales pipelines in one place.', color: '#3b82f6', Icon: Target },
-              { title: 'ERP System', desc: 'Control operations, finance, and internal workflows.', color: '#22c55e', Icon: Layers },
-              { title: 'Finance & Billing', desc: 'Handle invoices, payments, and financial tracking with ease.', color: '#eab308', Icon: BarChart3 },
-              { title: 'HR & Workforce', desc: 'Manage employees, roles, and payroll efficiently.', color: '#a855f7', Icon: Users },
-              { title: 'Workflow Automation', desc: 'Automate repetitive processes and improve efficiency.', color: '#ef4444', Icon: Workflow },
-              { title: 'Industry Solutions', desc: 'Pre-built systems tailored for your business domain.', color: '#78716c', Icon: Building2 },
+              { title: 'CRM System', desc: 'Manage leads, customers, and sales pipelines in one place.', Icon: Target, featured: true },
+              { title: 'ERP System', desc: 'Control operations, finance, and internal workflows.', Icon: Layers, featured: false },
+              { title: 'Finance & Billing', desc: 'Handle invoices, payments, and financial tracking with ease.', Icon: BarChart3, featured: false },
+              { title: 'HR & Workforce', desc: 'Manage employees, roles, and payroll efficiently.', Icon: Users, featured: false },
+              { title: 'Workflow Automation', desc: 'Automate repetitive processes and improve efficiency.', Icon: Workflow, featured: false },
+              { title: 'Industry Solutions', desc: 'Pre-built systems tailored for your business domain.', Icon: Building2, featured: false },
             ].map((m, i) => (
               <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.06 }}>
-                <Box sx={{ p: 4, bgcolor: '#fafafa', borderRadius: 4, border: '1px solid #f0f0f0', height: '100%', transition: 'all .25s',
-                  '&:hover': { transform: 'translateY(-4px)', boxShadow: '0 12px 32px rgba(0,0,0,.06)', borderColor: m.color } }}>
-                  <Box sx={{ width: 48, height: 48, borderRadius: 3, bgcolor: `${m.color}12`, display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 3 }}>
-                    <m.Icon size={22} color={m.color} />
+                <Box sx={{
+                  p: 4, borderRadius: 4, height: '100%', transition: 'all .25s',
+                  bgcolor: m.featured ? '#111' : '#fafafa',
+                  border: m.featured ? '1px solid #333' : '1px solid #f0f0f0',
+                  '&:hover': { transform: 'translateY(-4px)', boxShadow: m.featured ? '0 16px 40px rgba(0,0,0,.3)' : '0 12px 32px rgba(0,0,0,.06)', borderColor: '#0D7377' },
+                }}>
+                  <Box sx={{ width: 48, height: 48, borderRadius: 3, bgcolor: m.featured ? 'rgba(20,255,236,.15)' : 'rgba(13,115,119,.06)', display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 3 }}>
+                    <m.Icon size={22} color={m.featured ? '#14FFEC' : '#0D7377'} />
                   </Box>
-                  <Typography sx={{ fontSize: 19, fontWeight: 800, mb: 1.5, color: '#1a1a2e', fontFamily: FONT_DISPLAY }}>{m.title}</Typography>
-                  <Typography sx={{ fontSize: 14, color: '#6b7280', lineHeight: 1.65 }}>{m.desc}</Typography>
+                  <Typography sx={{ fontSize: 19, fontWeight: 800, mb: 1.5, color: m.featured ? '#fff' : '#1a1a2e', fontFamily: FONT_DISPLAY }}>{m.title}</Typography>
+                  <Typography sx={{ fontSize: 14, color: m.featured ? 'rgba(255,255,255,.55)' : '#6b7280', lineHeight: 1.65 }}>{m.desc}</Typography>
                 </Box>
               </motion.div>
             ))}
@@ -232,6 +237,16 @@ function App() {
               </motion.div>
             ))}
           </Box>
+          <motion.div {...fadeUp}>
+            <Box sx={{ textAlign: 'center', mt: 6 }}>
+              <Button href="https://www.kalnet.co/industries" variant="contained" size="large"
+                sx={{ px: 5, py: 1.8, fontSize: 16, bgcolor: '#0D7377', boxShadow: '0 4px 20px rgba(13,115,119,.35)',
+                '&:hover': { bgcolor: '#14FFEC', color: '#000', boxShadow: '0 8px 32px rgba(20,255,236,.3)' } }}>
+                Explore All Industries
+                <ArrowRight size={18} style={{ marginLeft: 8 }} />
+              </Button>
+            </Box>
+          </motion.div>
         </Container>
       </Box>
 
