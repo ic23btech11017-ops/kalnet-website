@@ -1,0 +1,14 @@
+
+> kalnet-web@0.0.0 build
+> tsc -b && vite build
+
+src/App.tsx(1,23): error TS6133: 'Chip' is declared but its value is never read.
+src/App.tsx(2,78): error TS6133: 'AnimatePresence' is declared but its value is never read.
+src/App.tsx(2,106): error TS6133: 'useMotionValueEvent' is declared but its value is never read.
+src/App.tsx(3,31): error TS6133: 'useRef' is declared but its value is never read.
+src/App.tsx(7,98): error TS6133: 'Send' is declared but its value is never read.
+src/App.tsx(96,9): error TS6133: 'inverseLeft' is declared but its value is never read.
+src/App.tsx(97,9): error TS6133: 'inverseTop' is declared but its value is never read.
+src/App.tsx(464,18): error TS2304: Cannot find name 'CardBlock'.
+src/App.tsx(480,19): error TS2304: Cannot find name 'CardBlock'.
+src/App.tsx(651,10): error TS6133: 'processLine' is declared but its value is never read.

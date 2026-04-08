@@ -1,1011 +1,632 @@
-import { Box, Button, Chip, Container, Stack, Typography, ThemeProvider, createTheme } from '@mui/material'
-import { motion, useMotionTemplate, useMotionValue, useSpring, useTransform, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion'
-import { useEffect, useState, useRef } from 'react'
-import type { ReactNode } from 'react'
+import { Box, Button, Container, Stack, Typography, ThemeProvider, createTheme, Accordion, AccordionSummary, AccordionDetails } from '@mui/material'
+import { motion, useMotionTemplate, useMotionValue, useSpring, useTransform, useScroll } from 'framer-motion'
+import { useEffect, useState, useRef, useCallback } from 'react'
+import type { MouseEvent as ReactMouseEvent } from 'react'
 import Lenis from 'lenis'
 import 'lenis/dist/lenis.css'
+import {
+  ChevronUp, Monitor, Smartphone, Layers, Settings, Code,
+  Search, Headphones, CheckCircle, Star, HelpCircle,
+  Mail, Zap, Eye, FileText, Sparkles,
+  Shield, BarChart3, ClipboardList, Clock, Check, Brain,
+  GraduationCap, Heart, Building2, Hotel, Factory, ShoppingCart, Landmark, CreditCard,
+  ArrowRight, Users
+} from 'lucide-react'
 
-const garvinTheme = createTheme({
+/* ─── Font family tokens ─── */
+const FONT_DISPLAY = "'Inter', -apple-system, BlinkMacSystemFont, sans-serif"
+const FONT_BODY = "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+
+/* ─── Theme ─── */
+const theme = createTheme({
   palette: {
-    mode: 'dark',
-    primary: {
-      main: '#0071e3',
-      dark: '#0033a0',
-      light: '#5ac8fa',
-    },
-    secondary: {
-      main: '#808080',
-      dark: '#404040',
-      light: '#cccccc',
-    },
-    background: {
-      default: '#0a0a0a',
-      paper: '#1a1a1a',
-    },
-    text: {
-      primary: '#ffffff',
-      secondary: '#cccccc',
-    },
-    divider: '#404040',
+    mode: 'light',
+    primary: { main: '#0D7377', light: '#14FFEC', dark: '#085255' },
+    background: { default: '#ffffff', paper: '#f5f6fa' },
+    text: { primary: '#1a1a2e', secondary: '#6b7280' },
   },
   typography: {
-    fontFamily: "'Inter', -apple-system, sans-serif",
-    allVariants: {
-      letterSpacing: '-0.02em',
-      color: '#ffffff',
-    },
-    h1: { letterSpacing: '-0.03em', fontWeight: 800, color: '#ffffff' },
-    h2: { letterSpacing: '-0.03em', fontWeight: 800, color: '#ffffff' },
-    h3: { letterSpacing: '-0.03em', fontWeight: 800, color: '#ffffff' },
-    h4: { letterSpacing: '-0.03em', fontWeight: 800, color: '#ffffff' },
-    h5: { letterSpacing: '-0.03em', fontWeight: 800, color: '#ffffff' },
-    h6: { letterSpacing: '-0.03em', fontWeight: 800, color: '#ffffff' },
-    body1: { letterSpacing: '-0.01em', color: '#cccccc' },
-    body2: { letterSpacing: '-0.01em', color: '#a6a6a6' },
-    button: { letterSpacing: '-0.01em', fontWeight: 600, color: '#ffffff' }
+    fontFamily: FONT_BODY,
+    allVariants: { letterSpacing: '-0.01em' },
+    h1: { fontFamily: FONT_DISPLAY, fontWeight: 800, letterSpacing: '-0.03em', fontOpticalSizing: 'auto' },
+    h2: { fontFamily: FONT_DISPLAY, fontWeight: 800, letterSpacing: '-0.03em', fontOpticalSizing: 'auto' },
+    h3: { fontFamily: FONT_DISPLAY, fontWeight: 700, letterSpacing: '-0.02em' },
+    h4: { fontFamily: FONT_DISPLAY, fontWeight: 700, letterSpacing: '-0.02em' },
+    button: { textTransform: 'none' as const, fontWeight: 600 },
   },
   components: {
     MuiButton: {
       styleOverrides: {
-        root: {
-          borderRadius: 999,
-          textTransform: 'none',
-          padding: '10px 28px',
-          transition: 'all 0.2s ease',
-        },
-        contained: {
-          backgroundColor: '#0071e3',
-          color: '#ffffff',
-          boxShadow: 'none',
-          '&:hover': {
-            backgroundColor: '#0033a0',
-            boxShadow: '0 8px 24px rgba(0, 113, 227, 0.35)',
-            transform: 'translateY(-2px)'
-          },
-          '&:active': {
-            backgroundColor: '#002060',
-          }
-        },
-        outlined: {
-          borderColor: '#0071e3',
-          color: '#ffffff',
-          borderWidth: '2px',
-          backgroundColor: 'transparent',
-          '&:hover': {
-            borderWidth: '2px',
-            borderColor: '#5ac8fa',
-            backgroundColor: 'rgba(0, 113, 227, 0.12)',
-            transform: 'translateY(-2px)'
-          }
-        },
-        text: {
-          color: '#0071e3',
-          '&:hover': {
-            backgroundColor: 'rgba(0, 113, 227, 0.08)',
-            color: '#5ac8fa',
-          }
-        }
-      }
+        root: { borderRadius: 999, textTransform: 'none', padding: '12px 28px', fontWeight: 700, fontSize: 15, transition: 'all .2s ease', fontFamily: FONT_BODY },
+        contained: { backgroundColor: '#0D7377', color: '#fff', boxShadow: 'none', '&:hover': { backgroundColor: '#085255', boxShadow: '0 8px 24px rgba(13,115,119,.3)', transform: 'translateY(-1px)' } },
+        outlined: { borderColor: '#0D7377', borderWidth: 2, color: '#0D7377', '&:hover': { borderWidth: 2, borderColor: '#085255', backgroundColor: 'rgba(13,115,119,.04)' } },
+      },
     },
-    MuiChip: {
-      styleOverrides: {
-        root: {
-          backgroundColor: '#2d2d2d',
-          color: '#ffffff',
-          borderColor: '#404040',
-          '&:hover': {
-            backgroundColor: '#404040',
-          }
-        }
-      }
-    },
-    MuiCard: {
-      styleOverrides: {
-        root: {
-          backgroundColor: '#1a1a1a',
-          borderColor: '#404040',
-          boxShadow: '0 0 1px rgba(0, 113, 227, 0.1)',
-        }
-      }
-    },
-    MuiPaper: {
-      styleOverrides: {
-        root: {
-          backgroundColor: '#1a1a1a',
-          backgroundImage: 'none',
-          borderColor: '#404040',
-        }
-      }
-    }
-  }
+  },
 })
 
-const products = [
-  {
-    code: 'EDU',
-    accent: '#3b82f6',
-    title: 'Education Management',
-    text: 'A complete school and college operating system — from admissions to alumni, everything in one intelligent platform.',
-    tags: ['Fee Collection', 'Biometric Attendance', 'Timetable', 'Library', 'Exams & Results'],
-  },
-  {
-    code: 'HLT',
-    accent: '#14b8a6',
-    title: 'Healthcare Management',
-    text: 'Streamline clinic and hospital operations with smart patient records, automated billing, and pharmacy management.',
-    tags: ['Patient Records', 'OPD/IPD', 'Pharmacy', 'Lab Reports', 'Insurance'],
-  },
-  {
-    code: 'ERP',
-    accent: '#8b5cf6',
-    title: 'Enterprise ERP',
-    text: 'Run your entire business — HR, payroll, inventory, procurement, and finance — through one unified control panel.',
-    tags: ['HR & Payroll', 'Inventory', 'Accounting', 'CRM', 'Projects'],
-  },
-  {
-    code: 'MFG',
-    accent: '#f59e0b',
-    title: 'Manufacturing Suite',
-    text: 'Production planning, quality control, supply chain visibility and shop-floor automation in a single dashboard.',
-    tags: ['Production Planning', 'QC', 'Supply Chain', 'MRP'],
-  },
-  {
-    code: 'RTL',
-    accent: '#ef4444',
-    title: 'Retail & POS',
-    text: 'Smart point-of-sale, inventory sync, GST billing, and customer loyalty — built for modern retail businesses.',
-    tags: ['POS Billing', 'Inventory Sync', 'GST Reports', 'Loyalty'],
-  },
-  {
-    code: 'GOV',
-    accent: '#0ea5e9',
-    title: 'Government & NGO',
-    text: 'Transparent, compliant, and citizen-centric software for government departments and non-profit organisations.',
-    tags: ['Citizen Records', 'Compliance', 'Budget Tracking', 'Grants'],
-  },
-]
+const fadeUp = { initial: { opacity: 0, y: 24 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true, amount: 0.15 }, transition: { duration: 0.55 } }
 
-const features = [
-  { code: 'AI', accent: '#2563eb', title: 'Gen AI Automation', text: 'Intelligent workflows that learn from your data, auto-draft reports, flag anomalies, and surface insights before you ask.' },
-  { code: 'BI', accent: '#0ea5e9', title: 'Real-Time Analytics', text: 'Live dashboards with role-based views — executives see the big picture, teams see their tasks. All data, always current.' },
-  { code: 'CLD', accent: '#14b8a6', title: 'Cloud-First Platform', text: 'Access from any device, anywhere. Zero infrastructure to manage. Auto-backups, 99.9% uptime SLA, and bank-grade security.' },
-  { code: 'APP', accent: '#6366f1', title: 'Mobile App Support', text: 'Native mobile experience for staff and stakeholders — approve requests, view reports, and manage tasks on the go.' },
-  { code: 'API', accent: '#8b5cf6', title: 'Third-Party Integrations', text: 'Biometric devices, payment gateways, accounting tools, WhatsApp notifications, and more — all pre-integrated.' },
-  { code: 'SEC', accent: '#0284c7', title: 'Enterprise-Grade Security', text: 'Role-based access control, end-to-end encryption, audit logs, and GDPR-aligned data policies for full compliance.' },
-]
-
-
-
-const testimonials = [
-  {
-    name: 'Rajesh Kumar',
-    role: 'Principal, City Public School',
-    text: 'KALNET transformed how we manage 1,200 students. Fee collection that used to take a full week now runs automatically.',
-  },
-  {
-    name: 'Dr. Priya Sharma',
-    role: 'Director, MedCare Clinic, Hyderabad',
-    text: 'Our clinic went paperless in under two weeks. Patient records, prescriptions, billing — everything is now digital and instant.',
-  },
-  {
-    name: 'Arjun Mehta',
-    role: 'COO, Nexus Industries',
-    text: 'We needed one system for HR, payroll, and procurement. KALNET delivered that and dramatically reduced weekly reporting effort.',
-  },
-]
-
-const fadeUp = {
-  initial: { opacity: 0, y: 30 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, amount: 0.2 },
-  transition: { duration: 0.65 },
-}
-
+/* ─── App ─── */
 function App() {
   const [navScrolled, setNavScrolled] = useState(false)
   const cursorX = useMotionValue(50)
   const cursorY = useMotionValue(40)
-
   const { scrollYProgress } = useScroll()
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.15], [1, 0])
-  const heroY = useTransform(scrollYProgress, [0, 0.2], [0, 150])
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.12], [1, 0])
+  const heroY = useTransform(scrollYProgress, [0, 0.15], [0, 80])
   const backgroundY = useTransform(scrollYProgress, [0, 0.3], [0, 200])
-
-  const smoothX = useSpring(cursorX, { stiffness: 52, damping: 30, mass: 0.9 })
-  const smoothY = useSpring(cursorY, { stiffness: 52, damping: 30, mass: 0.9 })
-
+  const smoothX = useSpring(cursorX, { stiffness: 50, damping: 28, mass: 0.8 })
+  const smoothY = useSpring(cursorY, { stiffness: 50, damping: 28, mass: 0.8 })
   const spotlightLeft = useMotionTemplate`${smoothX}%`
   const spotlightTop = useMotionTemplate`${smoothY}%`
-  const inverseLeft = useMotionTemplate`${useTransform(smoothX, (value) => 100 - value)}%`
-  const inverseTop = useMotionTemplate`${useTransform(smoothY, (value) => 100 - value)}%`
-
-  const gridX = useTransform(smoothX, (value) => (value - 50) * 0.9)
-  const gridY = useTransform(smoothY, (value) => (value - 50) * 0.9)
+  const gridX = useTransform(smoothX, v => (v - 50) * 0.6)
+  const gridY = useTransform(smoothY, v => (v - 50) * 0.6)
 
   useEffect(() => {
-    const lenis = new Lenis({
-      autoRaf: true,
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-    })
-
-    const onScroll = () => setNavScrolled(window.scrollY > 16)
+    const lenis = new Lenis({ autoRaf: true, duration: 1.2, easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)) })
+    const onScroll = () => setNavScrolled(window.scrollY > 20)
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
-    return () => {
-      lenis.destroy()
-      window.removeEventListener('scroll', onScroll)
-    }
+    return () => { lenis.destroy(); window.removeEventListener('scroll', onScroll) }
   }, [])
 
+  const handleHeroMouse = (e: ReactMouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect()
+    cursorX.set(((e.clientX - rect.left) / rect.width) * 100)
+    cursorY.set(((e.clientY - rect.top) / rect.height) * 100)
+  }
+
   return (
-    <ThemeProvider theme={garvinTheme}>
-      <Box sx={{ bgcolor: '#0a0a0a', color: '#ffffff' }}>
-      <Box
-        component="nav"
-        sx={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          zIndex: 1200,
-          bgcolor: navScrolled ? 'rgba(10,10,10,.88)' : 'rgba(10,10,10,.62)',
-          backdropFilter: navScrolled ? 'blur(20px)' : 'blur(14px)',
-          borderBottom: `1px solid ${navScrolled ? 'rgba(255,255,255,.12)' : 'rgba(255,255,255,.06)'}`,
-          transition: 'all .28s ease',
-        }}
-      >
-        <Container maxWidth="lg" sx={{ py: navScrolled ? 0.95 : 1.25, display: 'flex', alignItems: 'center', justifyContent: 'space-between', transition: 'padding .28s ease' }}>
-          <Typography sx={{ color: '#fff', fontWeight: 800, letterSpacing: '-.02em', fontSize: navScrolled ? 22 : 23, transition: 'font-size .28s ease' }}>KALNET</Typography>
-          <Button
-            href="https://www.kalnet.co/request-demo"
-            variant="contained"
-            sx={{
-              textTransform: 'none',
-              borderRadius: 999,
-              px: 2.4,
-              fontWeight: 700,
-              transition: 'all .25s ease',
-              '&:hover': { transform: 'translateY(-1px)', boxShadow: '0 10px 26px rgba(0,113,227,.35)' },
-            }}
-          >
-            Book a Demo
+    <ThemeProvider theme={theme}>
+    <Box sx={{ bgcolor: '#fff', color: '#1a1a2e', minHeight: '100vh' }}>
+
+      {/* ═══════════ NAVBAR ═══════════ */}
+      <Box component="nav" sx={{
+        position: 'fixed', top: 16, left: '50%', transform: 'translateX(-50%)',
+        width: 'calc(100% - 40px)', maxWidth: 1200, zIndex: 1200,
+        bgcolor: navScrolled ? 'rgba(10,10,10,.88)' : 'rgba(15,15,15,.55)',
+        backdropFilter: 'blur(24px)', border: '1px solid rgba(255,255,255,.08)',
+        borderRadius: '999px', transition: 'all .3s ease',
+        boxShadow: navScrolled ? '0 8px 32px rgba(0,0,0,.4)' : 'none',
+      }}>
+        <Container maxWidth={false} sx={{ py: 1.2, px: { xs: 2.5, md: 3.5 }, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <Typography sx={{ color: '#fff', fontWeight: 800, fontSize: 22, letterSpacing: '-.03em', fontFamily: FONT_DISPLAY }}>KALNET</Typography>
+          <Stack direction="row" spacing={4} sx={{ display: { xs: 'none', md: 'flex' } }}>
+            {['Solutions', 'Industries', 'About', 'Careers'].map(l => (
+              <Typography key={l} sx={{ color: 'rgba(255,255,255,.7)', fontSize: 14, fontWeight: 500, cursor: 'pointer', transition: 'color .2s', '&:hover': { color: '#14FFEC' } }}>{l}</Typography>
+            ))}
+          </Stack>
+          <Button href="https://www.kalnet.co/request-demo" variant="contained" size="small"
+            sx={{ bgcolor: '#0D7377', color: '#fff', fontWeight: 700, fontSize: 13, px: 3, '&:hover': { bgcolor: '#14FFEC', color: '#000' } }}>
+            Request Demo
           </Button>
         </Container>
       </Box>
 
-      <Box
-        component="section"
-        onMouseMove={(event) => {
-          const rect = event.currentTarget.getBoundingClientRect()
-          const x = ((event.clientX - rect.left) / rect.width) * 100
-          const y = ((event.clientY - rect.top) / rect.height) * 100
-          cursorX.set(x)
-          cursorY.set(y)
-        }}
-        onMouseLeave={() => {
-          cursorX.set(50)
-          cursorY.set(40)
-        }}
-        sx={{
-          minHeight: '100svh',
-          display: 'flex',
-          alignItems: 'center',
-          pt: { xs: 12, md: 15 },
-          pb: { xs: 7, md: 8 },
-          overflow: 'hidden',
-          position: 'relative',
-          background: `
-            radial-gradient(1000px 500px at 12% 8%, rgba(0,113,227,.24), transparent 60%),
-            radial-gradient(900px 460px at 88% 92%, rgba(90,200,250,.16), transparent 60%),
-            radial-gradient(620px 300px at 50% -14%, rgba(255,255,255,.08), transparent 60%),
-            linear-gradient(to bottom, #0a0a0a 0%, #1a1a1a 100%)
-          `,
-        }}
-      >
-        <motion.div
-          style={{
-            position: 'absolute',
-            inset: -40,
-            x: gridX,
-            y: gridY,
-            pointerEvents: 'none',
-            zIndex: 0,
-            opacity: 0.5,
-            background: `
-              repeating-linear-gradient(90deg, rgba(255,255,255,.085) 0 1px, transparent 1px 95px),
-              repeating-linear-gradient(0deg, rgba(255,255,255,.06) 0 1px, transparent 1px 95px)
-            `,
-            top: backgroundY,
-          }}
-        />
-        <motion.div
-          style={{
-            position: 'absolute',
-            left: spotlightLeft,
-            top: spotlightTop,
-            width: 520,
-            height: 520,
-            transform: 'translate(-50%, -50%)',
-            borderRadius: '50%',
-            pointerEvents: 'none',
-            background: 'radial-gradient(circle, rgba(0,113,227,.35) 0%, rgba(90,200,250,.2) 32%, rgba(0,0,0,0) 70%)',
-            filter: 'blur(5px)',
-            mixBlendMode: 'screen',
-            zIndex: 0,
-          }}
-        />
-        <motion.div
-          style={{
-            position: 'absolute',
-            left: inverseLeft,
-            top: inverseTop,
-            width: 300,
-            height: 300,
-            transform: 'translate(-50%, -50%)',
-            borderRadius: '50%',
-            pointerEvents: 'none',
-            background: 'radial-gradient(circle, rgba(191,90,242,.18) 0%, rgba(0,0,0,0) 72%)',
-            filter: 'blur(14px)',
-            mixBlendMode: 'screen',
-            zIndex: 0,
-          }}
-        />
-        <Box
+      {/* ═══════════ HERO ═══════════ */}
+      <Box sx={{ px: { xs: 1, md: 2 }, pt: 1, pb: 0, bgcolor: '#212121' }}>
+        <Box component="section"
+          onMouseMove={handleHeroMouse}
+          onMouseLeave={() => { cursorX.set(50); cursorY.set(40) }}
           sx={{
-            position: 'absolute',
-            inset: 0,
-            pointerEvents: 'none',
-            zIndex: 0,
-            background: 'radial-gradient(500px 200px at 50% 0%, rgba(255,255,255,.07), transparent 75%)',
-          }}
-        />
-        <Container maxWidth="lg">
-          <Box sx={{ maxWidth: 860, mx: 'auto', textAlign: 'center', position: 'relative', zIndex: 1 }}>
-            <motion.div {...fadeUp} style={{ y: heroY, opacity: heroOpacity }}>
-              <Typography sx={{ color: '#58b7ff', fontSize: 13, letterSpacing: '.16em', fontWeight: 800, mb: 2.2 }}>GEN AI-POWERED ENTERPRISE SOFTWARE</Typography>
-              <Typography sx={{ color: '#fff', fontSize: { xs: 40, md: 74 }, fontWeight: 900, lineHeight: { xs: 1.05, md: 1.01 }, mb: 2.6 }}>
-                The Digital <Box component="span" sx={{ background: 'linear-gradient(90deg,#0071e3,#5ac8fa)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Operating System</Box> for Modern Enterprises
+            position: 'relative', minHeight: 'calc(100svh - 16px)',
+            borderRadius: { xs: 3, md: 5 }, overflow: 'hidden',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            pt: { xs: 16, md: 0 }, pb: { xs: 10, md: 0 },
+            bgcolor: '#212121', color: '#fff',
+            border: '1px solid rgba(255,255,255,.06)',
+          }}>
+          {/* Gradient bg using Kalnet palette: #212121 → #323232 → #0D7377 → #14FFEC */}
+          <Box sx={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, #212121 0%, #2a2a2a 30%, #1a3a3b 60%, #0D7377 85%, #14FFEC 100%)', opacity: 0.5, zIndex: 0 }} />
+          <Box sx={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 70% 50% at 50% 55%, rgba(13,115,119,.2) 0%, transparent 70%)', zIndex: 0 }} />
+          {/* Tech grid */}
+          <motion.div style={{ position: 'absolute', inset: -40, x: gridX, y: gridY, pointerEvents: 'none', zIndex: 0, opacity: 0.035,
+            background: 'repeating-linear-gradient(90deg, rgba(255,255,255,.3) 0 1px, transparent 1px 80px), repeating-linear-gradient(0deg, rgba(255,255,255,.3) 0 1px, transparent 1px 80px)', top: backgroundY }} />
+          {/* Cursor spotlight */}
+          <motion.div style={{ position: 'absolute', left: spotlightLeft, top: spotlightTop, width: 700, height: 700, transform: 'translate(-50%,-50%)', borderRadius: '50%', pointerEvents: 'none', background: 'radial-gradient(circle, rgba(20,255,236,.08) 0%, transparent 55%)', filter: 'blur(30px)', zIndex: 0 }} />
+          {/* Bottom fade to white */}
+          <Box sx={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 120, background: 'linear-gradient(to top, #f5f6fa, transparent)', zIndex: 0 }} />
+
+          <Container maxWidth="md" sx={{ position: 'relative', zIndex: 1, textAlign: 'center' }}>
+            <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.15 }} style={{ y: heroY, opacity: heroOpacity }}>
+              {/* Badge */}
+              <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 1, px: 2.5, py: 0.8, borderRadius: 2, bgcolor: 'rgba(20,255,236,.08)', border: '1px solid rgba(20,255,236,.18)', mb: 4 }}>
+                <Layers size={13} color="#14FFEC" />
+                <Typography sx={{ color: '#14FFEC', fontSize: 12, letterSpacing: '.14em', fontWeight: 700 }}>THE DIGITAL OPERATING SYSTEM</Typography>
+              </Box>
+
+              <Typography sx={{ fontSize: { xs: 40, md: 68 }, fontWeight: 800, lineHeight: 1.08, letterSpacing: '-0.035em', mb: 3, fontFamily: FONT_DISPLAY }}>
+                Run your entire business<br />on <Box component="span" sx={{ color: '#14FFEC' }}>one platform</Box>
               </Typography>
-              <Typography sx={{ color: 'rgba(255,255,255,.7)', fontSize: { xs: 16, md: 19 }, maxWidth: 700, mx: 'auto', lineHeight: 1.72, mb: 4.4 }}>
-                Automate operations, unlock real-time insights, and scale seamlessly — one unified platform for schools, hospitals, and enterprises across India.
+
+              <Typography sx={{ color: 'rgba(255,255,255,.5)', fontSize: { xs: 16, md: 18 }, lineHeight: 1.65, mb: 5, maxWidth: 520, mx: 'auto' }}>
+                CRM, ERP, finance, HR, inventory, and automation — unified in a single platform purpose-built for modern enterprises.
               </Typography>
-              <Stack direction="row" gap={1.5} flexWrap="wrap" justifyContent="center">
-                <Button
-                  href="https://www.kalnet.co/request-demo"
-                  variant="contained"
-                  size="large"
-                  sx={{
-                    position: 'relative',
-                    overflow: 'hidden',
-                    '&::before': { content: '""', position: 'absolute', top: 0, left: '-100%', width: '100%', height: '100%', background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent)', transition: 'none' },
-                    '&:hover::before': { left: '100%', transition: 'all 0.6s ease' },
-                    '&:hover': { transform: 'translateY(-2px) scale(1.02)' },
-                  }}
-                >
-                  Book a Free Demo
+
+              <Stack direction="row" gap={2} justifyContent="center" flexWrap="wrap" sx={{ mb: 6 }}>
+                <Button href="https://www.kalnet.co/request-demo" variant="contained" size="large"
+                  sx={{ px: 4.5, py: 1.6, fontSize: 15, bgcolor: '#0D7377', '&:hover': { bgcolor: '#14FFEC', color: '#000' } }}>
+                  Request a Demo
+                  <ArrowRight size={16} style={{ marginLeft: 8 }} />
                 </Button>
-                <Button
-                  href="#products"
-                  variant="outlined"
-                  size="large"
-                  sx={{
-                    color: '#fff',
-                    borderColor: 'rgba(255,255,255,.3)',
-                    '&:hover': {
-                      borderColor: 'rgba(255,255,255,.8)',
-                      bgcolor: 'rgba(255,255,255,.1)',
-                      transform: 'translateY(-2px) scale(1.02)',
-                    }
-                  }}
-                >
-                  Explore Solutions
+                <Button href="#advantage" variant="outlined" size="large"
+                  sx={{ px: 3.5, py: 1.6, fontSize: 15, color: 'rgba(255,255,255,.8)', borderColor: 'rgba(255,255,255,.15)', borderWidth: '1.5px',
+                  '&:hover': { borderColor: 'rgba(255,255,255,.4)', bgcolor: 'rgba(255,255,255,.04)', borderWidth: '1.5px' } }}>
+                  See How It Works
                 </Button>
               </Stack>
-              <Stack direction="row" gap={1.2} flexWrap="wrap" justifyContent="center" sx={{ mt: 3 }}>
-                {['5+ Live Institutions', '30+ AI Modules', '15+ Industries'].map((item) => (
-                  <Box
-                    key={item}
-                    sx={{
-                      px: 2,
-                      py: 1,
-                      borderRadius: 999,
-                      border: '1px solid rgba(255,255,255,.18)',
-                      bgcolor: 'rgba(255,255,255,.06)',
-                      color: '#f4f6fb',
-                      fontSize: 13,
-                      fontWeight: 600,
-                      backdropFilter: 'blur(6px)',
-                    }}
-                  >
-                    {item}
-                  </Box>
+
+              {/* Trust strip */}
+              <Stack direction="row" spacing={4} justifyContent="center" alignItems="center" flexWrap="wrap">
+                {[
+                  { Icon: Shield, text: 'Enterprise-grade security' },
+                  { Icon: Users, text: 'Trusted by 150+ businesses' },
+                  { Icon: Zap, text: 'Deploy in 2 weeks' },
+                ].map((t, i) => (
+                  <Stack key={i} direction="row" spacing={1} alignItems="center" sx={{ opacity: 0.35 }}>
+                    <t.Icon size={14} />
+                    <Typography sx={{ fontSize: 12, fontWeight: 500, letterSpacing: '.02em' }}>{t.text}</Typography>
+                  </Stack>
                 ))}
               </Stack>
             </motion.div>
+          </Container>
+        </Box>
+      </Box>
+
+      {/* ═══════════ HEADLINE BANNER ═══════════ */}
+      <Box component="section" sx={{ py: { xs: 6, md: 8 }, bgcolor: '#fff', textAlign: 'center' }}>
+        <Container maxWidth="md">
+          <motion.div {...fadeUp}>
+            <Typography sx={{ fontSize: { xs: 28, md: 42 }, fontWeight: 800, color: '#1a1a2e', lineHeight: 1.2, fontFamily: FONT_DISPLAY }}>
+              Manage your entire business from <Box component="span" sx={{ color: '#0D7377' }}>one dashboard</Box>
+            </Typography>
+            <Typography sx={{ fontSize: { xs: 15, md: 17 }, color: '#6b7280', mt: 2, lineHeight: 1.6 }}>
+              CRM, ERP, finance, HR, inventory, and automation — unified in a single platform built for Indian enterprises.
+            </Typography>
+          </motion.div>
+        </Container>
+      </Box>
+
+      {/* ═══════════ STATS ═══════════ */}
+      <Box id="stats" component="section" sx={{ py: { xs: 8, md: 12 }, bgcolor: '#f5f6fa' }}>
+        <Container maxWidth="lg">
+          <motion.div {...fadeUp}>
+          <Stack direction={{ xs: 'column', md: 'row' }} gap={6} alignItems="center">
+            <Box sx={{ flex: 1 }}>
+              <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 1, bgcolor: 'rgba(13,115,119,.08)', color: '#0D7377', px: 2, py: 0.8, borderRadius: 2, mb: 3, fontSize: 13, fontWeight: 700 }}>
+                <Layers size={14} /> Kalnet in Numbers
+              </Box>
+              <Typography sx={{ fontSize: { xs: 30, md: 38 }, fontWeight: 800, color: '#1a1a2e', lineHeight: 1.2, mb: 1, fontFamily: FONT_DISPLAY }}>
+                Trusted by Leading Enterprises
+              </Typography>
+              <Typography sx={{ fontSize: { xs: 22, md: 28 }, fontWeight: 500, color: '#9ca3af', lineHeight: 1.3 }}>
+                Across India & Worldwide
+              </Typography>
+            </Box>
+            <Box sx={{ flex: 1.2, display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 2 }}>
+              {[
+                { num: 150, suffix: '+', label: 'Projects Completed', Icon: CheckCircle },
+                { num: 95, suffix: '%', label: 'Client Success Rate', Icon: Star },
+                { num: 24, suffix: '/7', label: 'Continuous Support', Icon: Headphones },
+              ].map((s, i) => (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}>
+                  <Box sx={{ p: 3, bgcolor: '#fff', borderRadius: 4, border: '1px solid #f0f0f0', height: '100%' }}>
+                    <Box sx={{ width: 36, height: 36, borderRadius: '50%', bgcolor: 'rgba(13,115,119,.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2.5 }}>
+                      <s.Icon size={18} color="#0D7377" />
+                    </Box>
+                    <Typography sx={{ fontSize: 30, fontWeight: 800, color: '#1a1a2e', mb: 0.3, fontFamily: FONT_DISPLAY }}>
+                      <CountUp target={s.num} suffix={s.suffix} />
+                    </Typography>
+                    <Typography sx={{ fontSize: 13, color: '#9ca3af', fontWeight: 500 }}>{s.label}</Typography>
+                  </Box>
+                </motion.div>
+              ))}
+            </Box>
+          </Stack>
+          </motion.div>
+        </Container>
+      </Box>
+
+      {/* ═══════════ CURRENT LANDSCAPE vs KALNET ADVANTAGE ═══════════ */}
+      <Box id="advantage" component="section" sx={{ py: { xs: 8, md: 14 }, bgcolor: '#fff' }}>
+        <Container maxWidth="lg">
+          <motion.div {...fadeUp}>
+          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' }, gap: 0, borderRadius: 5, overflow: 'hidden', border: '1px solid #e5e7eb' }}>
+            {/* Left — Current Landscape */}
+            <Box sx={{ p: { xs: 4, md: 6 }, bgcolor: '#fafafa' }}>
+              <Typography sx={{ fontSize: 11, fontWeight: 700, letterSpacing: '.14em', color: '#9ca3af', mb: 3 }}>CURRENT LANDSCAPE</Typography>
+              <Typography sx={{ fontSize: { xs: 26, md: 32 }, fontWeight: 800, color: '#1a1a2e', mb: 2, lineHeight: 1.2, fontFamily: FONT_DISPLAY }}>
+                Manual work, scattered data
+              </Typography>
+              <Typography sx={{ color: '#6b7280', fontSize: 15, lineHeight: 1.6, mb: 5 }}>
+                Hours wasted on repetitive tasks, jumping between systems, and chasing information across departments.
+              </Typography>
+              <Stack spacing={2}>
+                {[
+                  { Icon: ClipboardList, text: 'Scattered spreadsheets' },
+                  { Icon: Mail, text: 'Endless email chains' },
+                  { Icon: Clock, text: 'Manual data entry' },
+                ].map((item, i) => (
+                  <Box key={i} sx={{ display: 'flex', alignItems: 'center', gap: 2, p: 2.5, bgcolor: '#fff', borderRadius: 3, border: '1px solid #f0f0f0' }}>
+                    <Box sx={{ width: 40, height: 40, borderRadius: 2.5, bgcolor: '#f5f6fa', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                      <item.Icon size={18} color="#9ca3af" />
+                    </Box>
+                    <Typography sx={{ fontSize: 15, fontWeight: 600, color: '#4b5563' }}>{item.text}</Typography>
+                  </Box>
+                ))}
+              </Stack>
+            </Box>
+
+            {/* Right — Kalnet Advantage */}
+            <Box sx={{ p: { xs: 4, md: 6 }, bgcolor: '#0f1729', color: '#fff' }}>
+              <Typography sx={{ fontSize: 11, fontWeight: 700, letterSpacing: '.14em', color: '#14FFEC', mb: 3 }}>THE KALNET ADVANTAGE</Typography>
+              <Typography sx={{ fontSize: { xs: 26, md: 32 }, fontWeight: 800, mb: 2, lineHeight: 1.2, fontFamily: FONT_DISPLAY }}>
+                One AI workspace for everything
+              </Typography>
+              <Typography sx={{ color: 'rgba(255,255,255,.6)', fontSize: 15, lineHeight: 1.6, mb: 5 }}>
+                A unified platform where operations, data, and insights come together — powered by intelligent automation.
+              </Typography>
+              <Stack spacing={2}>
+                {[
+                  { Icon: Zap, text: 'AI-powered automation' },
+                  { Icon: BarChart3, text: 'Real-time insights' },
+                  { Icon: Shield, text: 'Enterprise security' },
+                ].map((item, i) => (
+                  <Box key={i} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 2, p: 2.5, bgcolor: 'rgba(255,255,255,.04)', borderRadius: 3, border: '1px solid rgba(255,255,255,.08)' }}>
+                    <Stack direction="row" spacing={2} alignItems="center">
+                      <Box sx={{ width: 40, height: 40, borderRadius: 2.5, bgcolor: 'rgba(20,255,236,.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                        <item.Icon size={18} color="#14FFEC" />
+                      </Box>
+                      <Typography sx={{ fontSize: 15, fontWeight: 600 }}>{item.text}</Typography>
+                    </Stack>
+                    <Check size={18} color="#14FFEC" />
+                  </Box>
+                ))}
+              </Stack>
+            </Box>
+          </Box>
+          </motion.div>
+        </Container>
+      </Box>
+
+      {/* ═══════════ AI CAPABILITIES (Feature Cards) ═══════════ */}
+      <Box component="section" sx={{ py: { xs: 10, md: 14 }, bgcolor: '#f5f6fa' }}>
+        <Container maxWidth="lg">
+          <Box sx={{ textAlign: 'center', mb: 8 }}>
+            <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 1, bgcolor: 'rgba(13,115,119,.08)', color: '#0D7377', px: 2, py: 0.8, borderRadius: 2, mb: 3, fontSize: 13, fontWeight: 700 }}>
+              <Brain size={14} /> Platform Intelligence
+            </Box>
+            <Typography sx={{ fontSize: { xs: 32, md: 46 }, fontWeight: 800, color: '#1a1a2e', fontFamily: FONT_DISPLAY }}>
+              Automate decisions with built-in AI
+            </Typography>
+            <Typography sx={{ fontSize: 17, color: '#6b7280', mt: 2, maxWidth: 620, mx: 'auto', lineHeight: 1.6 }}>
+              From predictive analytics to natural language queries — intelligence is embedded in every module.
+            </Typography>
+          </Box>
+          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(3, 1fr)' }, gap: 3 }}>
+            {[
+              { title: 'Natural Language Interface', desc: 'Ask questions in plain English. Get reports, data, and insights without writing a single query.', Icon: Search },
+              { title: 'Predictive Intelligence', desc: 'Forecast dropout risk, patient outcomes, or sales trends before they become problems.', Icon: BarChart3 },
+              { title: 'Workflow Automation', desc: 'Automate approvals, notifications, and routine tasks. Reduce manual work by up to 70%.', Icon: Zap },
+              { title: 'Anomaly Detection', desc: 'Identify unusual patterns in real-time — from billing discrepancies to attendance fraud.', Icon: Eye },
+              { title: 'Document Intelligence', desc: 'Extract data from documents, receipts, and forms automatically with AI-powered OCR.', Icon: FileText },
+              { title: 'Smart Recommendations', desc: 'Get AI-suggested optimizations for resources, inventory, and operational efficiency.', Icon: Sparkles },
+            ].map((f, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.06 }}>
+                <Box sx={{ p: 4, bgcolor: '#fff', borderRadius: 4, border: '1px solid #f0f0f0', height: '100%', transition: 'all .25s', '&:hover': { transform: 'translateY(-4px)', boxShadow: '0 12px 32px rgba(0,0,0,.06)' } }}>
+                  <Box sx={{ width: 44, height: 44, borderRadius: 3, bgcolor: i === 5 ? '#FEF9C3' : 'rgba(13,115,119,.06)', display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 3, color: i === 5 ? '#d97706' : '#0D7377' }}>
+                    <f.Icon size={20} />
+                  </Box>
+                  <Typography sx={{ fontSize: 18, fontWeight: 800, mb: 1.5, color: '#1a1a2e', fontFamily: FONT_DISPLAY }}>{f.title}</Typography>
+                  <Typography sx={{ fontSize: 14, color: '#6b7280', lineHeight: 1.65 }}>{f.desc}</Typography>
+                </Box>
+              </motion.div>
+            ))}
           </Box>
         </Container>
       </Box>
 
-      <Container maxWidth="lg" sx={{ py: 6 }}>
-        <Box sx={{ bgcolor: '#fff', border: '1px solid #edf0f6', borderRadius: 3, display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(3,1fr)' } }}>
-          {[
-            { value: 5, label: 'Institutions Trusted Us' },
-            { value: 15, label: 'Industries Served' },
-            { value: 30, label: 'AI-Powered Modules' },
-          ].map((s) => (
-            <Box key={s.label} sx={{ textAlign: 'center', py: 4 }}>
-              <Typography sx={{ fontSize: { xs: 42, md: 60 }, fontWeight: 900, lineHeight: 1 }}>
-                <CountUp target={s.value} suffix="+" />
-              </Typography>
-              <Typography sx={{ color: '#6e6e73', fontWeight: 500 }}>{s.label}</Typography>
+      {/* ═══════════ PLATFORM MODULES (Dark) ═══════════ */}
+      <Box component="section" sx={{ py: { xs: 10, md: 14 }, bgcolor: '#111111', color: '#fff', borderRadius: { xs: 0, md: '40px 40px 0 0' } }}>
+        <Container maxWidth="lg">
+          <Box sx={{ textAlign: 'center', mb: 8 }}>
+            <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 1, px: 2, py: 1, bgcolor: '#1e1e1e', border: '1px solid #333', borderRadius: 2, mb: 3, fontSize: 13, fontWeight: 600 }}>
+              <Layers size={14} color="#14FFEC" /> Platform Modules
             </Box>
-          ))}
-        </Box>
-      </Container>
-
-      <Container maxWidth="lg" sx={{ py: 10 }}>
-        <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' }, gap: 4, alignItems: 'stretch' }}>
-          <motion.div {...fadeUp}>
-            <Chip label="What is KALNET" sx={{ mb: 2, bgcolor: 'rgba(10,10,10,.06)' }} />
-            <Typography sx={{ fontSize: { xs: 36, md: 56 }, fontWeight: 900, lineHeight: 1.06, letterSpacing: '-.03em', mb: 2 }}>One Platform. Every Operation. Any Industry.</Typography>
-            <Typography sx={{ color: '#6e6e73', fontSize: 18, lineHeight: 1.7, mb: 2 }}>KALNET is a Gen AI-powered cloud platform that replaces disconnected tools with a single intelligent operating system for your institution.</Typography>
-            <Typography sx={{ color: '#6e6e73', fontSize: 18, lineHeight: 1.7, mb: 3 }}>From student fee collection and biometric attendance to patient records and payroll — every workflow, automated.</Typography>
-            <Stack direction="row" gap={1.5} flexWrap="wrap">
-              <Button href="https://www.kalnet.co/request-demo" variant="contained" sx={{ textTransform: 'none', borderRadius: 999, fontWeight: 700, transition: 'all .24s ease', '&:hover': { transform: 'translateY(-2px)', boxShadow: '0 12px 26px rgba(0,113,227,.35)' } }}>Get Started Free</Button>
-              <Button href="#products" variant="outlined" sx={{ textTransform: 'none', borderRadius: 999, fontWeight: 600, transition: 'all .24s ease', '&:hover': { transform: 'translateY(-2px)' } }}>See All Solutions</Button>
-            </Stack>
-          </motion.div>
-          <motion.div {...fadeUp}>
-            <CardBlock>
-              <Typography sx={{ fontSize: 13, letterSpacing: '.12em', color: '#5f6f8e', fontWeight: 700, mb: 2 }}>UNIFIED CONTROL LAYER</Typography>
-              <Stack gap={1.4}>
-                {[
-                  ['Admissions to Alumni', 'Single pipeline across the full lifecycle.'],
-                  ['Finance to Compliance', 'Automated collections, approvals, and reporting.'],
-                  ['Operations to Insights', 'Real-time visibility with AI-led recommendations.'],
-                ].map((item) => (
-                  <Box key={item[0]} sx={{ p: 1.7, borderRadius: 2, bgcolor: '#f8faff', border: '1px solid #e3e9f8' }}>
-                    <Typography sx={{ fontWeight: 700, mb: 0.4 }}>{item[0]}</Typography>
-                    <Typography sx={{ color: '#6e6e73', fontSize: 14 }}>{item[1]}</Typography>
+            <Typography sx={{ fontSize: { xs: 32, md: 48 }, fontWeight: 800, fontFamily: FONT_DISPLAY }}>
+              Replace 5 tools with <Box component="span" sx={{ color: '#14FFEC' }}>one platform</Box>
+            </Typography>
+            <Typography sx={{ fontSize: 17, color: 'rgba(255,255,255,.5)', mt: 2, maxWidth: 560, mx: 'auto', lineHeight: 1.6 }}>
+              Stop juggling disconnected software. Kalnet brings CRM, ERP, finance, HR, and inventory into a single system.
+            </Typography>
+          </Box>
+          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(3, 1fr)' }, gap: 2.5 }}>
+            {[
+              { title: 'CRM Software', desc: 'Manage leads, deals, and customer relationships with smart pipelines and automation.', Icon: Monitor },
+              { title: 'ERP Software', desc: 'Unified resource planning across finance, inventory, HR, and procurement.', Icon: Layers },
+              { title: 'Finance & Billing', desc: 'Automated invoicing, payment tracking, and real-time financial reporting.', Icon: BarChart3 },
+              { title: 'HR & Payroll', desc: 'Employee management, attendance tracking, payroll processing, and compliance.', Icon: Smartphone },
+              { title: 'Inventory Management', desc: 'Real-time stock levels, automated reordering, and multi-warehouse support.', Icon: Settings },
+              { title: 'Workflow Automation', desc: 'Build custom workflows, automate approvals, and eliminate repetitive processes.', Icon: Code },
+            ].map((s, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.05 }}>
+                <Box sx={{ p: 4, bgcolor: '#1a1a1a', borderRadius: 4, border: '1px solid #252525', height: '100%', transition: 'all .25s', '&:hover': { borderColor: '#0D7377', transform: 'translateY(-4px)' } }}>
+                  <Box sx={{ width: 44, height: 44, borderRadius: 2.5, bgcolor: '#252525', display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 3.5, color: '#fff' }}>
+                    <s.Icon size={20} />
                   </Box>
-                ))}
-              </Stack>
-              <Box sx={{ mt: 2.2, p: 2, borderRadius: 2, bgcolor: '#0e1525', border: '1px solid #26344f' }}>
-                <Typography sx={{ color: '#89c1ff', fontSize: 12, letterSpacing: '.08em', mb: 1 }}>SYSTEM HEALTH</Typography>
-                <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0,1fr))', gap: 1 }}>
-                  {[
-                    ['99.9%', 'Uptime'],
-                    ['< 2s', 'Response'],
-                    ['24/7', 'Monitoring'],
-                  ].map((metric) => (
-                    <Box key={metric[1]} sx={{ p: 1.2, borderRadius: 1.6, bgcolor: 'rgba(255,255,255,.04)' }}>
-                      <Typography sx={{ color: '#fff', fontWeight: 800, lineHeight: 1.1 }}>{metric[0]}</Typography>
-                      <Typography sx={{ color: 'rgba(255,255,255,.64)', fontSize: 12 }}>{metric[1]}</Typography>
+                  <Typography sx={{ fontSize: 20, fontWeight: 800, mb: 1.5, fontFamily: FONT_DISPLAY }}>{s.title}</Typography>
+                  <Typography sx={{ color: 'rgba(255,255,255,.5)', fontSize: 14, lineHeight: 1.6 }}>{s.desc}</Typography>
+                </Box>
+              </motion.div>
+            ))}
+          </Box>
+        </Container>
+      </Box>
+
+      {/* ═══════════ INDUSTRY SOLUTIONS (Light) ═══════════ */}
+      <Box component="section" sx={{ py: { xs: 10, md: 14 }, bgcolor: '#fff' }}>
+        <Container maxWidth="lg">
+          <Box sx={{ textAlign: 'center', mb: 8 }}>
+            <Typography sx={{ fontSize: 11, fontWeight: 700, letterSpacing: '.14em', color: '#0D7377', mb: 2 }}>INDUSTRY-READY</Typography>
+            <Typography sx={{ fontSize: { xs: 32, md: 46 }, fontWeight: 800, color: '#1a1a2e', fontFamily: FONT_DISPLAY }}>
+              Not generic tools — purpose-built systems
+            </Typography>
+            <Typography sx={{ fontSize: 17, color: '#6b7280', mt: 2, maxWidth: 600, mx: 'auto', lineHeight: 1.6 }}>
+              Unlike one-size-fits-all platforms, Kalnet delivers industry-specific modules with workflows designed for your sector.
+            </Typography>
+          </Box>
+          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr 1fr', md: 'repeat(4, 1fr)' }, gap: 2.5 }}>
+            {[
+              { title: 'Education', desc: 'Schools, colleges & coaching', Icon: GraduationCap },
+              { title: 'Healthcare', desc: 'Hospitals & clinics', Icon: Heart },
+              { title: 'Real Estate', desc: 'Property & agents', Icon: Building2 },
+              { title: 'Hospitality', desc: 'Hotels & restaurants', Icon: Hotel },
+              { title: 'Manufacturing', desc: 'Industry & production', Icon: Factory },
+              { title: 'Retail', desc: 'Stores & e-commerce', Icon: ShoppingCart },
+              { title: 'Government', desc: 'Public sector & NGOs', Icon: Landmark },
+              { title: 'Finance', desc: 'Banking & insurance', Icon: CreditCard },
+            ].map((ind, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.04 }}>
+                <Box sx={{ p: 3.5, bgcolor: '#fafafa', borderRadius: 4, border: '1px solid #f0f0f0', textAlign: 'center', transition: 'all .25s', cursor: 'pointer', '&:hover': { bgcolor: '#0D7377', color: '#fff', borderColor: '#0D7377', transform: 'translateY(-4px)', '& .ind-desc': { color: 'rgba(255,255,255,.7)' }, '& .ind-icon': { bgcolor: 'rgba(255,255,255,.15)', color: '#fff' } } }}>
+                  <Box className="ind-icon" sx={{ width: 48, height: 48, borderRadius: 3, bgcolor: 'rgba(13,115,119,.06)', color: '#0D7377', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', mb: 2, transition: 'all .25s' }}>
+                    <ind.Icon size={22} />
+                  </Box>
+                  <Typography sx={{ fontSize: 16, fontWeight: 800, mb: 0.5, fontFamily: FONT_DISPLAY }}>{ind.title}</Typography>
+                  <Typography className="ind-desc" sx={{ fontSize: 13, color: '#9ca3af', transition: 'color .25s' }}>{ind.desc}</Typography>
+                </Box>
+              </motion.div>
+            ))}
+          </Box>
+        </Container>
+      </Box>
+
+      {/* ═══════════ TOOLS & INTEGRATIONS ═══════════ */}
+      <Box component="section" sx={{ py: { xs: 10, md: 14 }, bgcolor: '#f5f6fa', position: 'relative', overflow: 'hidden' }}>
+        <Container maxWidth="lg" sx={{ position: 'relative', minHeight: 480, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+          <Box sx={{ position: 'relative', zIndex: 10, mb: 4 }}>
+            <Box sx={{ width: 80, height: 80, borderRadius: 3, bgcolor: '#0D7377', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 0 60px rgba(13,115,119,.3)' }}>
+              <Typography sx={{ color: '#14FFEC', fontSize: 28, fontWeight: 900, letterSpacing: '-0.04em', fontFamily: FONT_DISPLAY }}>K</Typography>
+            </Box>
+          </Box>
+          <Typography sx={{ fontSize: { xs: 28, md: 40 }, fontWeight: 800, color: '#1a1a2e', textAlign: 'center', mb: 0.5, fontFamily: FONT_DISPLAY }}>We rely on reliable tools to</Typography>
+          <Typography sx={{ fontSize: { xs: 28, md: 40 }, fontWeight: 800, color: '#9ca3af', textAlign: 'center', fontStyle: 'italic', fontFamily: FONT_DISPLAY }}>build high-quality products</Typography>
+          {[
+            { label: 'JS', bg: '#f7df1e', color: '#000', top: '5%', left: '18%' },
+            { label: 'Ai', bg: '#ff6c37', color: '#fff', top: '6%', left: '38%' },
+            { label: 'Fg', bg: '#a259ff', color: '#fff', top: '3%', right: '35%' },
+            { label: '<>', bg: '#61dafb', color: '#000', top: '8%', right: '12%' },
+            { label: 'H5', bg: '#e34f26', color: '#fff', top: '30%', left: '22%' },
+            { label: 'A', bg: '#dd0031', color: '#fff', top: '22%', right: '28%' },
+            { label: 'GH', bg: '#181717', color: '#fff', top: '42%', left: '8%' },
+            { label: 'V', bg: '#4fc08d', color: '#fff', bottom: '28%', left: '20%' },
+            { label: 'Ps', bg: '#31a8ff', color: '#fff', bottom: '18%', left: '28%' },
+            { label: 'Fl', bg: '#02569b', color: '#fff', bottom: '10%', right: '42%' },
+            { label: 'iOS', bg: '#000', color: '#fff', top: '18%', right: '8%' },
+            { label: 'php', bg: '#777bb4', color: '#fff', bottom: '8%', left: '10%' },
+            { label: 'NJ', bg: '#339933', color: '#fff', top: '12%', right: '18%' },
+            { label: 'And', bg: '#3ddc84', color: '#000', bottom: '32%', right: '8%' },
+          ].map((t, i) => (
+            <motion.div key={i} animate={{ y: [0, -10, 0] }} transition={{ repeat: Infinity, duration: 3.5 + (i % 4), delay: i * 0.15 }}
+              style={{ position: 'absolute', top: t.top, left: t.left, right: t.right, bottom: t.bottom, zIndex: 5 }}>
+              <Box sx={{ width: 40, height: 40, borderRadius: 2, bgcolor: t.bg, color: t.color, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, fontWeight: 800, boxShadow: '0 4px 16px rgba(0,0,0,.08)' }}>
+                {t.label}
+              </Box>
+            </motion.div>
+          ))}
+        </Container>
+      </Box>
+
+      {/* ═══════════ TESTIMONIALS ═══════════ */}
+      <Box component="section" sx={{ py: { xs: 10, md: 14 }, bgcolor: '#fff' }}>
+        <Container maxWidth="lg">
+          <Box sx={{ textAlign: 'center', mb: 7 }}>
+            <Typography sx={{ fontSize: { xs: 32, md: 46 }, fontWeight: 800, color: '#1a1a2e', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 2, fontFamily: FONT_DISPLAY }}>
+              What Our
+              <Box sx={{ bgcolor: '#d97706', color: '#fff', width: 44, height: 44, borderRadius: 2, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: 22, fontWeight: 900 }}>"</Box>
+              Clients Say
+            </Typography>
+          </Box>
+        </Container>
+        <Box sx={{ overflowX: 'auto', pb: 3, px: { xs: 2, md: 8 }, '&::-webkit-scrollbar': { display: 'none' } }}>
+          <Stack direction="row" spacing={3} sx={{ minWidth: 'max-content', px: { md: 6 } }}>
+            {[
+              { type: 'School Management System', quote: "Kalnet replaced 4 different tools we were using. Everything from attendance to fee collection is now in one dashboard. Our admin overhead dropped by 60%.", name: 'Rajesh M.', role: 'School Director' },
+              { type: 'Hospital ERP Platform', quote: "The healthcare module understood our exact workflow. Patient records, billing, pharmacy — all integrated. Implementation took just 3 weeks.", name: 'Dr. Priya S.', role: 'Hospital Administrator' },
+              { type: 'Real Estate CRM', quote: "Lead tracking and deal management became effortless. Our agents close 35% more deals now with the automated follow-up system.", name: 'Arjun K.', role: 'Broker, PropFirst' },
+              { type: 'Retail Operations', quote: "Inventory management across 12 stores, unified billing, employee tracking — Kalnet handles it all. Best investment we've made.", name: 'Sneha R.', role: 'Operations Head' },
+            ].map((t, i) => (
+              <motion.div key={i} initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}>
+                <Box sx={{ width: 340, p: 4, bgcolor: '#fff', borderRadius: 4, border: '1px solid #f0f0f0', boxShadow: '0 4px 20px rgba(0,0,0,.03)' }}>
+                  <Typography sx={{ fontSize: 12, color: '#9ca3af', mb: 0.5 }}>Project Type</Typography>
+                  <Typography sx={{ fontSize: 14, fontWeight: 700, color: '#1a1a2e', mb: 3 }}>{t.type}</Typography>
+                  <Typography sx={{ color: '#d97706', fontSize: 32, lineHeight: 1, mb: 1.5, fontWeight: 800 }}>"</Typography>
+                  <Typography sx={{ color: '#4b5563', fontSize: 15, lineHeight: 1.65, mb: 4 }}>{t.quote}</Typography>
+                  <Stack direction="row" spacing={2} alignItems="center">
+                    <Box sx={{ width: 42, height: 42, borderRadius: '50%', bgcolor: '#e5e7eb' }} />
+                    <Box>
+                      <Typography sx={{ fontWeight: 700, fontSize: 14, color: '#1a1a2e' }}>{t.name}</Typography>
+                      <Typography sx={{ fontSize: 13, color: '#9ca3af' }}>{t.role}</Typography>
                     </Box>
-                  ))}
+                  </Stack>
                 </Box>
-              </Box>
-            </CardBlock>
-          </motion.div>
+              </motion.div>
+            ))}
+          </Stack>
         </Box>
-      </Container>
-
-      <InfiniteMarquee text="Unified Operating System" />
-
-      <Section title="Software Built for Your Industry" subtitle="Every solution is purpose-built with the workflows, modules, and automations specific to your sector — not a one-size-fits-all tool." id="products" surface>
-        <GridWrap>
-          {products.map((item, index) => (
-            <motion.div
-              key={item.title}
-              initial={{ opacity: 0, y: 34, scale: 0.98 }}
-              whileInView={{ opacity: 1, y: 0, scale: 1 }}
-              viewport={{ once: true, amount: 0.28 }}
-              transition={{ duration: 0.55, delay: index * 0.08, ease: 'easeOut' }}
-            >
-              <Box
-                sx={{
-                  position: 'relative',
-                  overflow: 'hidden',
-                  bgcolor: '#fff',
-                  border: '1.5px solid #e4e7f0',
-                  borderRadius: 2.8,
-                  p: 3.1,
-                  boxShadow: '0 18px 38px rgba(17,24,39,.05)',
-                  transition: 'all .28s ease',
-                  '&:hover': { borderColor: '#c8d4ee', transform: 'translateY(-5px)', boxShadow: '0 22px 46px rgba(15,23,42,.11)' },
-                }}
-              >
-                <motion.div
-                  initial={{ scaleX: 0, opacity: 0.55 }}
-                  whileInView={{ scaleX: 1, opacity: 1 }}
-                  viewport={{ once: true, amount: 0.4 }}
-                  transition={{ duration: 0.65, delay: 0.15 + index * 0.08 }}
-                  style={{ transformOrigin: 'left center', position: 'absolute', left: 0, top: 0, width: '100%', height: 3, background: `linear-gradient(90deg, ${item.accent}, #93c5fd)` }}
-                />
-                <Box sx={{ position: 'absolute', right: -20, top: -20, width: 110, height: 110, borderRadius: '50%', background: `radial-gradient(circle, ${item.accent}33 0%, transparent 72%)` }} />
-                <Box
-                  sx={{
-                    width: 44,
-                    height: 44,
-                    borderRadius: 1.8,
-                    mb: 1.6,
-                    display: 'grid',
-                    placeItems: 'center',
-                    fontSize: 12,
-                    fontWeight: 800,
-                    letterSpacing: '.08em',
-                    color: '#fff',
-                    background: `linear-gradient(135deg, ${item.accent}, #1d4ed8)`,
-                    boxShadow: `0 10px 24px ${item.accent}55`,
-                  }}
-                >
-                  {item.code}
+        <Container maxWidth="lg" sx={{ mt: 3 }}>
+          <Stack direction="row" justifyContent="space-between" alignItems="center">
+            <Stack direction="row" alignItems="center" spacing={1.5}>
+              <Box sx={{ width: 40, height: 4, bgcolor: '#0D7377', borderRadius: 2 }} />
+              <Box sx={{ width: 80, height: 4, bgcolor: '#e5e7eb', borderRadius: 2 }} />
+              <Typography sx={{ fontSize: 13, color: '#9ca3af', fontWeight: 600 }}>1 of 3</Typography>
+            </Stack>
+            <Stack direction="row" spacing={1}>
+              {[false, true].map((active, i) => (
+                <Box key={i} sx={{ width: 36, height: 36, borderRadius: '50%', border: '1px solid #e5e7eb', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', '&:hover': { borderColor: '#0D7377' } }}>
+                  <ChevronUp size={16} style={{ transform: i === 0 ? 'rotate(-90deg)' : 'rotate(90deg)' }} color={active ? '#1a1a2e' : '#9ca3af'} />
                 </Box>
-                <Typography sx={{ fontWeight: 800, fontSize: 22, mb: 1 }}>{item.title}</Typography>
-                <Typography sx={{ color: '#6e6e73', mb: 2 }}>{item.text}</Typography>
-                <Stack direction="row" gap={1} flexWrap="wrap">
-                  {item.tags.map((tag) => (
-                    <Chip key={tag} size="small" label={tag} sx={{ bgcolor: '#eef3ff', color: '#2a3e67', fontWeight: 600 }} />
-                  ))}
-                </Stack>
-              </Box>
-            </motion.div>
-          ))}
-        </GridWrap>
-      </Section>
-
-      <FlagshipStorySection />
-
-      <Section title="Everything You Need. Nothing You Don't." subtitle="Every KALNET deployment ships with these powerful capabilities out of the box." surface>
-        <GridWrap>
-          {features.map((f, index) => (
-            <motion.div key={f.title} initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.25 }} transition={{ duration: 0.5, delay: index * 0.06 }}>
-              <Box sx={{ 
-                position: 'relative', 
-                p: 3.6, 
-                borderRadius: 3.2, 
-                bgcolor: '#fff', 
-                border: '1.5px solid #e4e7f0', 
-                background: `linear-gradient(135deg, #ffffff 0%, #f8f9fc 100%)`,
-                boxShadow: '0 10px 30px rgba(0,0,0,.06), 0 0 1px rgba(0,113,227,.1)',
-                height: '100%', 
-                transition: 'all .35s cubic-bezier(0.34, 1.56, 0.64, 1)',
-                overflow: 'hidden',
-                '&:hover': { 
-                  borderColor: f.accent,
-                  transform: 'translateY(-8px)', 
-                  boxShadow: `0 24px 48px rgba(0,113,227,.18), 0 0 1px ${f.accent}40`,
-                  background: `linear-gradient(135deg, #ffffff 0%, ${f.accent}08 100%)`,
-                } 
-              }}>
-                {/* Accent top border */}
-                <Box sx={{ position: 'absolute', left: 0, top: 0, width: '100%', height: 3, background: `linear-gradient(90deg, ${f.accent}, #93c5fd)`, opacity: 0.8 }} />
-                
-                {/* Decorative corner gradient */}
-                <Box sx={{ position: 'absolute', top: -50, right: -50, width: 150, height: 150, borderRadius: '50%', background: `radial-gradient(circle, ${f.accent}12, transparent 70%)`, pointerEvents: 'none' }} />
-                
-                {/* Badge */}
-                <motion.div whileHover={{ scale: 1.12, rotate: 5 }} transition={{ type: 'spring', stiffness: 400, damping: 10 }}>
-                  <Box sx={{ 
-                    width: 54, 
-                    height: 54, 
-                    borderRadius: 2.2, 
-                    mb: 2.2, 
-                    display: 'grid', 
-                    placeItems: 'center', 
-                    fontSize: 13, 
-                    fontWeight: 900, 
-                    letterSpacing: '.06em', 
-                    color: '#fff', 
-                    background: `linear-gradient(135deg, ${f.accent}, #1d4ed8)`, 
-                    boxShadow: `0 16px 32px ${f.accent}32`,
-                    position: 'relative',
-                    '&::before': {
-                      content: '""',
-                      position: 'absolute',
-                      inset: 0,
-                      borderRadius: 2.2,
-                      background: `linear-gradient(45deg, rgba(255,255,255,.2), transparent)`,
-                      pointerEvents: 'none'
-                    }
-                  }}>
-                    {f.code}
-                  </Box>
-                </motion.div>
-                
-                <Typography sx={{ fontWeight: 900, fontSize: 20, mb: 1.2, color: '#0a0a0a', letterSpacing: '-.01em' }}>{f.title}</Typography>
-                <Typography sx={{ color: '#505050', fontSize: 15.5, lineHeight: 1.6, fontWeight: 500 }}>{f.text}</Typography>
-                
-                {/* Hidden accent line on hover */}
-                <Box sx={{ 
-                  position: 'absolute',
-                  bottom: 0,
-                  left: 0,
-                  width: '100%',
-                  height: 1,
-                  background: `linear-gradient(90deg, transparent, ${f.accent}, transparent)`,
-                  opacity: 0,
-                  transition: 'opacity .35s ease',
-                  '.&:hover &': { opacity: 1 }
-                }} />
-              </Box>
-            </motion.div>
-          ))}
-        </GridWrap>
-      </Section>
-
-      <ServicesShowcase />
-
-      <IndustriesShowcase />
-
-      <InfiniteMarquee text="Trusted by Institutions Nationwide" />
-
-      <Section title="Trusted by Leaders Across India" subtitle="See what our clients say about running their institution on KALNET." surface>
-        <Stack direction="row" alignItems="center" justifyContent="center" spacing={1.2} sx={{ mb: 5 }}>
-          <Chip label="VERIFIED CLIENT RATING" sx={{ bgcolor: '#eaf2ff', color: '#24467f', fontWeight: 700, letterSpacing: '.03em' }} />
-          <Typography sx={{ fontWeight: 800, color: '#1d1d1f' }}>4.8 / 5</Typography>
-          <Typography sx={{ color: '#6e6e73' }}>across institutions</Typography>
-        </Stack>
-        <GridWrap cols={{ xs: 1, md: 3 }}>
-          {testimonials.map((t) => (
-            <motion.div key={t.name} {...fadeUp}>
-              <CardBlock>
-                <Typography sx={{ color: '#0071e3', fontSize: 40, lineHeight: 1, mb: 1 }}>"</Typography>
-                <Typography sx={{ mb: 2, color: '#1d1d1f' }}>{t.text}</Typography>
-                <Typography sx={{ fontWeight: 800, color: '#0a0a0a' }}>{t.name}</Typography>
-                <Typography sx={{ color: '#6e6e73', fontSize: 14 }}>{t.role}</Typography>
-              </CardBlock>
-            </motion.div>
-          ))}
-        </GridWrap>
-      </Section>
-
-      <Box component="section" sx={{ py: 14, textAlign: 'center', background: '#0a0a0a' }}>
-        <Container maxWidth="md">
-          <Typography sx={{ color: '#fff', fontSize: { xs: 40, md: 64 }, fontWeight: 900, lineHeight: 1.05, mb: 2 }}>
-            Ready to Digitise Your <Box component="span" sx={{ background: 'linear-gradient(90deg,#0071e3,#5ac8fa)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Institution?</Box>
-          </Typography>
-          <Typography sx={{ color: 'rgba(255,255,255,.6)', fontSize: 19, mb: 4 }}>
-            Join 5+ institutions already running smarter on KALNET.
-          </Typography>
-          <Stack direction="row" justifyContent="center" gap={1.5} flexWrap="wrap">
-            <Button href="https://www.kalnet.co/request-demo" variant="contained" size="large" sx={{ textTransform: 'none', borderRadius: 999, px: 3.2, fontWeight: 700, transition: 'all .24s ease', '&:hover': { transform: 'translateY(-2px)', boxShadow: '0 16px 34px rgba(0,113,227,.38)' } }}>Book a Free Demo</Button>
-            <Button href="mailto:hello@kalnet.co" variant="outlined" size="large" sx={{ textTransform: 'none', borderRadius: 999, px: 3.2, color: '#fff', borderColor: 'rgba(255,255,255,.35)', fontWeight: 650, transition: 'all .24s ease', '&:hover': { borderColor: 'rgba(255,255,255,.62)', bgcolor: 'rgba(255,255,255,.05)', transform: 'translateY(-2px)' } }}>Talk to Sales</Button>
+              ))}
+            </Stack>
           </Stack>
         </Container>
       </Box>
 
-      <Box component="footer" sx={{ py: 4, textAlign: 'center', bgcolor: '#0a0a0a', borderTop: '1px solid rgba(255,255,255,.08)', color: 'rgba(255,255,255,.65)' }}>
-        <Typography sx={{ fontSize: 13 }}>© 2026 KALNET Solutions Pvt Ltd. All rights reserved.</Typography>
+      {/* ═══════════ FAQ (Dark) ═══════════ */}
+      <Box component="section" sx={{ py: { xs: 10, md: 14 }, bgcolor: '#111111', color: '#fff', borderRadius: { xs: 4, md: 6 }, mx: { xs: 1, md: 3 }, mb: 2 }}>
+        <Container maxWidth="md">
+          <Box sx={{ textAlign: 'center', mb: 7 }}>
+            <Typography sx={{ fontSize: { xs: 30, md: 44 }, fontWeight: 800, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 2, fontFamily: FONT_DISPLAY }}>
+              Frequently Asked Questions
+              <Box sx={{ bgcolor: '#84cc16', p: 1, borderRadius: '50%', display: 'inline-flex', transform: 'rotate(10deg)' }}><HelpCircle size={22} /></Box>
+            </Typography>
+          </Box>
+          <Box sx={{ borderRadius: 4, overflow: 'hidden', border: '1px solid #222' }}>
+            {[
+              { q: 'How long does it take to deploy KALNET?', a: 'Most deployments are completed within 2-4 weeks. We handle data migration, user onboarding, and customization as part of the setup process.' },
+              { q: 'What industries does KALNET support?', a: 'We support 15+ industries including Education, Healthcare, Real Estate, Hospitality, Manufacturing, Retail, Government, and more with purpose-built modules.' },
+              { q: 'Can KALNET replace our existing CRM and ERP?', a: 'Yes. Kalnet is designed as a unified replacement for fragmented tools. Most clients consolidate 3-5 separate systems into one Kalnet platform.' },
+              { q: 'Do you provide post-launch support?', a: 'Absolutely. We provide 24/7 support, regular updates, and a dedicated account manager for enterprise clients.' },
+              { q: 'How do you ensure data security?', a: 'We use AES-256 encryption, role-based access controls, regular security audits, and are hosted on enterprise-grade cloud infrastructure.' },
+            ].map((f, i) => (
+              <Accordion key={i} defaultExpanded={i === 0} sx={{ bgcolor: '#1a1a1a', color: '#fff', '&:before': { display: 'none' }, borderBottom: i < 4 ? '1px solid #252525' : 'none', m: '0 !important' }}>
+                <AccordionSummary expandIcon={<ChevronUp size={18} color="rgba(255,255,255,.5)" />} sx={{ px: 3, py: 1 }}>
+                  <Typography sx={{ fontWeight: 600, fontSize: 15 }}>{f.q}</Typography>
+                </AccordionSummary>
+                <AccordionDetails sx={{ px: 3, pb: 3, color: 'rgba(255,255,255,.6)', fontSize: 14, lineHeight: 1.65 }}>
+                  {f.a}
+                </AccordionDetails>
+              </Accordion>
+            ))}
+          </Box>
+        </Container>
       </Box>
+
+      {/* ═══════════ CONTACT FORM ═══════════ */}
+      <Box component="section" sx={{ py: { xs: 12, md: 16 }, position: 'relative', overflow: 'hidden' }}>
+        <Box sx={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, #f5f6fa 0%, #e0f2f1 40%, #a7f3d0 100%)', zIndex: 0 }} />
+        <Container maxWidth="sm" sx={{ position: 'relative', zIndex: 1, textAlign: 'center' }}>
+          <Typography sx={{ fontSize: { xs: 40, md: 56 }, fontWeight: 800, color: '#1a1a2e', mb: 2, fontFamily: FONT_DISPLAY }}>Ready to Grow?</Typography>
+          <Typography sx={{ fontSize: 17, color: '#4b5563', mb: 7, lineHeight: 1.6 }}>Get in touch with us and let's discuss how we can support your goals.</Typography>
+          <Box sx={{ p: { xs: 4, md: 5 }, bgcolor: '#fff', borderRadius: 4, boxShadow: '0 16px 48px rgba(13,115,119,.08)', textAlign: 'left' }}>
+            <Stack spacing={3}>
+              <Box>
+                <Typography sx={{ fontSize: 14, fontWeight: 700, color: '#1a1a2e', mb: 1 }}>Full Name</Typography>
+                <Box component="input" placeholder="Enter your name" sx={{ width: '100%', p: 2, borderRadius: 3, border: '1px solid #e5e7eb', outline: 'none', fontFamily: 'inherit', fontSize: 15, bgcolor: '#fafafa', '&:focus': { borderColor: '#0D7377' } }} />
+              </Box>
+              <Box>
+                <Typography sx={{ fontSize: 14, fontWeight: 700, color: '#1a1a2e', mb: 1 }}>Email Address</Typography>
+                <Box component="input" placeholder="Enter your email" sx={{ width: '100%', p: 2, borderRadius: 3, border: '1px solid #e5e7eb', outline: 'none', fontFamily: 'inherit', fontSize: 15, bgcolor: '#fafafa', '&:focus': { borderColor: '#0D7377' } }} />
+              </Box>
+              <Box>
+                <Typography sx={{ fontSize: 14, fontWeight: 700, color: '#1a1a2e', mb: 1 }}>Messages</Typography>
+                <Box component="textarea" rows={4} placeholder="Your message here..." sx={{ width: '100%', p: 2, borderRadius: 3, border: '1px solid #e5e7eb', outline: 'none', fontFamily: 'inherit', fontSize: 15, bgcolor: '#fafafa', resize: 'none', '&:focus': { borderColor: '#0D7377' } }} />
+              </Box>
+              <Button variant="contained" fullWidth size="large" sx={{ py: 1.8, fontSize: 16, mt: 1 }}>Send</Button>
+            </Stack>
+          </Box>
+        </Container>
+      </Box>
+
+      {/* ═══════════ DARK FOOTER ═══════════ */}
+      <Box component="footer" sx={{ bgcolor: '#0a0a0a', color: '#fff', position: 'relative', overflow: 'hidden' }}>
+        {/* Massive KALNET watermark */}
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', pt: { xs: 10, md: 16 }, pb: { xs: 4, md: 6 }, position: 'relative' }}>
+          <Typography sx={{
+            fontSize: { xs: '20vw', md: '16vw' },
+            fontWeight: 900,
+            color: 'rgba(255,255,255,.06)',
+            letterSpacing: '-0.04em',
+            fontFamily: FONT_DISPLAY,
+            lineHeight: 1,
+            userSelect: 'none',
+          }}>
+            KALNET
+          </Typography>
+        </Box>
+
+        {/* Bottom bar */}
+        <Box sx={{ borderTop: '1px solid rgba(255,255,255,.08)', py: 3 }}>
+          <Container maxWidth="lg">
+            <Stack direction={{ xs: 'column', md: 'row' }} justifyContent="space-between" alignItems="center" spacing={2}>
+              <Typography sx={{ color: 'rgba(255,255,255,.4)', fontSize: 13 }}>
+                © 2026 <Box component="span" sx={{ fontWeight: 700, color: 'rgba(255,255,255,.6)' }}>TAYOG Pvt. Ltd.</Box> All rights reserved.
+              </Typography>
+              <Stack direction="row" spacing={4}>
+                {['Privacy', 'Terms', 'Sitemap'].map(l => (
+                  <Typography key={l} sx={{ color: 'rgba(255,255,255,.4)', fontSize: 13, cursor: 'pointer', '&:hover': { color: '#14FFEC' } }}>{l}</Typography>
+                ))}
+              </Stack>
+              <Typography sx={{ color: 'rgba(255,255,255,.4)', fontSize: 13 }}>
+                Made in India
+              </Typography>
+            </Stack>
+          </Container>
+        </Box>
+      </Box>
+
     </Box>
     </ThemeProvider>
   )
 }
 
-type SectionProps = {
-  title: string
-  subtitle: string
-  id?: string
-  surface?: boolean
-  children: ReactNode
-}
-
-function Section({ title, subtitle, children, id, surface = false }: SectionProps) {
-  return (
-    <Box component="section" id={id} sx={{ py: 10, bgcolor: surface ? '#f6f7fb' : '#fff' }}>
-      <Container maxWidth="lg">
-        <Typography sx={{ textAlign: 'center', fontSize: { xs: 36, md: 56 }, fontWeight: 900, lineHeight: 1.08, letterSpacing: '-.03em', mb: 1, color: surface ? '#0a0a0a' : '#1d1d1f' }}>{title}</Typography>
-        <Typography sx={{ textAlign: 'center', color: surface ? '#404040' : '#6e6e73', maxWidth: 620, mx: 'auto', mb: 6 }}>{subtitle}</Typography>
-        {children}
-      </Container>
-    </Box>
-  )
-}
-
-function GridWrap({
-  children,
-  cols = { xs: 1, md: 2 },
-}: {
-  children: ReactNode
-  cols?: { xs: number; md: number }
-}) {
-  return (
-    <Box sx={{ display: 'grid', gridTemplateColumns: { xs: `repeat(${cols.xs}, minmax(0,1fr))`, md: `repeat(${cols.md}, minmax(0,1fr))` }, gap: 3 }}>
-      {children}
-    </Box>
-  )
-}
-
-function ServicesShowcase() {
-  const containerRef = useRef<HTMLElement>(null)
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"]
-  })
-
-  const [activeIndex, setActiveIndex] = useState(0)
-
-  useMotionValueEvent(scrollYProgress, "change", (latest) => {
-    const index = Math.floor(latest * 0.99 * features.length)
-    if (index !== activeIndex) {
-      setActiveIndex(index)
-    }
-  })
-
-  const variants = {
-    enter: { opacity: 0, y: 40 },
-    center: { opacity: 1, y: 0, transition: { duration: 0.6 } },
-    exit: { opacity: 0, y: -40, transition: { duration: 0.4 } }
-  }
-
-  return (
-    <Box component="section" ref={containerRef} sx={{ height: `${features.length * 100}vh`, position: 'relative', bgcolor: '#0a0a0a', color: '#fff' }}>
-      <Box sx={{ position: 'sticky', top: 0, height: '100vh', display: 'flex', alignItems: 'center', overflow: 'hidden' }}>
-        <Container maxWidth="lg" sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' }, gap: 8, alignItems: 'center', height: '100%' }}>
-          
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-            <Typography sx={{ color: '#58b7ff', fontSize: 13, letterSpacing: '.16em', fontWeight: 800, mb: 2 }}>CORE CAPABILITIES</Typography>
-            {features.map((f, i) => {
-              const isActive = i === activeIndex
-              return (
-                <Stack key={f.code} direction="row" alignItems="center" spacing={2.5} sx={{ cursor: 'pointer', transition: 'all 0.3s ease', opacity: isActive ? 1 : 0.4, '&:hover': { opacity: isActive ? 1 : 0.8 } }}>
-                  <Box sx={{ width: 10, height: 10, borderRadius: '50%', border: `1.5px solid ${isActive ? f.accent : '#555'}`, bgcolor: isActive ? f.accent : 'transparent', transition: 'all 0.3s ease', transform: isActive ? 'scale(1.2)' : 'scale(1)' }} />
-                  <Typography sx={{ fontSize: { xs: 24, md: 32 }, fontWeight: 800, letterSpacing: '-0.02em', transition: 'all 0.3s ease' }}>{f.title}</Typography>
-                </Stack>
-              )
-            })}
-          </Box>
-
-          <Box sx={{ position: 'relative', height: 400, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-            <motion.div
-              animate={{ rotate: 360 }}
-              transition={{ repeat: Infinity, duration: 25, ease: 'linear' }}
-              style={{ position: 'absolute', right: -60, top: '50%', marginTop: -200, width: 400, height: 400, borderRadius: '50%', border: '1px dashed rgba(255,255,255,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', pointerEvents: 'none' }}
-            >
-              <Box sx={{ width: 280, height: 280, borderRadius: '50%', border: '1px solid rgba(255,255,255,0.1)', background: 'radial-gradient(circle, rgba(90,200,250,0.1) 0%, transparent 70%)' }} />
-              <Box sx={{ position: 'absolute', width: 140, height: 140, borderRadius: '50%', background: `radial-gradient(circle, ${features[activeIndex].accent}40 0%, transparent 60%)`, filter: 'blur(20px)', transition: 'background 0.6s ease' }} />
-              <Box sx={{ position: 'absolute', width: '100%', height: '100%', borderRadius: '50%', background: `conic-gradient(from 0deg, transparent 0%, transparent 60%, ${features[activeIndex].accent}40 100%)`, filter: 'blur(8px)', mixBlendMode: 'screen', transition: 'all 0.6s ease' }} />
-            </motion.div>
-
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeIndex}
-                variants={variants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                style={{ position: 'relative', zIndex: 1 }}
-              >
-                <Box sx={{ width: 48, height: 48, borderRadius: 2, mb: 3, display: 'grid', placeItems: 'center', fontSize: 13, fontWeight: 800, letterSpacing: '.08em', color: '#fff', background: `linear-gradient(135deg, ${features[activeIndex].accent}, #1d4ed8)`, boxShadow: `0 12px 28px ${features[activeIndex].accent}55` }}>
-                  {features[activeIndex].code}
-                </Box>
-                <Typography sx={{ fontSize: { xs: 28, md: 40 }, fontWeight: 900, lineHeight: 1.1, mb: 2 }}>{features[activeIndex].title}</Typography>
-                <Typography sx={{ fontSize: { xs: 16, md: 20 }, color: 'rgba(255,255,255,0.7)', lineHeight: 1.6, maxWidth: 440 }}>{features[activeIndex].text}</Typography>
-              </motion.div>
-            </AnimatePresence>
-          </Box>
-
-        </Container>
-      </Box>
-    </Box>
-  )
-}
-
-function IndustriesShowcase() {
-  const containerRef = useRef<HTMLElement>(null)
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"]
-  })
-
-  const y1 = useTransform(scrollYProgress, [0, 1], [-200, 400])
-  const rotate1 = useTransform(scrollYProgress, [0, 1], [0, 180])
-  const y2 = useTransform(scrollYProgress, [0, 1], [300, -300])
-  const rotate2 = useTransform(scrollYProgress, [0, 1], [180, 0])
-
-  return (
-    <Box component="section" ref={containerRef} sx={{ position: 'relative', overflow: 'hidden', py: { xs: 8, md: 14 } }}>
-      <motion.div style={{ y: y1, rotate: rotate1, position: 'absolute', left: '-5%', top: '10%', pointerEvents: 'none', zIndex: 0 }}>
-        <Box sx={{ width: 600, height: 600, borderRadius: '50%', border: '2px dashed rgba(0, 51, 160, 0.15)', opacity: 0.6 }} />
-      </motion.div>
-      <motion.div style={{ y: y2, rotate: rotate2, position: 'absolute', right: '-10%', bottom: '20%', pointerEvents: 'none', zIndex: 0 }}>
-        <Box sx={{ width: 800, height: 800, borderRadius: '20%', border: '4px solid rgba(94, 183, 255, 0.1)', opacity: 0.5 }} />
-      </motion.div>
-      <motion.div style={{ y: y1, position: 'absolute', left: '40%', top: '50%', pointerEvents: 'none', filter: 'blur(100px)', zIndex: 0 }}>
-        <Box sx={{ width: 400, height: 400, borderRadius: '50%', background: 'rgba(0, 113, 227, 0.08)' }} />
-      </motion.div>
-
-      <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
-        <Box sx={{ textAlign: 'center', mb: { xs: 6, md: 8 } }}>
-          <Typography sx={{ fontSize: { xs: 36, md: 56 }, fontWeight: 900, mb: 2, letterSpacing: '-.03em', color: '#1d1d1f' }}>Software Built for Your Industry</Typography>
-          <Typography sx={{ color: '#6e6e73', fontSize: { xs: 16, md: 19 }, maxWidth: 660, mx: 'auto', lineHeight: 1.6 }}>
-            Every solution is purpose-built with the workflows, modules, and automations specific to your sector — not a one-size-fits-all tool.
-          </Typography>
-        </Box>
-
-        <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' }, gap: 4 }}>
-          {products.map((item, index) => (
-            <motion.div key={item.title} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 0.6, delay: index * 0.1 }}>
-              <Box sx={{ 
-                position: 'relative', bgcolor: 'rgba(255, 255, 255, 0.8)', backdropFilter: 'blur(20px)',
-                borderRadius: 3, p: 4, pt: 5, overflow: 'hidden', border: '1px solid #e3e9f8', 
-                boxShadow: '0 20px 40px rgba(0,0,0,0.04)', transition: 'all 0.3s ease',
-                '&:hover': { transform: 'translateY(-4px)', boxShadow: '0 30px 60px rgba(0,51,160,0.08)' }
-              }}>
-                <Box sx={{ position: 'absolute', top: 0, left: 0, right: 0, height: 4, background: `linear-gradient(90deg, ${item.accent}, transparent)` }} />
-                <Box sx={{ position: 'absolute', top: -30, right: -30, width: 140, height: 140, borderRadius: '50%', background: `radial-gradient(circle, ${item.accent}33 0%, transparent 70%)`, filter: 'blur(20px)' }} />
-                
-                <Box sx={{ width: 46, height: 46, borderRadius: 2, display: 'grid', placeItems: 'center', bgcolor: item.accent, color: '#fff', fontWeight: 800, fontSize: 13, mb: 2.5, boxShadow: `0 8px 16px ${item.accent}4d` }}>
-                  {item.code}
-                </Box>
-                <Typography sx={{ fontSize: 24, fontWeight: 800, mb: 1.5, letterSpacing: '-0.02em', color: '#1d1d1f' }}>{item.title}</Typography>
-                <Typography sx={{ color: '#6e6e73', mb: 3, lineHeight: 1.6, fontSize: 15 }}>{item.text}</Typography>
-                
-                <Stack direction="row" flexWrap="wrap" gap={1}>
-                  {item.tags.map((tag) => (
-                    <Chip key={tag} label={tag} size="small" sx={{ bgcolor: '#f1f5fa', color: '#334155', fontWeight: 600, fontSize: 12, border: 'none' }} />
-                  ))}
-                </Stack>
-              </Box>
-            </motion.div>
-          ))}
-        </Box>
-      </Container>
-    </Box>
-  )
-}
-
-function CardBlock({ children, compact = false }: { children: ReactNode; compact?: boolean }) {
-  return (
-    <Box
-      sx={{
-        bgcolor: '#fff',
-        border: '1.5px solid #e4e7f0',
-        borderRadius: 2.5,
-        p: compact ? 2.2 : 3.2,
-        boxShadow: '0 18px 38px rgba(17,24,39,.05)',
-        height: '100%',
-        '&:hover': { borderColor: '#c8d4ee', transform: 'translateY(-4px)' },
-        transition: 'all .25s ease',
-      }}
-    >
-      {children}
-    </Box>
-  )
-}
-
+/* ─── CountUp Component ─── */
 function CountUp({ target, suffix = '' }: { target: number; suffix?: string }) {
-  const [value, setValue] = useState(0)
-  const [started, setStarted] = useState(false)
+  const [count, setCount] = useState(0)
+  const [hasStarted, setHasStarted] = useState(false)
+  const ref = useRef<HTMLSpanElement>(null)
+
+  const startCounting = useCallback(() => {
+    if (hasStarted) return
+    setHasStarted(true)
+    const duration = 1800
+    const steps = 60
+    const increment = target / steps
+    let current = 0
+    const timer = setInterval(() => {
+      current += increment
+      if (current >= target) {
+        setCount(target)
+        clearInterval(timer)
+      } else {
+        setCount(Math.floor(current))
+      }
+    }, duration / steps)
+  }, [target, hasStarted])
 
   useEffect(() => {
-    if (!started) return
+    const el = ref.current
+    if (!el) return
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) startCounting() },
+      { threshold: 0.5 }
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [startCounting])
 
-    const durationMs = 1400
-    const start = performance.now()
-
-    let raf = 0
-    const tick = (now: number) => {
-      const progress = Math.min((now - start) / durationMs, 1)
-      const eased = 1 - (1 - progress) * (1 - progress)
-      setValue(Math.round(target * eased))
-      if (progress < 1) {
-        raf = requestAnimationFrame(tick)
-      }
-    }
-
-    raf = requestAnimationFrame(tick)
-    return () => cancelAnimationFrame(raf)
-  }, [started, target])
-
-  return (
-    <motion.span
-      initial={{ opacity: 0.7, y: 8 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.8 }}
-      transition={{ duration: 0.35 }}
-      onViewportEnter={() => setStarted(true)}
-      style={{ display: 'inline-block' }}
-    >
-      {value}
-      {suffix}
-    </motion.span>
-  )
-}
-
-function InfiniteMarquee({ text }: { text: string }) {
-  const words = new Array(6).fill(text)
-  
-  return (
-    <Box sx={{ py: 3.5, background: '#0a0a0a', borderTop: '1px solid rgba(255,255,255,.06)', borderBottom: '1px solid rgba(255,255,255,.04)', overflow: 'hidden', whiteSpace: 'nowrap', display: 'flex' }}>
-      <motion.div
-        animate={{ x: ["0%", "-50%"] }}
-        transition={{ repeat: Infinity, ease: 'linear', duration: 15 }}
-        style={{ display: 'flex', whiteSpace: 'nowrap' }}
-      >
-        <Stack direction="row" spacing={8} sx={{ pr: 8 }}>
-          {words.map((w, i) => (
-            <Stack direction="row" alignItems="center" spacing={4} key={i}>
-              <Box sx={{ width: 12, height: 12, borderRadius: '50%', background: 'linear-gradient(135deg, #0071e3, #5ac8fa)' }} />
-              <Typography sx={{ color: 'rgba(255,255,255,.9)', fontSize: 24, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '.1em', WebkitTextStroke: '1px rgba(255,255,255,0.2)', WebkitTextFillColor: 'transparent' }}>
-                {w}
-              </Typography>
-            </Stack>
-          ))}
-        </Stack>
-        <Stack direction="row" spacing={8} sx={{ pr: 8 }}>
-          {words.map((w, i) => (
-            <Stack direction="row" alignItems="center" spacing={4} key={`dup-${i}`}>
-              <Box sx={{ width: 12, height: 12, borderRadius: '50%', background: 'linear-gradient(135deg, #0071e3, #5ac8fa)' }} />
-              <Typography sx={{ color: 'rgba(255,255,255,.9)', fontSize: 24, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '.1em', WebkitTextStroke: '1px rgba(255,255,255,0.2)', WebkitTextFillColor: 'transparent' }}>
-                {w}
-              </Typography>
-            </Stack>
-          ))}
-        </Stack>
-      </motion.div>
-    </Box>
-  )
-}
-
-function FlagshipStorySection() {
-  const steps = [
-    ['01', 'Connect Your Existing Stack', 'Map workflows, import legacy data, and establish role-level access controls.'],
-    ['02', 'Automate Critical Workflows', "Enable KALNET's AI routing for billing, attendance, approvals, and reporting."],
-    ['03', 'Scale with Operational Insight', 'Track KPIs in real time and roll out additional modules without disruption.'],
-  ]
-
-  return (
-    <Box component="section" sx={{ py: 10, background: '#fff' }}>
-      <Container maxWidth="lg">
-        <Typography sx={{ textAlign: 'center', fontSize: { xs: 36, md: 56 }, fontWeight: 900, lineHeight: 1.08, letterSpacing: '-.03em', mb: 1 }}>
-          Up and Running in Days, Not Months
-        </Typography>
-        <Typography sx={{ textAlign: 'center', color: '#6e6e73', maxWidth: 620, mx: 'auto', mb: 6 }}>
-          A sticky, guided rollout model designed for zero-disruption adoption across departments.
-        </Typography>
-
-        <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1.15fr .85fr' }, gap: 3.2, alignItems: 'start' }}>
-          <Box>
-            {steps.map((step, index) => (
-              <motion.div key={step[0]} initial={{ opacity: 0, y: 26 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.55, delay: index * 0.08 }}>
-                <Box sx={{ p: 2.4, borderRadius: 2.5, border: '1.5px solid #e4e7f0', mb: 2, background: '#fff', boxShadow: '0 16px 36px rgba(16,24,40,.06)' }}>
-                  <Typography sx={{ color: '#3f6cbc', fontSize: 12, fontWeight: 800, letterSpacing: '.12em', mb: 0.7 }}>STEP {step[0]}</Typography>
-                  <Typography sx={{ fontWeight: 800, fontSize: 24, mb: 0.8 }}>{step[1]}</Typography>
-                  <Typography sx={{ color: '#6e6e73' }}>{step[2]}</Typography>
-                </Box>
-              </motion.div>
-            ))}
-          </Box>
-
-          <Box sx={{ position: { xs: 'relative', md: 'sticky' }, top: { md: 110 }, borderRadius: 2.7, border: '1.5px solid #dfe5f3', overflow: 'hidden', background: '#0f172a', boxShadow: '0 26px 56px rgba(15,23,42,.22)' }}>
-            <Box sx={{ p: 2, borderBottom: '1px solid rgba(255,255,255,.12)', display: 'flex', gap: 1 }}>
-              <Box sx={{ width: 9, height: 9, borderRadius: '50%', bgcolor: '#f87171' }} />
-              <Box sx={{ width: 9, height: 9, borderRadius: '50%', bgcolor: '#fbbf24' }} />
-              <Box sx={{ width: 9, height: 9, borderRadius: '50%', bgcolor: '#4ade80' }} />
-            </Box>
-            <Box sx={{ p: 2.2 }}>
-              <Typography sx={{ color: '#9cc8ff', fontSize: 12, letterSpacing: '.08em', fontWeight: 700, mb: 1 }}>ROLL OUT CONTROL ROOM</Typography>
-              <Stack spacing={1.2}>
-                {[
-                  ['Data Migration', 'Completed'],
-                  ['Workflow Automation', 'In Progress'],
-                  ['Multi-site Expansion', 'Queued'],
-                ].map((item) => (
-                  <Box key={item[0]} sx={{ p: 1.4, borderRadius: 1.7, bgcolor: 'rgba(255,255,255,.05)', border: '1px solid rgba(255,255,255,.08)' }}>
-                    <Typography sx={{ color: '#fff', fontWeight: 700, fontSize: 14 }}>{item[0]}</Typography>
-                    <Typography sx={{ color: 'rgba(255,255,255,.7)', fontSize: 12 }}>{item[1]}</Typography>
-                  </Box>
-                ))}
-              </Stack>
-            </Box>
-          </Box>
-        </Box>
-      </Container>
-    </Box>
-  )
+  return <span ref={ref}>{count}{suffix}</span>
 }
 
 export default App
