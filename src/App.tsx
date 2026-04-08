@@ -112,22 +112,21 @@ function App() {
           position: 'relative', minHeight: '100svh',
           overflow: 'hidden',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          pt: { xs: 16, md: 0 }, pb: { xs: 14, md: 6 },
+          pt: { xs: 14, md: 12 }, pb: { xs: 14, md: 6 },
           bgcolor: '#111', color: '#fff',
         }}>
-        {/* Base: solid dark */}
-        {/* Teal accent blobs scattered across the hero */}
-        <Box sx={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle 600px at 20% 80%, rgba(13,115,119,.25) 0%, transparent 60%)', zIndex: 0 }} />
-        <Box sx={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle 500px at 75% 20%, rgba(20,255,236,.08) 0%, transparent 55%)', zIndex: 0 }} />
-        <Box sx={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle 400px at 50% 60%, rgba(13,115,119,.12) 0%, transparent 50%)', zIndex: 0 }} />
-        <Box sx={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle 350px at 85% 70%, rgba(20,255,236,.06) 0%, transparent 45%)', zIndex: 0 }} />
+        {/* Aurora-style gradient — dark base with organic teal/cyan glow */}
+        <Box sx={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 80% 70% at 65% 25%, rgba(13,115,119,.55) 0%, transparent 60%)', zIndex: 0 }} />
+        <Box sx={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 60% 50% at 75% 15%, rgba(20,255,236,.2) 0%, transparent 50%)', zIndex: 0 }} />
+        <Box sx={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 50% 60% at 55% 40%, rgba(13,115,119,.3) 0%, transparent 55%)', zIndex: 0 }} />
+        <Box sx={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 40% 35% at 80% 35%, rgba(20,255,236,.12) 0%, transparent 45%)', zIndex: 0 }} />
+        <Box sx={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle 300px at 30% 70%, rgba(13,115,119,.15) 0%, transparent 50%)', zIndex: 0 }} />
+        <Box sx={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 90% 40% at 95% 50%, rgba(20,255,236,.08) 0%, transparent 40%)', zIndex: 0 }} />
         {/* Tech grid */}
         <motion.div style={{ position: 'absolute', inset: -40, x: gridX, y: gridY, pointerEvents: 'none', zIndex: 0, opacity: 0.04,
           background: 'repeating-linear-gradient(90deg, rgba(255,255,255,.25) 0 1px, transparent 1px 80px), repeating-linear-gradient(0deg, rgba(255,255,255,.25) 0 1px, transparent 1px 80px)', top: backgroundY }} />
         {/* Cursor spotlight */}
         <motion.div style={{ position: 'absolute', left: spotlightLeft, top: spotlightTop, width: 700, height: 700, transform: 'translate(-50%,-50%)', borderRadius: '50%', pointerEvents: 'none', background: 'radial-gradient(circle, rgba(20,255,236,.1) 0%, transparent 55%)', filter: 'blur(40px)', zIndex: 0 }} />
-        {/* Bottom fade: black → grey → white */}
-        <Box sx={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 200, background: 'linear-gradient(to bottom, transparent 0%, #1a1a1a 30%, #3a3a3a 55%, #8a8a8a 72%, #d0d0d0 86%, #ffffff 100%)', zIndex: 0 }} />
 
         <Container maxWidth="md" sx={{ position: 'relative', zIndex: 1, textAlign: 'center' }}>
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.15 }} style={{ y: heroY, opacity: heroOpacity }}>
@@ -145,7 +144,7 @@ function App() {
               CRM, ERP, finance, HR, inventory, and automation — unified in a single platform purpose-built for modern enterprises.
             </Typography>
 
-            <Stack direction="row" gap={2} justifyContent="center" flexWrap="wrap" sx={{ mb: 6 }}>
+            <Stack direction="row" gap={2} justifyContent="center" flexWrap="wrap" sx={{ mb: 5 }}>
               <Button href="https://www.kalnet.co/request-demo" variant="contained" size="large"
                 sx={{ px: 4.5, py: 1.6, fontSize: 15, bgcolor: '#0D7377', '&:hover': { bgcolor: '#14FFEC', color: '#000' } }}>
                 Request a Demo
@@ -159,15 +158,15 @@ function App() {
             </Stack>
 
             {/* Trust strip */}
-            <Stack direction="row" spacing={4} justifyContent="center" alignItems="center" flexWrap="wrap">
+            <Stack direction="row" spacing={{ xs: 2, md: 4 }} justifyContent="center" alignItems="center" flexWrap="wrap">
               {[
                 { Icon: Shield, text: 'Enterprise-grade security' },
                 { Icon: Users, text: 'Trusted by 150+ businesses' },
                 { Icon: Zap, text: 'Deploy in 2 weeks' },
               ].map((t, i) => (
-                <Stack key={i} direction="row" spacing={1} alignItems="center" sx={{ opacity: 0.45 }}>
-                  <t.Icon size={14} />
-                  <Typography sx={{ fontSize: 12, fontWeight: 500, letterSpacing: '.02em' }}>{t.text}</Typography>
+                <Stack key={i} direction="row" spacing={1} alignItems="center">
+                  <t.Icon size={13} color="#0D7377" />
+                  <Typography sx={{ fontSize: 12, fontWeight: 500, letterSpacing: '.02em', color: 'rgba(255,255,255,.45)' }}>{t.text}</Typography>
                 </Stack>
               ))}
             </Stack>
