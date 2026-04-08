@@ -104,75 +104,75 @@ function App() {
         </Container>
       </Box>
 
-      {/* ═══════════ HERO ═══════════ */}
-      <Box sx={{ px: { xs: 1, md: 2 }, pt: 1, pb: 0, bgcolor: '#212121' }}>
-        <Box component="section"
-          onMouseMove={handleHeroMouse}
-          onMouseLeave={() => { cursorX.set(50); cursorY.set(40) }}
-          sx={{
-            position: 'relative', minHeight: 'calc(100svh - 16px)',
-            borderRadius: { xs: 3, md: 5 }, overflow: 'hidden',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            pt: { xs: 16, md: 0 }, pb: { xs: 10, md: 0 },
-            bgcolor: '#212121', color: '#fff',
-            border: '1px solid rgba(255,255,255,.06)',
-          }}>
-          {/* Gradient bg using Kalnet palette: #212121 → #323232 → #0D7377 → #14FFEC */}
-          <Box sx={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, #212121 0%, #2a2a2a 30%, #1a3a3b 60%, #0D7377 85%, #14FFEC 100%)', opacity: 0.5, zIndex: 0 }} />
-          <Box sx={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 70% 50% at 50% 55%, rgba(13,115,119,.2) 0%, transparent 70%)', zIndex: 0 }} />
-          {/* Tech grid */}
-          <motion.div style={{ position: 'absolute', inset: -40, x: gridX, y: gridY, pointerEvents: 'none', zIndex: 0, opacity: 0.035,
-            background: 'repeating-linear-gradient(90deg, rgba(255,255,255,.3) 0 1px, transparent 1px 80px), repeating-linear-gradient(0deg, rgba(255,255,255,.3) 0 1px, transparent 1px 80px)', top: backgroundY }} />
-          {/* Cursor spotlight */}
-          <motion.div style={{ position: 'absolute', left: spotlightLeft, top: spotlightTop, width: 700, height: 700, transform: 'translate(-50%,-50%)', borderRadius: '50%', pointerEvents: 'none', background: 'radial-gradient(circle, rgba(20,255,236,.08) 0%, transparent 55%)', filter: 'blur(30px)', zIndex: 0 }} />
-          {/* Bottom fade to white */}
-          <Box sx={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 120, background: 'linear-gradient(to top, #f5f6fa, transparent)', zIndex: 0 }} />
+      {/* ═══════════ HERO (full-bleed) ═══════════ */}
+      <Box component="section"
+        onMouseMove={handleHeroMouse}
+        onMouseLeave={() => { cursorX.set(50); cursorY.set(40) }}
+        sx={{
+          position: 'relative', minHeight: '100svh',
+          overflow: 'hidden',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          pt: { xs: 16, md: 0 }, pb: { xs: 14, md: 6 },
+          bgcolor: '#111', color: '#fff',
+        }}>
+        {/* Base: solid dark */}
+        {/* Teal accent blobs scattered across the hero */}
+        <Box sx={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle 600px at 20% 80%, rgba(13,115,119,.25) 0%, transparent 60%)', zIndex: 0 }} />
+        <Box sx={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle 500px at 75% 20%, rgba(20,255,236,.08) 0%, transparent 55%)', zIndex: 0 }} />
+        <Box sx={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle 400px at 50% 60%, rgba(13,115,119,.12) 0%, transparent 50%)', zIndex: 0 }} />
+        <Box sx={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle 350px at 85% 70%, rgba(20,255,236,.06) 0%, transparent 45%)', zIndex: 0 }} />
+        {/* Tech grid */}
+        <motion.div style={{ position: 'absolute', inset: -40, x: gridX, y: gridY, pointerEvents: 'none', zIndex: 0, opacity: 0.04,
+          background: 'repeating-linear-gradient(90deg, rgba(255,255,255,.25) 0 1px, transparent 1px 80px), repeating-linear-gradient(0deg, rgba(255,255,255,.25) 0 1px, transparent 1px 80px)', top: backgroundY }} />
+        {/* Cursor spotlight */}
+        <motion.div style={{ position: 'absolute', left: spotlightLeft, top: spotlightTop, width: 700, height: 700, transform: 'translate(-50%,-50%)', borderRadius: '50%', pointerEvents: 'none', background: 'radial-gradient(circle, rgba(20,255,236,.1) 0%, transparent 55%)', filter: 'blur(40px)', zIndex: 0 }} />
+        {/* Bottom fade: black → grey → white */}
+        <Box sx={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 200, background: 'linear-gradient(to bottom, transparent 0%, #1a1a1a 30%, #3a3a3a 55%, #8a8a8a 72%, #d0d0d0 86%, #ffffff 100%)', zIndex: 0 }} />
 
-          <Container maxWidth="md" sx={{ position: 'relative', zIndex: 1, textAlign: 'center' }}>
-            <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.15 }} style={{ y: heroY, opacity: heroOpacity }}>
-              {/* Badge */}
-              <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 1, px: 2.5, py: 0.8, borderRadius: 2, bgcolor: 'rgba(20,255,236,.08)', border: '1px solid rgba(20,255,236,.18)', mb: 4 }}>
-                <Layers size={13} color="#14FFEC" />
-                <Typography sx={{ color: '#14FFEC', fontSize: 12, letterSpacing: '.14em', fontWeight: 700 }}>THE DIGITAL OPERATING SYSTEM</Typography>
-              </Box>
+        <Container maxWidth="md" sx={{ position: 'relative', zIndex: 1, textAlign: 'center' }}>
+          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.15 }} style={{ y: heroY, opacity: heroOpacity }}>
+            {/* Badge */}
+            <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 1, px: 2.5, py: 0.8, borderRadius: 2, bgcolor: 'rgba(20,255,236,.08)', border: '1px solid rgba(20,255,236,.18)', mb: 4 }}>
+              <Layers size={13} color="#14FFEC" />
+              <Typography sx={{ color: '#14FFEC', fontSize: 12, letterSpacing: '.14em', fontWeight: 700 }}>THE DIGITAL OPERATING SYSTEM</Typography>
+            </Box>
 
-              <Typography sx={{ fontSize: { xs: 40, md: 68 }, fontWeight: 800, lineHeight: 1.08, letterSpacing: '-0.035em', mb: 3, fontFamily: FONT_DISPLAY }}>
-                Run your entire business<br />on <Box component="span" sx={{ color: '#14FFEC' }}>one platform</Box>
-              </Typography>
+            <Typography sx={{ fontSize: { xs: 40, md: 68 }, fontWeight: 800, lineHeight: 1.08, letterSpacing: '-0.035em', mb: 3, fontFamily: FONT_DISPLAY }}>
+              Run your entire business<br />on <Box component="span" sx={{ color: '#14FFEC' }}>one platform</Box>
+            </Typography>
 
-              <Typography sx={{ color: 'rgba(255,255,255,.5)', fontSize: { xs: 16, md: 18 }, lineHeight: 1.65, mb: 5, maxWidth: 520, mx: 'auto' }}>
-                CRM, ERP, finance, HR, inventory, and automation — unified in a single platform purpose-built for modern enterprises.
-              </Typography>
+            <Typography sx={{ color: 'rgba(255,255,255,.6)', fontSize: { xs: 16, md: 18 }, lineHeight: 1.65, mb: 5, maxWidth: 520, mx: 'auto' }}>
+              CRM, ERP, finance, HR, inventory, and automation — unified in a single platform purpose-built for modern enterprises.
+            </Typography>
 
-              <Stack direction="row" gap={2} justifyContent="center" flexWrap="wrap" sx={{ mb: 6 }}>
-                <Button href="https://www.kalnet.co/request-demo" variant="contained" size="large"
-                  sx={{ px: 4.5, py: 1.6, fontSize: 15, bgcolor: '#0D7377', '&:hover': { bgcolor: '#14FFEC', color: '#000' } }}>
-                  Request a Demo
-                  <ArrowRight size={16} style={{ marginLeft: 8 }} />
-                </Button>
-                <Button href="#advantage" variant="outlined" size="large"
-                  sx={{ px: 3.5, py: 1.6, fontSize: 15, color: 'rgba(255,255,255,.8)', borderColor: 'rgba(255,255,255,.15)', borderWidth: '1.5px',
-                  '&:hover': { borderColor: 'rgba(255,255,255,.4)', bgcolor: 'rgba(255,255,255,.04)', borderWidth: '1.5px' } }}>
-                  See How It Works
-                </Button>
-              </Stack>
+            <Stack direction="row" gap={2} justifyContent="center" flexWrap="wrap" sx={{ mb: 6 }}>
+              <Button href="https://www.kalnet.co/request-demo" variant="contained" size="large"
+                sx={{ px: 4.5, py: 1.6, fontSize: 15, bgcolor: '#0D7377', '&:hover': { bgcolor: '#14FFEC', color: '#000' } }}>
+                Request a Demo
+                <ArrowRight size={16} style={{ marginLeft: 8 }} />
+              </Button>
+              <Button href="#advantage" variant="outlined" size="large"
+                sx={{ px: 3.5, py: 1.6, fontSize: 15, color: 'rgba(255,255,255,.85)', borderColor: 'rgba(255,255,255,.2)', borderWidth: '1.5px',
+                '&:hover': { borderColor: 'rgba(255,255,255,.5)', bgcolor: 'rgba(255,255,255,.06)', borderWidth: '1.5px' } }}>
+                See How It Works
+              </Button>
+            </Stack>
 
-              {/* Trust strip */}
-              <Stack direction="row" spacing={4} justifyContent="center" alignItems="center" flexWrap="wrap">
-                {[
-                  { Icon: Shield, text: 'Enterprise-grade security' },
-                  { Icon: Users, text: 'Trusted by 150+ businesses' },
-                  { Icon: Zap, text: 'Deploy in 2 weeks' },
-                ].map((t, i) => (
-                  <Stack key={i} direction="row" spacing={1} alignItems="center" sx={{ opacity: 0.35 }}>
-                    <t.Icon size={14} />
-                    <Typography sx={{ fontSize: 12, fontWeight: 500, letterSpacing: '.02em' }}>{t.text}</Typography>
-                  </Stack>
-                ))}
-              </Stack>
-            </motion.div>
-          </Container>
-        </Box>
+            {/* Trust strip */}
+            <Stack direction="row" spacing={4} justifyContent="center" alignItems="center" flexWrap="wrap">
+              {[
+                { Icon: Shield, text: 'Enterprise-grade security' },
+                { Icon: Users, text: 'Trusted by 150+ businesses' },
+                { Icon: Zap, text: 'Deploy in 2 weeks' },
+              ].map((t, i) => (
+                <Stack key={i} direction="row" spacing={1} alignItems="center" sx={{ opacity: 0.45 }}>
+                  <t.Icon size={14} />
+                  <Typography sx={{ fontSize: 12, fontWeight: 500, letterSpacing: '.02em' }}>{t.text}</Typography>
+                </Stack>
+              ))}
+            </Stack>
+          </motion.div>
+        </Container>
       </Box>
 
       {/* ═══════════ HEADLINE BANNER ═══════════ */}
