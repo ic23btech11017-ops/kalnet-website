@@ -84,11 +84,11 @@ function App() {
       {/* ═══════════ NAVBAR ═══════════ */}
       <Box component="nav" sx={{
         position: 'fixed', top: 16, left: '50%', transform: 'translateX(-50%)',
-        width: 'calc(100% - 40px)', maxWidth: 1200, zIndex: 1200,
-        bgcolor: navScrolled ? 'rgba(10,10,10,.88)' : 'rgba(15,15,15,.55)',
+        width: 'calc(100% - 48px)', maxWidth: 880, zIndex: 1200,
+        bgcolor: navScrolled ? 'rgba(10,10,10,.9)' : 'rgba(15,15,15,.6)',
         backdropFilter: 'blur(24px)', border: '1px solid rgba(255,255,255,.08)',
         borderRadius: '999px', transition: 'all .3s ease',
-        boxShadow: navScrolled ? '0 8px 32px rgba(0,0,0,.4)' : 'none',
+        boxShadow: navScrolled ? '0 8px 32px rgba(0,0,0,.45)' : '0 4px 20px rgba(0,0,0,.25)',
       }}>
         <Container maxWidth={false} sx={{ py: 1.2, px: { xs: 2.5, md: 3.5 }, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <Typography sx={{ color: '#fff', fontWeight: 800, fontSize: 22, letterSpacing: '-.03em', fontFamily: FONT_DISPLAY }}>KALNET</Typography>
