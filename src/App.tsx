@@ -12,11 +12,11 @@ import {
   Plug, Database, Rocket, Eye, Clock, Globe,
   Play, Image as ImageIcon, Monitor
 } from 'lucide-react'
-
+import SiteHeader from './components/navigation/SiteHeader'
+import SiteFooter from './components/navigation/SiteFooter'
 /* ─── Font ─── */
-const FONT_DISPLAY = "'Inter', -apple-system, BlinkMacSystemFont, sans-serif"
-const FONT_BODY = "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
-const FONT_BRAND = "'Chillax', 'Inter', sans-serif"
+const FONT_DISPLAY = "'SF Pro Display', 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+const FONT_BODY = "'SF Pro Text', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
 
 /* ─── Theme (Light-first) ─── */
 const theme = createTheme({
@@ -34,7 +34,7 @@ const theme = createTheme({
   components: {
     MuiButton: {
       styleOverrides: {
-        root: { borderRadius: 999, textTransform: 'none', padding: '12px 28px', fontWeight: 700, fontSize: 15, transition: 'all .2s ease', fontFamily: FONT_BODY },
+        root: { borderRadius: 999, textTransform: 'none', padding: '12px 28px', fontWeight: 700, fontSize: 14, transition: 'all .2s ease', fontFamily: FONT_BODY },
         contained: { backgroundColor: '#0D7377', color: '#fff', boxShadow: 'none', '&:hover': { backgroundColor: '#085255', boxShadow: '0 8px 24px rgba(13,115,119,.3)', transform: 'translateY(-1px)' } },
         outlined: { borderColor: '#0D7377', borderWidth: 2, color: '#0D7377', '&:hover': { borderWidth: 2, borderColor: '#085255', backgroundColor: 'rgba(13,115,119,.04)' } },
       },
@@ -79,6 +79,8 @@ const INDUSTRIES = [
     color: '#fff3e0',
   },
 ]
+
+
 
 const PRODUCTS = [
   {
@@ -155,7 +157,6 @@ const FEATURES = [
 
 /* ─── App ─── */
 function App() {
-  const [navScrolled, setNavScrolled] = useState(false)
   const cursorX = useMotionValue(50)
   const cursorY = useMotionValue(40)
 
@@ -167,10 +168,7 @@ function App() {
 
   useEffect(() => {
     const lenis = new Lenis({ autoRaf: true, duration: 1.2, easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)) })
-    const onScroll = () => setNavScrolled(window.scrollY > 20)
-    onScroll()
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => { lenis.destroy(); window.removeEventListener('scroll', onScroll) }
+    return () => { lenis.destroy() }
   }, [])
 
   const handleHeroMouse = (e: ReactMouseEvent<HTMLDivElement>) => {
@@ -183,28 +181,7 @@ function App() {
     <ThemeProvider theme={theme}>
     <Box sx={{ bgcolor: '#fff', color: '#1a1a2e', minHeight: '100vh' }}>
 
-      {/* ═══════════ NAVBAR ═══════════ */}
-      <Box component="nav" sx={{
-        position: 'fixed', top: 16, left: '50%', transform: 'translateX(-50%)',
-        width: 'calc(100% - 48px)', maxWidth: 880, zIndex: 1200,
-        bgcolor: navScrolled ? 'rgba(10,10,10,.95)' : 'rgba(10,10,10,.92)',
-        backdropFilter: 'blur(24px)', border: '1px solid rgba(255,255,255,.08)',
-        borderRadius: '999px', transition: 'all .3s ease',
-        boxShadow: navScrolled ? '0 8px 32px rgba(0,0,0,.45)' : '0 4px 20px rgba(0,0,0,.25)',
-      }}>
-        <Container maxWidth={false} sx={{ py: 1.2, px: { xs: 2.5, md: 3.5 }, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <Typography sx={{ color: '#fff', fontWeight: 600, fontSize: 22, letterSpacing: '-.02em', fontFamily: FONT_BRAND }}>KALNET</Typography>
-          <Stack direction="row" spacing={4} sx={{ display: { xs: 'none', md: 'flex' } }}>
-            {['Platform', 'Industries', 'About', 'Contact'].map(l => (
-              <Typography key={l} sx={{ color: 'rgba(255,255,255,.7)', fontSize: 14, fontWeight: 500, cursor: 'pointer', transition: 'color .2s', '&:hover': { color: '#14FFEC' } }}>{l}</Typography>
-            ))}
-          </Stack>
-          <Button href="https://www.kalnet.co/request-demo" variant="contained" size="small"
-            sx={{ bgcolor: '#0D7377', color: '#fff', fontWeight: 700, fontSize: 13, px: 3, '&:hover': { bgcolor: '#14FFEC', color: '#000' } }}>
-            Get a Demo
-          </Button>
-        </Container>
-      </Box>
+      <SiteHeader />
 
       {/* ═══════════ 1. HERO — MEWS-STYLE 2 CARDS ═══════════ */}
       <Box component="section" sx={{ bgcolor: '#fff', pt: { xs: 12, md: 14 }, pb: { xs: 4, md: 6 } }}>
@@ -239,24 +216,24 @@ function App() {
                     </Typography>
                   </Box>
 
-                  <Typography sx={{ fontSize: { xs: 36, md: 48, lg: 56 }, fontWeight: 800, lineHeight: 1.05, letterSpacing: '-0.035em', mb: 3, fontFamily: FONT_DISPLAY }}>
+                  <Typography sx={{ fontSize: { xs: 32, md: 40, lg: 48 }, fontWeight: 800, lineHeight: 1.05, letterSpacing: '-0.035em', mb: 3, fontFamily: FONT_DISPLAY }}>
                     Run your entire business from{' '}
                     <Box component="span" sx={{ color: '#14FFEC' }}>one platform</Box>
                   </Typography>
 
-                  <Typography sx={{ color: 'rgba(255,255,255,.5)', fontSize: { xs: 15, md: 17 }, lineHeight: 1.65, mb: 5, maxWidth: 460 }}>
+                  <Typography sx={{ color: 'rgba(255,255,255,.5)', fontSize: { xs: 14, md: 15 }, lineHeight: 1.65, mb: 5, maxWidth: 460 }}>
                     Manage customers, automate operations, track finances, and scale effortlessly — whether you run a hospital, hotel, school, or enterprise.
                   </Typography>
 
                   <Stack direction="row" gap={2} flexWrap="wrap" sx={{ mb: 4 }}>
                     <Button href="https://www.kalnet.co/request-demo" variant="contained" size="large"
-                      sx={{ px: 4, py: 1.6, fontSize: 15, bgcolor: '#0D7377', boxShadow: '0 4px 20px rgba(13,115,119,.4)',
+                      sx={{ px: 4, py: 1.6, fontSize: 14, bgcolor: '#0D7377', boxShadow: '0 4px 20px rgba(13,115,119,.4)',
                       '&:hover': { bgcolor: '#14FFEC', color: '#000', boxShadow: '0 8px 32px rgba(20,255,236,.35)', transform: 'translateY(-2px)' } }}>
                       Book a Demo
                       <ArrowRight size={16} style={{ marginLeft: 8 }} />
                     </Button>
                     <Button href="#solutions" variant="outlined" size="large"
-                      sx={{ px: 3.5, py: 1.6, fontSize: 15, color: '#fff', borderColor: 'rgba(255,255,255,.2)', borderWidth: 2,
+                      sx={{ px: 3.5, py: 1.6, fontSize: 14, color: '#fff', borderColor: 'rgba(255,255,255,.2)', borderWidth: 2,
                       '&:hover': { borderColor: '#14FFEC', color: '#14FFEC', bgcolor: 'rgba(20,255,236,.06)', borderWidth: 2 } }}>
                       Explore Platform
                     </Button>
@@ -330,10 +307,10 @@ function App() {
             {/* Left heading */}
             <motion.div {...fadeUp}>
               <Box sx={{ position: { md: 'sticky' }, top: { md: 120 } }}>
-                <Typography sx={{ fontSize: { xs: 34, md: 44 }, fontWeight: 800, color: '#0a1020', lineHeight: 1.08, fontFamily: FONT_DISPLAY }}>
+                <Typography sx={{ fontSize: { xs: 30, md: 38 }, fontWeight: 800, color: '#0a1020', lineHeight: 1.08, fontFamily: FONT_DISPLAY }}>
                   See what Kalnet can do for you
                 </Typography>
-                <Typography sx={{ fontSize: 15, color: '#5f6b7a', mt: 2.5, lineHeight: 1.6 }}>
+                <Typography sx={{ fontSize: 14, color: '#5f6b7a', mt: 2.5, lineHeight: 1.6 }}>
                   Purpose-built systems for every industry. Choose yours.
                 </Typography>
               </Box>
@@ -396,10 +373,10 @@ function App() {
       <Box component="section" sx={{ py: { xs: 10, md: 14 }, bgcolor: '#0f0f0f', color: '#fff' }}>
         <Container maxWidth="lg">
           <motion.div {...fadeUp}>
-            <Typography sx={{ fontSize: { xs: 34, md: 52 }, fontWeight: 800, fontFamily: FONT_DISPLAY, mb: 2, lineHeight: 1.1 }}>
+            <Typography sx={{ fontSize: { xs: 30, md: 40 }, fontWeight: 800, fontFamily: FONT_DISPLAY, mb: 2, lineHeight: 1.1 }}>
               The platform behind it all
             </Typography>
-            <Typography sx={{ fontSize: 17, color: 'rgba(255,255,255,.4)', mb: 8, maxWidth: 560 }}>
+            <Typography sx={{ fontSize: 15, color: 'rgba(255,255,255,.4)', mb: 8, maxWidth: 560 }}>
               One unified system powering CRM, ERP, finance, and automation across every industry you serve.
             </Typography>
           </motion.div>
@@ -531,7 +508,7 @@ function App() {
           <Box sx={{ textAlign: 'center', mb: 8 }}>
             <motion.div {...fadeUp}>
               <Typography sx={{ fontSize: 11, fontWeight: 700, letterSpacing: '.14em', color: '#0D7377', mb: 2 }}>FEATURES</Typography>
-              <Typography sx={{ fontSize: { xs: 32, md: 46 }, fontWeight: 800, color: '#1a1a2e', fontFamily: FONT_DISPLAY }}>
+              <Typography sx={{ fontSize: { xs: 28, md: 38 }, fontWeight: 800, color: '#1a1a2e', fontFamily: FONT_DISPLAY }}>
                 Powerful features to simplify your operations
               </Typography>
             </motion.div>
@@ -562,10 +539,10 @@ function App() {
           <Box sx={{ textAlign: 'center', mb: 8 }}>
             <motion.div {...fadeUp}>
               <Typography sx={{ fontSize: 11, fontWeight: 700, letterSpacing: '.14em', color: '#14FFEC', mb: 2 }}>PROCESS</Typography>
-              <Typography sx={{ fontSize: { xs: 32, md: 46 }, fontWeight: 800, fontFamily: FONT_DISPLAY }}>
+              <Typography sx={{ fontSize: { xs: 28, md: 38 }, fontWeight: 800, fontFamily: FONT_DISPLAY }}>
                 How Kalnet works
               </Typography>
-              <Typography sx={{ color: 'rgba(255,255,255,.45)', fontSize: 17, mt: 2, maxWidth: 540, mx: 'auto' }}>
+              <Typography sx={{ color: 'rgba(255,255,255,.45)', fontSize: 15, mt: 2, maxWidth: 540, mx: 'auto' }}>
                 From understanding your business to delivering a fully functional system with a smooth rollout.
               </Typography>
             </motion.div>
@@ -609,7 +586,7 @@ function App() {
           <Box sx={{ textAlign: 'center', mb: 8 }}>
             <motion.div {...fadeUp}>
               <Typography sx={{ fontSize: 11, fontWeight: 700, letterSpacing: '.14em', color: '#0D7377', mb: 2 }}>WHY KALNET</Typography>
-              <Typography sx={{ fontSize: { xs: 32, md: 46 }, fontWeight: 800, color: '#1a1a2e', fontFamily: FONT_DISPLAY }}>
+              <Typography sx={{ fontSize: { xs: 28, md: 38 }, fontWeight: 800, color: '#1a1a2e', fontFamily: FONT_DISPLAY }}>
                 Why businesses choose Kalnet
               </Typography>
             </motion.div>
@@ -643,19 +620,19 @@ function App() {
         <Box sx={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle 500px at 80% 30%, rgba(20,255,236,.15) 0%, transparent 50%)', zIndex: 0 }} />
         <Container maxWidth="sm" sx={{ position: 'relative', zIndex: 1, textAlign: 'center' }}>
           <motion.div {...fadeUp}>
-            <Typography sx={{ fontSize: { xs: 32, md: 48 }, fontWeight: 800, color: '#fff', mb: 3, fontFamily: FONT_DISPLAY }}>
+            <Typography sx={{ fontSize: { xs: 28, md: 40 }, fontWeight: 800, color: '#fff', mb: 3, fontFamily: FONT_DISPLAY }}>
               Ready to streamline your business?
             </Typography>
-            <Typography sx={{ fontSize: 17, color: 'rgba(255,255,255,.6)', mb: 6, lineHeight: 1.6 }}>
+            <Typography sx={{ fontSize: 15, color: 'rgba(255,255,255,.6)', mb: 6, lineHeight: 1.6 }}>
               Get started with a powerful CRM & ERP system tailored to your business needs.
             </Typography>
             <Stack direction={{ xs: 'column', sm: 'row' }} gap={2} justifyContent="center">
               <Button href="https://www.kalnet.co/request-demo" variant="contained" size="large"
-                sx={{ px: 5, py: 1.8, fontSize: 16, bgcolor: '#fff', color: '#0D7377', '&:hover': { bgcolor: '#14FFEC', color: '#000' } }}>
+                sx={{ px: 5, py: 1.8, fontSize: 15, bgcolor: '#fff', color: '#0D7377', '&:hover': { bgcolor: '#14FFEC', color: '#000' } }}>
                 Book a Demo
               </Button>
               <Button href="https://www.kalnet.co/contact" variant="outlined" size="large"
-                sx={{ px: 4, py: 1.8, fontSize: 16, color: '#fff', borderColor: 'rgba(255,255,255,.3)', borderWidth: '1.5px',
+                sx={{ px: 4, py: 1.8, fontSize: 15, color: '#fff', borderColor: 'rgba(255,255,255,.3)', borderWidth: '1.5px',
                 '&:hover': { borderColor: '#fff', bgcolor: 'rgba(255,255,255,.08)', borderWidth: '1.5px' } }}>
                 Get Free Consultation
               </Button>
@@ -665,42 +642,7 @@ function App() {
       </Box>
 
       {/* ═══════════ 10. FOOTER ═══════════ */}
-      <Box component="footer" sx={{ bgcolor: '#000', color: '#fff', position: 'relative', overflow: 'hidden' }}>
-        {/* SEO block */}
-        <Container maxWidth="md" sx={{ pt: 10, pb: 4, textAlign: 'center' }}>
-          <Typography sx={{ color: 'rgba(255,255,255,.2)', fontSize: 13, lineHeight: 1.8, maxWidth: 640, mx: 'auto' }}>
-            Kalnet is a powerful CRM and ERP software platform designed to help businesses manage operations, customer relationships, finance, and workflows in one place. Our business management system is built for scalability, automation, and efficiency across industries.
-          </Typography>
-        </Container>
-        {/* Massive KALNET watermark — outlined, full-width */}
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', pt: 6, pb: 6, overflow: 'hidden' }}>
-          <Typography sx={{
-            fontSize: { xs: '28vw', md: '20vw' }, fontWeight: 700,
-            color: 'transparent', letterSpacing: '-0.02em',
-            fontFamily: FONT_BRAND, lineHeight: 1, userSelect: 'none',
-            WebkitTextStroke: '1.5px rgba(255,255,255,.12)',
-            whiteSpace: 'nowrap',
-          }}>
-            KALNET
-          </Typography>
-        </Box>
-        {/* Bottom bar */}
-        <Box sx={{ borderTop: '1px solid rgba(255,255,255,.08)', py: 3 }}>
-          <Container maxWidth="lg">
-            <Stack direction={{ xs: 'column', md: 'row' }} justifyContent="space-between" alignItems="center" spacing={2}>
-              <Typography sx={{ color: 'rgba(255,255,255,.4)', fontSize: 13 }}>
-                &copy; 2026 <Box component="span" sx={{ fontWeight: 700, color: 'rgba(255,255,255,.6)' }}>KALNET Solutions Pvt. Ltd.</Box> All rights reserved.
-              </Typography>
-              <Stack direction="row" spacing={4}>
-                {['Privacy', 'Terms', 'Sitemap'].map(l => (
-                  <Typography key={l} sx={{ color: 'rgba(255,255,255,.4)', fontSize: 13, cursor: 'pointer', '&:hover': { color: '#14FFEC' } }}>{l}</Typography>
-                ))}
-              </Stack>
-              <Typography sx={{ color: 'rgba(255,255,255,.4)', fontSize: 13 }}>Made in India</Typography>
-            </Stack>
-          </Container>
-        </Box>
-      </Box>
+      <SiteFooter />
 
     </Box>
     </ThemeProvider>
