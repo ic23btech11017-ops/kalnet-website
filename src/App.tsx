@@ -131,13 +131,13 @@ const STEPS = [
   { step: '02', title: 'Configure Your Platform', desc: 'We customize CRM, ERP modules, dashboards, and workflows tailored to your operations.', Icon: Settings },
   { step: '03', title: 'Integrate Your Tools', desc: 'We connect third-party services like payments, communication tools, and external systems.', Icon: Plug },
   { step: '04', title: 'Data Setup & Backend', desc: 'We handle data entry, migration, and backend setup so everything is ready from day one.', Icon: Database },
-  { step: '05', title: 'Go Live in 24 Hours', desc: 'Your system is deployed and ready to use — no long development cycles.', Icon: Rocket },
+              { step: '05', title: 'Go Live Smoothly', desc: 'Your system is deployed and ready to use with a well-planned rollout.', Icon: Rocket },
 ]
 
 const WHY_ITEMS = [
   { title: 'All-in-one CRM & ERP platform', desc: 'No more juggling between 5 different apps. Everything runs from one dashboard.', Icon: Layers, link: '/crm-erp-platform' },
   { title: 'Fully customizable to your needs', desc: 'Every module, workflow, and dashboard adapts to how your business operates.', Icon: Settings, link: '/customization' },
-  { title: 'Fast deployment within 24 hours', desc: 'Your complete system is configured, tested, and live in under a day.', Icon: Zap, link: '/fast-deployment' },
+              { title: 'Smooth deployment and onboarding', desc: 'Your complete system is configured, tested, and launched with guided onboarding.', Icon: Zap, link: '/fast-deployment' },
   { title: 'Scalable as your business grows', desc: 'Start with what you need, add modules as you expand — no migration hassle.', Icon: BarChart3, link: '/scalable-platform' },
   { title: 'Industry-specific solutions', desc: 'Purpose-built for Healthcare, Hospitality, Education, and more.', Icon: Building2, link: '/industries' },
   { title: 'Dedicated support', desc: 'A real team behind you — not just a chatbot. We are your technology partner.', Icon: Headphones, link: '/support' },
@@ -265,7 +265,7 @@ function App() {
                   <Stack direction="row" spacing={{ xs: 2, md: 3 }} alignItems="center" flexWrap="wrap">
                     {[
                       { Icon: Shield, text: 'Enterprise-grade security' },
-                      { Icon: Zap, text: 'Go live in 24 hours' },
+                      { Icon: Zap, text: 'Go live smoothly' },
                       { Icon: Users, text: 'Trusted by 5+ institutions' },
                     ].map((t, i) => (
                       <Stack key={i} direction="row" spacing={0.8} alignItems="center">
@@ -566,7 +566,7 @@ function App() {
                 How Kalnet works
               </Typography>
               <Typography sx={{ color: 'rgba(255,255,255,.45)', fontSize: 17, mt: 2, maxWidth: 540, mx: 'auto' }}>
-                From understanding your business to delivering a fully functional system — all within 24 hours.
+                From understanding your business to delivering a fully functional system with a smooth rollout.
               </Typography>
             </motion.div>
           </Box>
@@ -595,7 +595,7 @@ function App() {
               </Typography>
               <Button href="https://www.kalnet.co/request-demo" variant="contained" size="large"
                 sx={{ px: 4.5, py: 1.6, bgcolor: '#0D7377', '&:hover': { bgcolor: '#14FFEC', color: '#000' } }}>
-                Get Your System Setup in 24 Hours
+                Get Your System Setup
                 <ArrowRight size={16} style={{ marginLeft: 8 }} />
               </Button>
             </Box>
