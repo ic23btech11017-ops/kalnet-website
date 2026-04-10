@@ -1,6 +1,6 @@
 import { Box, Button, Container, Stack, Typography } from '@mui/material'
 import { ArrowRight, ChevronDown, Menu, X, Zap } from 'lucide-react'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Link as RouterLink, useLocation } from 'react-router-dom'
 import {
   industriesMenuItems,
@@ -9,7 +9,7 @@ import {
   topbarLinks,
 } from '../../data/navigationData'
 
-const FONT_BRAND = "'Chillax', 'Inter', sans-serif"
+const FONT_BRAND = "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
 
 type MegaMenuType = 'solutions' | 'industries' | null
 
@@ -17,7 +17,28 @@ export default function SiteHeader() {
   const [activeMenu, setActiveMenu] = useState<MegaMenuType>(null)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [mobileSection, setMobileSection] = useState<MegaMenuType>(null)
+  const [navTheme, setNavTheme] = useState<'light' | 'dark'>('dark')
   const location = useLocation()
+  const isDark = navTheme === 'dark'
+
+  useEffect(() => {
+    const detectTheme = () => {
+      const probeX = Math.floor(window.innerWidth / 2)
+      const probeY = 84
+      const node = document.elementFromPoint(probeX, probeY) as HTMLElement | null
+      const themedParent = node?.closest('[data-nav-theme]') as HTMLElement | null
+      const detected = themedParent?.dataset.navTheme === 'dark' ? 'dark' : 'light'
+      setNavTheme(prev => (prev === detected ? prev : detected))
+    }
+
+    detectTheme()
+    window.addEventListener('scroll', detectTheme, { passive: true })
+    window.addEventListener('resize', detectTheme)
+    return () => {
+      window.removeEventListener('scroll', detectTheme)
+      window.removeEventListener('resize', detectTheme)
+    }
+  }, [])
 
   const isActive = useMemo(() => {
     return (href: string) => location.pathname === href || location.pathname.startsWith(`${href}/`)
@@ -32,16 +53,17 @@ export default function SiteHeader() {
         <Box
           component="nav"
           sx={{
-            bgcolor: 'rgba(255,255,255,.92)',
+            bgcolor: isDark ? 'rgba(8, 20, 22, .86)' : 'rgba(255,255,255,.92)',
             backdropFilter: 'blur(20px)',
             borderRadius: '999px',
-            border: '1px solid #e7ecf4',
-            boxShadow: '0 8px 30px rgba(17,24,39,.08)',
+            border: isDark ? '1px solid rgba(255,255,255,.2)' : '1px solid #e7ecf4',
+            boxShadow: isDark ? '0 8px 30px rgba(0,0,0,.35)' : '0 8px 30px rgba(17,24,39,.08)',
+            transition: 'all .22s ease',
           }}
         >
           <Container maxWidth={false} sx={{ py: 0.8, px: { xs: 2.5, md: 3.5 }, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <Box component={RouterLink} to="/" sx={{ textDecoration: 'none' }}>
-              <Typography sx={{ color: '#0d1222', fontWeight: 600, fontSize: 32, letterSpacing: '-.02em', fontFamily: FONT_BRAND }}>
+              <Typography sx={{ color: isDark ? '#f8fbfc' : '#0d1222', fontWeight: 600, fontSize: 32, letterSpacing: '-.02em', fontFamily: FONT_BRAND }}>
                 KALNET
               </Typography>
             </Box>
@@ -51,7 +73,7 @@ export default function SiteHeader() {
                 onMouseEnter={() => setActiveMenu('solutions')}
                 component={RouterLink}
                 to="/solutions"
-                sx={{ textDecoration: 'none', color: isActive('/solutions') ? '#0D7377' : '#334155', display: 'inline-flex', alignItems: 'center', gap: .5, fontSize: 16, fontWeight: 500 }}
+                sx={{ textDecoration: 'none', color: isActive('/solutions') ? '#14FFEC' : isDark ? 'rgba(255,255,255,.88)' : '#334155', display: 'inline-flex', alignItems: 'center', gap: .5, fontSize: 16, fontWeight: 500 }}
               >
                 Solutions <ChevronDown size={14} />
               </Box>
@@ -60,7 +82,7 @@ export default function SiteHeader() {
                 onMouseEnter={() => setActiveMenu('industries')}
                 component={RouterLink}
                 to="/industries"
-                sx={{ textDecoration: 'none', color: isActive('/industries') ? '#0D7377' : '#334155', display: 'inline-flex', alignItems: 'center', gap: .5, fontSize: 16, fontWeight: 500 }}
+                sx={{ textDecoration: 'none', color: isActive('/industries') ? '#14FFEC' : isDark ? 'rgba(255,255,255,.88)' : '#334155', display: 'inline-flex', alignItems: 'center', gap: .5, fontSize: 16, fontWeight: 500 }}
               >
                 Industries <ChevronDown size={14} />
               </Box>
@@ -70,7 +92,7 @@ export default function SiteHeader() {
                   key={link.href}
                   component={RouterLink}
                   to={link.href}
-                  sx={{ textDecoration: 'none', color: isActive(link.href) ? '#0D7377' : '#334155', fontSize: 16, fontWeight: 500 }}
+                  sx={{ textDecoration: 'none', color: isActive(link.href) ? '#14FFEC' : isDark ? 'rgba(255,255,255,.88)' : '#334155', fontSize: 16, fontWeight: 500 }}
                 >
                   {link.label}
                 </Box>
@@ -82,7 +104,7 @@ export default function SiteHeader() {
               to="/contact"
               variant="contained"
               size="small"
-              sx={{ display: { xs: 'none', md: 'inline-flex' }, bgcolor: '#0D7377', color: '#fff', fontWeight: 700, fontSize: 13, px: 3.6, py: 1.05, minWidth: 132, borderRadius: '999px', '&:hover': { bgcolor: '#085255' } }}
+              sx={{ display: { xs: 'none', md: 'inline-flex' }, bgcolor: isDark ? '#14FFEC' : '#0D7377', color: isDark ? '#062022' : '#fff', fontWeight: 700, fontSize: 13, px: 3.6, py: 1.05, minWidth: 132, borderRadius: '999px', transition: 'all .2s ease', '&:hover': { bgcolor: isDark ? '#99fff6' : '#085255' } }}
             >
               Get Started
             </Button>
@@ -90,7 +112,7 @@ export default function SiteHeader() {
             <Button
               onClick={() => setMobileOpen(v => !v)}
               variant="text"
-              sx={{ display: { xs: 'inline-flex', md: 'none' }, minWidth: 40, width: 40, height: 40, borderRadius: 2, color: '#1f2937' }}
+              sx={{ display: { xs: 'inline-flex', md: 'none' }, minWidth: 40, width: 40, height: 40, borderRadius: 2, color: isDark ? 'rgba(255,255,255,.9)' : '#1f2937' }}
             >
               {mobileOpen ? <X size={18} /> : <Menu size={18} />}
             </Button>
