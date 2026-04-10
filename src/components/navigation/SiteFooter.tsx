@@ -34,7 +34,7 @@ export default function SiteFooter() {
             </Typography>
             <Stack direction="row" spacing={4}>
               {['Privacy', 'Terms', 'Sitemap'].map(l => (
-                <Typography key={l} sx={{ color: 'rgba(255,255,255,.4)', fontSize: 13, cursor: 'pointer', '&:hover': { color: '#14FFEC' } }}>{l}</Typography>
+                <Typography key={l} sx={{ color: 'rgba(255,255,255,.4)', fontSize: 13, cursor: 'pointer', '&:hover': { color: 'rgba(255,255,255,.7)' } }}>{l}</Typography>
               ))}
             </Stack>
             <Typography sx={{ color: 'rgba(255,255,255,.4)', fontSize: 13 }}>Made in India</Typography>

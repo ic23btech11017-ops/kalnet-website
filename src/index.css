@@ -1,32 +1,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
-@import url('https://api.fontshare.com/v2/css?f[]=chillax@200,300,400,500,600,700&display=swap');
 
-/* ─── DualEntry Design System ─── */
+/* ─── Monochrome System ─── */
 :root {
-  /* Brand & Dark Mode Base */
-  --brand-primary: #1D1F20;
-  --brand-gradient-start: #085255;
-  --brand-gradient-end: #14FFEC;
-
-  /* Accent Colors */
-  --accent-teal: #e0f7fa;
-  --accent-blue: #e0f2f1;
-  --accent-purple: #e8eaf6;
-  --accent-lime: #fff3e0;
-
-  /* Neutrals (Dual Mode) */
-  --bg-dark: #1D1F20;
-  --bg-dark-card: #282A2B;
+  --brand-primary: #111111;
+  --bg-dark: #0f0f10;
+  --bg-dark-card: #171717;
   --bg-white: #ffffff;
-  --bg-light: #F5F5F7;
-  
-  --text-primary: #1D1F20;
-  --text-secondary: rgba(61, 67, 68, 0.8);
-  --text-on-dark: #ffffff;
-  --text-on-dark-muted: rgba(255, 255, 255, 0.6);
+  --bg-light: #f2f2f2;
 
-  --border-light: rgb(228, 235, 236);
-  --border-dark: rgba(255, 255, 255, 0.1);
+  --text-primary: #111111;
+  --text-secondary: rgba(17, 17, 17, 0.68);
+  --text-on-dark: #ffffff;
+  --text-on-dark-muted: rgba(255, 255, 255, 0.76);
+
+  --border-light: rgba(17, 17, 17, 0.1);
+  --border-dark: rgba(255, 255, 255, 0.14);
 }
 
 *,
@@ -61,13 +49,13 @@ a {
 
 /* ─── Media Placeholder ─── */
 .media-placeholder {
-  background: rgba(0,0,0,.03);
-  border: 2px dashed rgba(0,0,0,.1);
+  background: #f5f5f5;
+  border: 1px solid rgba(17,17,17,.08);
   border-radius: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: rgba(0,0,0,.2);
+  color: rgba(17,17,17,.42);
   font-size: 14px;
   font-weight: 500;
   letter-spacing: .02em;
@@ -77,39 +65,32 @@ a {
 
 .media-placeholder--dark {
   background: rgba(255,255,255,.04);
-  border-color: rgba(255,255,255,.1);
-  color: rgba(255,255,255,.15);
+  border-color: rgba(255,255,255,.16);
+  color: rgba(255,255,255,.5);
 }
 
 .media-placeholder:hover {
-  border-color: rgba(13,115,119,.3);
-  background: rgba(13,115,119,.03);
+  border-color: rgba(17,17,17,.18);
+  background: #f3f3f3;
 }
 
-/* ─── Industry card hover ─── */
-.industry-card {
-  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease !important;
+/* ─── Flat card hover — border only ─── */
+.flat-card {
+  transition: border-color 0.25s ease !important;
 }
 
-.industry-card:hover {
-  transform: translateY(-4px) !important;
-  box-shadow: 0 12px 40px rgba(0,0,0,.08) !important;
-  border-color: var(--brand-primary) !important;
+.flat-card:hover {
+  border-color: #111 !important;
 }
 
-.industry-card:hover .industry-arrow {
-  opacity: 1 !important;
-  transform: translateX(0) !important;
-}
-
-/* ─── Product card accents ─── */
-.product-card {
-  transition: transform 0.3s ease, box-shadow 0.3s ease !important;
-}
-
-.product-card:hover {
-  transform: translateY(-6px) !important;
-  box-shadow: 0 20px 60px rgba(0,0,0,.3) !important;
+/* ─── Section label — editorial counter ─── */
+.section-label {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(17,17,17, .42);
+  margin-bottom: 12px;
 }
 
 /* ─── Stats counter animation ─── */
@@ -124,11 +105,21 @@ a {
   100% { transform: translateX(-50%); }
 }
 
-.logo-strip {
-  display: flex;
-  animation: scrollLogos 25s linear infinite;
+@keyframes scrollLogosReverse {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
 }
 
-.logo-strip:hover {
+.logo-strip {
+  display: flex;
+  animation: scrollLogos 40s linear infinite;
+}
+
+.logo-strip-reverse {
+  display: flex;
+  animation: scrollLogosReverse 40s linear infinite;
+}
+
+.logo-strip:hover, .logo-strip-reverse:hover {
   animation-play-state: paused;
 }
