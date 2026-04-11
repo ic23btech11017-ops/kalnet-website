@@ -1,4 +1,4 @@
-import { Box, Container, Typography } from '@mui/material'
+import { Box, Container, Stack, Typography } from '@mui/material'
 import SiteHeader from '../components/navigation/SiteHeader'
 import SiteFooter from '../components/navigation/SiteFooter'
 
@@ -42,30 +42,48 @@ export default function AboutPage() {
       <Box component="main" sx={{ flexGrow: 1, pt: { xs: 14, md: 20 }, pb: { xs: 8, md: 16 } }}>
         <Container maxWidth="lg">
           {/* HERO */}
-          <Box sx={{ maxWidth: 800, mb: { xs: 12, md: 16 } }}>
-            <Typography
-              component="h1"
-              sx={{
-                fontFamily: FONT_BRAND,
-                fontSize: { xs: 48, md: 72 },
-                fontWeight: 600,
-                lineHeight: 1.05,
-                letterSpacing: '-.03em',
-                mb: 4,
-              }}
-            >
-              Building the Digital Backbone for Modern Organizations.
-            </Typography>
-            <Typography
-              sx={{
-                fontSize: { xs: 20, md: 24 },
-                color: MONO.textMuted,
-                lineHeight: 1.5,
-                maxWidth: 600,
-              }}
-            >
-              We are a team of engineers, designers, and problem solvers dedicated to simplifying complex operations for organizations across all industries.
-            </Typography>
+          <Box sx={{ mb: { xs: 12, md: 16 } }}>
+            <Stack direction={{ xs: 'column', md: 'row' }} spacing={8} alignItems="center">
+              <Box sx={{ flex: 1, maxWidth: 800 }}>
+                <Typography
+                  component="h1"
+                  sx={{
+                    fontFamily: FONT_BRAND,
+                    fontSize: { xs: 48, md: 72 },
+                    fontWeight: 600,
+                    lineHeight: 1.05,
+                    letterSpacing: '-.03em',
+                    mb: 4,
+                  }}
+                >
+                  Building the Digital Backbone for Modern Organizations.
+                </Typography>
+                <Typography
+                  sx={{
+                    fontSize: { xs: 20, md: 24 },
+                    color: MONO.textMuted,
+                    lineHeight: 1.5,
+                    maxWidth: 600,
+                  }}
+                >
+                  We are a team of engineers, designers, and problem solvers dedicated to simplifying complex operations for organizations across all industries.
+                </Typography>
+              </Box>
+              <Box sx={{ flex: 1, display: { xs: 'none', md: 'block' } }}>
+                <Box
+                  component="img"
+                  src="/images/undraw_team_85hs.svg"
+                  alt="Kalnet Team"
+                  sx={{
+                    width: '100%',
+                    height: 'auto',
+                    maxWidth: 500,
+                    display: 'block',
+                    margin: '0 auto',
+                  }}
+                />
+              </Box>
+            </Stack>
           </Box>
 
           {/* OUR STORY */}
