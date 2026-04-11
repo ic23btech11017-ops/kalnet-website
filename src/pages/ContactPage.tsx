@@ -91,25 +91,41 @@ export default function ContactPage() {
 
       <Box component="main" sx={{ flexGrow: 1, pt: { xs: 16, md: 22 }, pb: { xs: 8, md: 14 } }}>
         <Container maxWidth="lg">
-          <Box sx={{ maxWidth: 720, mb: { xs: 5, md: 7 } }}>
-            <SectionLabel>Let&apos;s talk</SectionLabel>
-            <Typography
-              component="h1"
-              sx={{
-                fontFamily: FONT_BRAND,
-                fontSize: { xs: 36, md: 52 },
-                fontWeight: 500,
-                lineHeight: 1.05,
-                letterSpacing: '-.03em',
-                mb: 2,
-              }}
-            >
-              Contact
-            </Typography>
-            <Typography sx={{ color: MONO.muted, fontSize: { xs: 15, md: 17 }, lineHeight: 1.65, maxWidth: 560 }}>
-              Share your business goals and we will map the right CRM and ERP architecture for your workflows.
-            </Typography>
-          </Box>
+          <Stack direction={{ xs: 'column', md: 'row' }} spacing={8} alignItems="center" sx={{ mb: { xs: 5, md: 7 } }}>
+            <Box sx={{ flex: 1, maxWidth: 640 }}>
+              <SectionLabel>Let&apos;s talk</SectionLabel>
+              <Typography
+                component="h1"
+                sx={{
+                  fontFamily: FONT_BRAND,
+                  fontSize: { xs: 36, md: 52 },
+                  fontWeight: 500,
+                  lineHeight: 1.05,
+                  letterSpacing: '-.03em',
+                  mb: 2,
+                }}
+              >
+                Contact
+              </Typography>
+              <Typography sx={{ color: MONO.muted, fontSize: { xs: 15, md: 17 }, lineHeight: 1.65 }}>
+                Share your business goals and we will map the right CRM and ERP architecture for your workflows.
+              </Typography>
+            </Box>
+            <Box sx={{ flex: 1, display: { xs: 'none', md: 'block' } }}>
+              <Box
+                component="img"
+                src="/images/undraw_contact-us_kcoa.svg"
+                alt="Contact Kalnet"
+                sx={{
+                  width: '100%',
+                  height: 'auto',
+                  maxWidth: 500,
+                  display: 'block',
+                  margin: '0 auto',
+                }}
+              />
+            </Box>
+          </Stack>
 
           <Box
             sx={{

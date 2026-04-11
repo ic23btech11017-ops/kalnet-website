@@ -12,6 +12,8 @@ import AboutPage from './pages/AboutPage'
 import ContactPage from './pages/ContactPage'
 import PartnersPage from './pages/PartnersPage'
 import CareersPage from './pages/CareersPage'
+import PrivacyPolicyPage from './pages/PrivacyPolicyPage'
+import TermsOfServicePage from './pages/TermsOfServicePage'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -42,6 +44,9 @@ export default function AppRouter() {
       <Route path="/careers" element={<CareersPage />} />
       <Route path="/about" element={<AboutPage />} />
       <Route path="/contact" element={<ContactPage />} />
+
+      <Route path="/privacy" element={<PrivacyPolicyPage />} />
+      <Route path="/terms" element={<TermsOfServicePage />} />
 
       <Route path="/blogs" element={<BlogsPage />} />
       <Route path="/blogs/:slug" element={<BlogDetailPage />} />

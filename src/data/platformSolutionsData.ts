@@ -135,15 +135,10 @@ export function findSolutionModule(categorySlug: string, moduleSlug: string) {
   return { category, module }
 }
 
-/** Old single-segment /solutions/:slug URLs → nested path */
-export const LEGACY_SOLUTION_SLUG_REDIRECTS: Record<string, string> = {
-  'integration-hub': solutionModulePath('core-platform', 'integration-hub'),
-  'project-management': solutionModulePath('core-platform', 'project-management'),
-  'ai-intelligence': solutionModulePath('digital-data', 'ai-intelligence'),
-  'finance-accounting': solutionModulePath('finance-governance', 'finance-accounting'),
-  'hrms-payroll': solutionModulePath('people-workforce', 'hrms-payroll'),
-  'compliance-audit': solutionModulePath('finance-governance', 'compliance-audit'),
-}
+/** Old single-segment `/solutions/:moduleSlug` → canonical nested path (every module slug). */
+export const LEGACY_SOLUTION_SLUG_REDIRECTS: Record<string, string> = Object.fromEntries(
+  PLATFORM_SOLUTIONS.flatMap(cat => cat.modules.map(m => [m.slug, solutionModulePath(cat.categorySlug, m.slug)] as const)),
+)
 
 const titleToSlug = (t: string) => t.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '')
 

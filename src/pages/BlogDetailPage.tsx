@@ -1,17 +1,25 @@
 import { Box, Stack, Typography } from '@mui/material'
-import { useParams } from 'react-router-dom'
+import { Navigate, useParams } from 'react-router-dom'
 import BrandedPageLayout from '../components/layout/BrandedPageLayout'
 import { MediaPlaceholder } from '../components/content/PageBlocks'
+import { blogPosts, blogPostSlugs } from '../data/blogPosts'
 
 export default function BlogDetailPage() {
   const { slug } = useParams()
-  const title = (slug ?? 'blog-post').split('-').map(word => word[0]?.toUpperCase() + word.slice(1)).join(' ')
+  if (!slug || !blogPostSlugs.has(slug)) {
+    return <Navigate to="/blogs" replace />
+  }
+  const post = blogPosts.find(p => p.slug === slug)
+  if (!post) {
+    return <Navigate to="/blogs" replace />
+  }
+  const title = post.title
 
   return (
     <BrandedPageLayout
       eyebrow="BLOG ARTICLE"
       title={title}
-      description="Full-length article layout for content publishing is now wired into routing."
+      description={post.excerpt}
     >
       <Box sx={{ border: '1px solid #e2e8f4', borderRadius: 4, p: { xs: 3, md: 4 }, bgcolor: '#f9fbff', mb: 3 }}>
         <Typography sx={{ color: '#8ca0bd', fontSize: 12, fontWeight: 700, letterSpacing: '.08em', textTransform: 'uppercase', mb: .8 }}>

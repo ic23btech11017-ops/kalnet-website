@@ -163,66 +163,82 @@ export default function PartnersPage() {
         {/* Hero */}
         <Box sx={{ pt: { xs: 16, md: 22 }, pb: { xs: 8, md: 12 } }}>
           <Container maxWidth="lg">
-            <Box sx={{ maxWidth: 800 }}>
-              <SectionLabel>Partner program</SectionLabel>
-              <Typography
-                component="h1"
-                sx={{
-                  fontFamily: FONT_BRAND,
-                  fontSize: { xs: 34, md: 52 },
-                  fontWeight: 500,
-                  lineHeight: 1.05,
-                  letterSpacing: '-.03em',
-                  mb: 2.5,
-                }}
-              >
-                Grow together with Kalnet partnership
-              </Typography>
-              <Typography sx={{ color: MONO.muted, fontSize: { xs: 15, md: 18 }, lineHeight: 1.65, maxWidth: 640, mb: 4 }}>
-                Join a growing ERP and operating-system ecosystem. Empower your clients with solutions across 15+ industries and unlock new revenue streams.
-              </Typography>
-              <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.2} sx={{ flexWrap: 'wrap' }}>
-                <Button
-                  component="a"
-                  href={PARTNER_REGISTER}
-                  variant="contained"
+            <Stack direction={{ xs: 'column', md: 'row' }} spacing={8} alignItems="center">
+              <Box sx={{ flex: 1, maxWidth: 640 }}>
+                <SectionLabel>Partner program</SectionLabel>
+                <Typography
+                  component="h1"
                   sx={{
-                    bgcolor: MONO.accent,
-                    color: MONO.accentText,
-                    borderRadius: '999px',
-                    px: 3.5,
-                    py: 1.2,
-                    fontWeight: 600,
-                    fontSize: 14,
-                    textTransform: 'none',
-                    boxShadow: 'none',
-                    border: '1px solid transparent',
-                    '&:hover': { bgcolor: MONO.accentHover, boxShadow: 'none', borderColor: '#111' },
+                    fontFamily: FONT_BRAND,
+                    fontSize: { xs: 34, md: 52 },
+                    fontWeight: 500,
+                    lineHeight: 1.05,
+                    letterSpacing: '-.03em',
+                    mb: 2.5,
                   }}
                 >
-                  Become a partner
-                </Button>
-                <Button
-                  component="a"
-                  href={PARTNER_PORTAL}
-                  variant="outlined"
+                  Grow together with Kalnet partnership
+                </Typography>
+                <Typography sx={{ color: MONO.muted, fontSize: { xs: 15, md: 18 }, lineHeight: 1.65, mb: 4 }}>
+                  Join a growing ERP and operating-system ecosystem. Empower your clients with solutions across 15+ industries and unlock new revenue streams.
+                </Typography>
+                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.2} sx={{ flexWrap: 'wrap' }}>
+                  <Button
+                    component="a"
+                    href={PARTNER_REGISTER}
+                    variant="contained"
+                    sx={{
+                      bgcolor: MONO.accent,
+                      color: MONO.accentText,
+                      borderRadius: '999px',
+                      px: 3.5,
+                      py: 1.2,
+                      fontWeight: 600,
+                      fontSize: 14,
+                      textTransform: 'none',
+                      boxShadow: 'none',
+                      border: '1px solid transparent',
+                      '&:hover': { bgcolor: MONO.accentHover, boxShadow: 'none', borderColor: '#111' },
+                    }}
+                  >
+                    Become a partner
+                  </Button>
+                  <Button
+                    component="a"
+                    href={PARTNER_PORTAL}
+                    variant="outlined"
+                    sx={{
+                      borderColor: MONO.text,
+                      color: MONO.text,
+                      borderRadius: '999px',
+                      px: 3.5,
+                      py: 1.2,
+                      fontWeight: 600,
+                      fontSize: 14,
+                      textTransform: 'none',
+                      bgcolor: MONO.surface,
+                      '&:hover': { borderColor: '#111', bgcolor: MONO.surfaceSoft },
+                    }}
+                  >
+                    Already a partner?
+                  </Button>
+                </Stack>
+              </Box>
+              <Box sx={{ flex: 1, display: { xs: 'none', md: 'block' } }}>
+                <Box
+                  component="img"
+                  src="/images/undraw_handshake-deal_nwk6.svg"
+                  alt="Kalnet Partnership"
                   sx={{
-                    borderColor: MONO.text,
-                    color: MONO.text,
-                    borderRadius: '999px',
-                    px: 3.5,
-                    py: 1.2,
-                    fontWeight: 600,
-                    fontSize: 14,
-                    textTransform: 'none',
-                    bgcolor: MONO.surface,
-                    '&:hover': { borderColor: '#111', bgcolor: MONO.surfaceSoft },
+                    width: '100%',
+                    height: 'auto',
+                    maxWidth: 500,
+                    display: 'block',
+                    margin: '0 auto',
                   }}
-                >
-                  Already a partner?
-                </Button>
-              </Stack>
-            </Box>
+                />
+              </Box>
+            </Stack>
           </Container>
         </Box>
 

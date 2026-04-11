@@ -1,0 +1,27 @@
+import { Box, Container, Typography } from '@mui/material'
+import SiteFooter from '../components/navigation/SiteFooter'
+import SiteHeader from '../components/navigation/SiteHeader'
+import { FONT_BRAND, MONO } from '../theme/marketingMono'
+
+export default function TermsOfServicePage() {
+  return (
+    <Box data-nav-theme="light" sx={{ bgcolor: MONO.page, color: MONO.text, minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+      <SiteHeader />
+      <Box component="main" sx={{ flexGrow: 1, pt: { xs: 16, md: 22 }, pb: { xs: 8, md: 12 } }}>
+        <Container maxWidth="md">
+          <Typography component="h1" sx={{ fontFamily: FONT_BRAND, fontSize: { xs: 32, md: 40 }, fontWeight: 600, letterSpacing: '-.02em', mb: 2 }}>
+            Terms of Service
+          </Typography>
+          <Typography sx={{ color: MONO.muted, fontSize: 15, lineHeight: 1.7, mb: 4 }}>
+            This page is a placeholder for your terms of service. Replace with counsel-approved terms before binding customers or users.
+          </Typography>
+          <Typography sx={{ fontSize: 15, lineHeight: 1.75, color: MONO.text }}>
+            Terms typically cover acceptable use, intellectual property, warranties, limitation of liability, governing law, and how to resolve disputes. Final
+            wording should reflect your jurisdiction and product.
+          </Typography>
+        </Container>
+      </Box>
+      <SiteFooter />
+    </Box>
+  )
+}

@@ -3,12 +3,7 @@ import { ArrowRight } from 'lucide-react'
 import { Link as RouterLink } from 'react-router-dom'
 import BrandedPageLayout from '../components/layout/BrandedPageLayout'
 import { HighlightCard, MediaPlaceholder } from '../components/content/PageBlocks'
-
-const blogPosts = [
-  { slug: 'enterprise-automation-guide', title: 'Enterprise Automation: A Practical Rollout Guide', excerpt: 'How to move from scattered tools to a unified operations stack without disruption.' },
-  { slug: 'crm-erp-integration-playbook', title: 'CRM + ERP Integration Playbook', excerpt: 'A proven structure for syncing customer, sales, and finance workflows at scale.' },
-  { slug: 'industry-specific-digital-transformation', title: 'Industry-Specific Digital Transformation', excerpt: 'Why generic software fails and how tailored systems accelerate operations.' },
-]
+import { blogPosts } from '../data/blogPosts'
 
 export default function BlogsPage() {
   return (

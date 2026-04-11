@@ -158,25 +158,41 @@ export default function CareersPage() {
       <Box component="main" sx={{ flexGrow: 1 }}>
         <Box sx={{ pt: { xs: 16, md: 22 }, pb: { xs: 6, md: 10 } }}>
           <Container maxWidth="lg">
-            <Box sx={{ maxWidth: 760 }}>
-              <SectionLabel>We&apos;re hiring</SectionLabel>
-              <Typography
-                component="h1"
-                sx={{
-                  fontFamily: FONT_BRAND,
-                  fontSize: { xs: 34, md: 52 },
-                  fontWeight: 500,
-                  lineHeight: 1.05,
-                  letterSpacing: '-.03em',
-                  mb: 2.5,
-                }}
-              >
-                Build the future of enterprise tech
-              </Typography>
-              <Typography sx={{ color: MONO.muted, fontSize: { xs: 15, md: 18 }, lineHeight: 1.65, maxWidth: 640 }}>
-                Kalnet is transforming how education, healthcare, and enterprise organisations operate. If you&apos;re passionate about solving hard problems, we&apos;d love to meet you.
-              </Typography>
-            </Box>
+            <Stack direction={{ xs: 'column', md: 'row' }} spacing={8} alignItems="center">
+              <Box sx={{ flex: 1, maxWidth: 640 }}>
+                <SectionLabel>We&apos;re hiring</SectionLabel>
+                <Typography
+                  component="h1"
+                  sx={{
+                    fontFamily: FONT_BRAND,
+                    fontSize: { xs: 34, md: 52 },
+                    fontWeight: 500,
+                    lineHeight: 1.05,
+                    letterSpacing: '-.03em',
+                    mb: 2.5,
+                  }}
+                >
+                  Build the future of enterprise tech
+                </Typography>
+                <Typography sx={{ color: MONO.muted, fontSize: { xs: 15, md: 18 }, lineHeight: 1.65 }}>
+                  Kalnet is transforming how education, healthcare, and enterprise organisations operate. If you&apos;re passionate about solving hard problems, we&apos;d love to meet you.
+                </Typography>
+              </Box>
+              <Box sx={{ flex: 1, display: { xs: 'none', md: 'block' } }}>
+                <Box
+                  component="img"
+                  src="/images/undraw_online-resume_z4sp.svg"
+                  alt="Kalnet Careers"
+                  sx={{
+                    width: '100%',
+                    height: 'auto',
+                    maxWidth: 500,
+                    display: 'block',
+                    margin: '0 auto',
+                  }}
+                />
+              </Box>
+            </Stack>
           </Container>
         </Box>
 
