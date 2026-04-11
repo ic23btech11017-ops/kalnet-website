@@ -308,7 +308,7 @@ export default function App() {
         </Box>
 
         {/* ═══════════════ 01 — PLATFORM ═══════════════ */}
-        <Container data-nav-theme="light" maxWidth="lg" sx={{ mt: { xs: 8, md: 10 } }}>
+        <Container data-nav-theme="light" maxWidth="lg" sx={{ mt: { xs: 10, md: 14 } }}>
           <SectionLabel>01 — Platform</SectionLabel>
           <Typography
             sx={{
@@ -388,7 +388,7 @@ export default function App() {
         </Container>
 
         {/* ═══════════════ TRUSTED BY ═══════════════ */}
-        <Box sx={{ mt: { xs: 8, md: 10 }, overflow: 'hidden', py: { xs: 3, md: 4 }, borderTop: `1px solid ${MONO.borderSoft}`, borderBottom: `1px solid ${MONO.borderSoft}` }}>
+        <Box sx={{ mt: { xs: 10, md: 18 }, overflow: 'hidden', py: { xs: 3, md: 4 }, borderTop: `1px solid ${MONO.borderSoft}`, borderBottom: `1px solid ${MONO.borderSoft}` }}>
           <Typography
             sx={{
               textAlign: 'center',
