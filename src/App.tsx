@@ -68,7 +68,12 @@ const whyKalnet = [
 ]
 
 const trustedPartners = [
-  'Tayog', 'IIT Hyderabad', 'Commi', 'HealthBud', 'Apollo Clinics', 'Retail Chain', 'MedAssist',
+  { name: 'Tayog', logo: '/images/tayog_logo.png' },
+  { name: 'HealthBud', logo: '/images/Health_bud_logo.png' },
+  { name: 'IIT Hyderabad', logo: '/images/images_9.png' },
+  { name: 'Tayog', logo: '/images/tayog_logo.png' },
+  { name: 'HealthBud', logo: '/images/Health_bud_logo.png' },
+  { name: 'IIT Hyderabad', logo: '/images/images_9.png' },
 ]
 
 const testimonials = [
@@ -284,63 +289,26 @@ export default function App() {
                 </Stack>
               </Box>
 
-              <MediaSlot label="Dashboard preview" minHeight={380} />
+              <Box sx={{ display: { xs: 'none', md: 'block' } }}>
+                <Box
+                  component="img"
+                  src="/images/undraw_mcp-server_7kvc.svg"
+                  alt="Kalnet Platform Overview"
+                  sx={{
+                    width: '100%',
+                    height: 'auto',
+                    maxWidth: 540,
+                    display: 'block',
+                    margin: '0 auto',
+                  }}
+                />
+              </Box>
             </Box>
           </Container>
         </Box>
 
-        {/* ═══════════════ TRUSTED BY ═══════════════ */}
-        <Box sx={{ mt: { xs: 6, md: 8 }, overflow: 'hidden', py: { xs: 3, md: 4 }, borderTop: `1px solid ${MONO.borderSoft}`, borderBottom: `1px solid ${MONO.borderSoft}` }}>
-          <Typography
-            sx={{
-              textAlign: 'center',
-              fontSize: 11,
-              fontWeight: 500,
-              letterSpacing: '.14em',
-              textTransform: 'uppercase',
-              color: 'rgba(17,17,17,.35)',
-              mb: 2.5,
-            }}
-          >
-            Trusted by global leaders
-          </Typography>
-          <Box sx={{ overflow: 'hidden', position: 'relative' }}>
-            {/* Fade edges */}
-            <Box sx={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: 80, background: 'linear-gradient(90deg, #f5f5f5 0%, transparent 100%)', zIndex: 1 }} />
-            <Box sx={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: 80, background: 'linear-gradient(270deg, #f5f5f5 0%, transparent 100%)', zIndex: 1 }} />
-            <Box className="logo-strip">
-              {[...trustedPartners, ...trustedPartners, ...trustedPartners].map((name, i) => (
-                <Box
-                  key={`${name}-${i}`}
-                  sx={{
-                    flexShrink: 0,
-                    px: { xs: 3, md: 5 },
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <Typography
-                    sx={{
-                      fontSize: { xs: 16, md: 20 },
-                      fontWeight: 600,
-                      color: 'rgba(17,17,17,.2)',
-                      letterSpacing: '-.01em',
-                      whiteSpace: 'nowrap',
-                      fontFamily: FONT_BRAND,
-                      userSelect: 'none',
-                    }}
-                  >
-                    {name}
-                  </Typography>
-                </Box>
-              ))}
-            </Box>
-          </Box>
-        </Box>
-
         {/* ═══════════════ 01 — PLATFORM ═══════════════ */}
-        <Container data-nav-theme="light" maxWidth="lg" sx={{ mt: { xs: 10, md: 18 } }}>
+        <Container data-nav-theme="light" maxWidth="lg" sx={{ mt: { xs: 10, md: 14 } }}>
           <SectionLabel>01 — Platform</SectionLabel>
           <Typography
             sx={{
@@ -419,141 +387,340 @@ export default function App() {
           </Box>
         </Container>
 
-        {/* ═══════════════ 02 — INDUSTRIES ═══════════════ */}
+        {/* ═══════════════ TRUSTED BY ═══════════════ */}
+        <Box sx={{ mt: { xs: 10, md: 18 }, overflow: 'hidden', py: { xs: 3, md: 4 }, borderTop: `1px solid ${MONO.borderSoft}`, borderBottom: `1px solid ${MONO.borderSoft}` }}>
+          <Typography
+            sx={{
+              textAlign: 'center',
+              fontSize: 11,
+              fontWeight: 500,
+              letterSpacing: '.14em',
+              textTransform: 'uppercase',
+              color: 'rgba(17,17,17,.35)',
+              mb: 2.5,
+            }}
+          >
+            Trusted by global leaders
+          </Typography>
+          <Box sx={{ overflow: 'hidden', position: 'relative', '&:hover .logo-strip': { animationPlayState: 'paused' } }}>
+            {/* Fade edges */}
+            <Box sx={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: 80, background: 'linear-gradient(90deg, #f5f5f5 0%, transparent 100%)', zIndex: 1 }} />
+            <Box sx={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: 80, background: 'linear-gradient(270deg, #f5f5f5 0%, transparent 100%)', zIndex: 1 }} />
+            <Box className="logo-strip">
+              {[...trustedPartners, ...trustedPartners, ...trustedPartners].map((partner, i) => (
+                <Box
+                  key={`${partner.name}-${i}`}
+                  sx={{
+                    flexShrink: 0,
+                    px: { xs: 3, md: 5 },
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <Box
+                    component="img"
+                    src={partner.logo}
+                    alt={partner.name}
+                    sx={{
+                      height: { xs: 32, md: 54 }, // increased height specifically for healthbud visibility
+                      width: 'auto',
+                      objectFit: 'contain',
+                      filter: 'grayscale(100%) opacity(0.5)',
+                      transition: 'filter 0.3s ease, opacity 0.3s ease, transform 0.3s ease', transform: partner.name === 'HealthBud' ? 'scale(1.4)' : 'none',
+                      '&:hover': {
+                        filter: 'grayscale(0%) opacity(1)',
+                      },
+                    }}
+                  />
+                </Box>
+              ))}
+            </Box>
+          </Box>
+        </Box>
+
+        {/* ═══════════════ 02 — PLATFORM BENTO ═══════════════ */}
         <Container data-nav-theme="light" maxWidth="lg" sx={{ mt: { xs: 10, md: 18 } }}>
-          <SectionLabel>02 — Industries</SectionLabel>
+          <SectionLabel>02 — Platform</SectionLabel>
           <Typography
             sx={{
               fontFamily: FONT_BRAND,
-              fontSize: { xs: 28, md: 40 },
+              fontSize: { xs: 28, md: 44 },
               fontWeight: 500,
               lineHeight: 1.05,
               letterSpacing: '-.02em',
               mb: 1,
             }}
           >
-            Built for your industry
+            Built for how you operate
           </Typography>
-          <Typography sx={{ color: MONO.muted, maxWidth: 500, mb: 4, fontSize: 15, fontWeight: 400 }}>
-            Systems designed for real-world operations
+          <Typography sx={{ color: MONO.muted, maxWidth: 560, mb: { xs: 3, md: 5 }, fontSize: { xs: 15, md: 16 }, fontWeight: 400, lineHeight: 1.55 }}>
+            Kalnet is a modular digital operating system: ERP, CRM, finance, HR, workflows, and analytics in one governed stack—deploy end-to-end or by module, tuned to your industry.
           </Typography>
 
           <Box
             sx={{
               display: 'grid',
-              gridTemplateColumns: { xs: '1fr', md: '1fr 1.25fr .85fr' },
-              gridTemplateRows: { md: '220px 170px 170px' },
-              gridTemplateAreas: { md: '"a b c" "d b f" "d e f"' },
-              gap: 1.5,
+              gridTemplateColumns: { xs: '1fr', md: 'minmax(0, 1fr) minmax(0, 1.2fr) minmax(0, 0.95fr)' },
+              gridTemplateRows: { xs: 'auto', md: 'minmax(200px, 1fr) minmax(160px, auto) minmax(160px, auto)' },
+              gridTemplateAreas: {
+                xs: '"a" "b" "c" "d" "e" "f"',
+                md: '"a b c" "d b f" "d e f"',
+              },
+              gap: { xs: 1.5, md: 2 },
             }}
           >
-            {/* Card A — Admissions */}
-            <Box sx={{ gridArea: { md: 'a' } }}>
+            {/* A — Workflow UI mock → /solutions */}
+            <Box sx={{ gridArea: 'a', minHeight: { xs: 220, md: 0 } }}>
               <Box
+                component={RouterLink}
+                to="/solutions"
                 className="flat-card"
                 sx={{
-                  height: '100%', borderRadius: '16px', border: `1px solid ${MONO.border}`,
-                  bgcolor: MONO.surface, p: 2, display: 'flex', flexDirection: 'column',
+                  height: '100%',
+                  minHeight: { xs: 220, md: '100%' },
+                  borderRadius: { xs: '20px', md: '24px' },
+                  border: `1px solid ${MONO.border}`,
+                  bgcolor: MONO.surface,
+                  p: 2.25,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  textDecoration: 'none',
+                  color: 'inherit',
+                  transition: 'transform .22s ease, box-shadow .22s ease, border-color .22s ease',
+                  '&:hover': { transform: 'translateY(-3px)', boxShadow: '0 20px 48px rgba(17,17,17,.08)', borderColor: 'rgba(17,17,17,.18)' },
                 }}
               >
-                <Stack direction="row" spacing={0.7} sx={{ mb: 1 }}>
-                  <Box sx={{ px: 1.2, py: 0.4, borderRadius: 99, bgcolor: '#111', color: '#fff', fontSize: 10, fontWeight: 600 }}>
+                <Stack direction="row" spacing={0.75} sx={{ mb: 1.25 }}>
+                  <Box sx={{ px: 1.25, py: 0.45, borderRadius: 99, bgcolor: '#111', color: '#fff', fontSize: 10, fontWeight: 700, letterSpacing: '.04em' }}>
                     Queue
                   </Box>
-                  <Box sx={{ px: 1.2, py: 0.4, borderRadius: 99, bgcolor: '#f1f1f1', color: '#111', fontSize: 10, fontWeight: 600 }}>
+                  <Box sx={{ px: 1.25, py: 0.45, borderRadius: 99, bgcolor: '#ececec', color: '#111', fontSize: 10, fontWeight: 700, letterSpacing: '.04em' }}>
                     Status
                   </Box>
                 </Stack>
-                <Stack spacing={0.6}>
-                  {['Patient / Guest ID', 'Department', 'Workflow'].map(field => (
+                <Stack spacing={0.65}>
+                  {['Record / case ID', 'Cost center', 'Workflow'].map(field => (
                     <Box
                       key={field}
                       sx={{
-                        height: 28,
+                        height: 30,
                         borderRadius: 99,
                         border: `1px solid ${MONO.borderSoft}`,
-                        bgcolor: '#fafafa',
-                        px: 1,
+                        bgcolor: MONO.surfaceSoft,
+                        px: 1.25,
                         display: 'flex',
                         alignItems: 'center',
-                        color: 'rgba(17,17,17,.35)',
+                        color: 'rgba(17,17,17,.38)',
                         fontSize: 10,
+                        fontWeight: 500,
                       }}
                     >
                       {field}
                     </Box>
                   ))}
                 </Stack>
-                <Box sx={{ mt: 'auto', pt: 1 }}>
-                  <Box sx={{ height: 30, borderRadius: 99, bgcolor: '#111', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 600, fontSize: 11 }}>
-                    Open Workflow
+                <Box sx={{ mt: 'auto', pt: 1.25 }}>
+                  <Box
+                    sx={{
+                      height: 34,
+                      borderRadius: 99,
+                      bgcolor: '#111',
+                      color: '#fff',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontWeight: 700,
+                      fontSize: 11,
+                      letterSpacing: '.04em',
+                    }}
+                  >
+                    Open workflow
                   </Box>
                 </Box>
               </Box>
             </Box>
 
-            {/* Card B — Hero video */}
-            <Box sx={{ gridArea: { md: 'b' } }}>
-              <Box sx={{ height: '100%', position: 'relative', borderRadius: '16px', overflow: 'hidden', border: `1px solid ${MONO.borderSoft}`, bgcolor: '#787878' }}>
-                <Typography sx={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'rgba(255,255,255,.4)', fontSize: 11, fontWeight: 500, letterSpacing: '.06em', textTransform: 'uppercase' }}>
-                  Operations video
-                </Typography>
-                <Box sx={{ position: 'absolute', left: 0, right: 0, bottom: 0, p: 2, bgcolor: 'rgba(0,0,0,.65)' }}>
-                  <Typography sx={{ color: '#fff', fontFamily: FONT_BRAND, fontSize: { xs: 24, md: 28 }, fontWeight: 500, lineHeight: 1.05 }}>
-                    Healthcare & Hospitality
+            {/* B — Platform walkthrough (grey media + caption) */}
+            <Box sx={{ gridArea: 'b', minHeight: { xs: 320, md: 0 } }}>
+              <Box
+                component={RouterLink}
+                to="/solutions"
+                sx={{
+                  height: '100%',
+                  minHeight: { xs: 320, md: '100%' },
+                  display: 'flex',
+                  flexDirection: 'column',
+                  borderRadius: { xs: '20px', md: '24px' },
+                  overflow: 'hidden',
+                  border: `1px solid ${MONO.borderSoft}`,
+                  textDecoration: 'none',
+                  color: 'inherit',
+                  transition: 'transform .22s ease, box-shadow .22s ease',
+                  '&:hover': { transform: 'translateY(-3px)', boxShadow: '0 24px 56px rgba(17,17,17,.1)' },
+                }}
+              >
+                <Box
+                  sx={{
+                    flex: { md: '1 1 62%' },
+                    minHeight: { xs: 200, md: 0 },
+                    bgcolor: '#8a8a8a',
+                    position: 'relative',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      color: 'rgba(255,255,255,.45)',
+                      fontSize: 11,
+                      fontWeight: 600,
+                      letterSpacing: '.14em',
+                      textTransform: 'uppercase',
+                    }}
+                  >
+                    Platform walkthrough
                   </Typography>
-                  <Typography sx={{ color: 'rgba(255,255,255,.7)', fontSize: 13, mt: 0.3, fontWeight: 400 }}>
-                    Admissions, rooms, and support — one platform.
+                </Box>
+                <Box sx={{ flex: { md: '0 0 auto' }, p: 2.25, bgcolor: MONO.darkSoft, borderTop: '1px solid rgba(255,255,255,.06)' }}>
+                  <Typography sx={{ color: '#fff', fontFamily: FONT_BRAND, fontSize: { xs: 22, md: 28 }, fontWeight: 500, lineHeight: 1.08, letterSpacing: '-.02em' }}>
+                    30+ modules, one architecture
+                  </Typography>
+                  <Typography sx={{ color: 'rgba(255,255,255,.62)', fontSize: 14, mt: 0.75, fontWeight: 400, lineHeight: 1.45 }}>
+                    Finance, operations, CRM, HR, documents, and AI—composed the way your enterprise runs.
                   </Typography>
                 </Box>
               </Box>
             </Box>
 
-            {/* Card C */}
-            <Box sx={{ gridArea: { md: 'c' } }}>
-              <Box className="flat-card" sx={{ height: '100%', borderRadius: '16px', border: `1px solid ${MONO.border}`, bgcolor: '#eeeeee', p: 2, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
-                <Typography sx={{ fontSize: { xs: 22, md: 24 }, lineHeight: 1.05, color: '#111', fontFamily: FONT_BRAND, fontWeight: 500, mb: 0.4 }}>
-                  Decisions with clarity
+            {/* C — Light panel */}
+            <Box sx={{ gridArea: 'c', minHeight: { xs: 140, md: 0 } }}>
+              <Box
+                className="flat-card"
+                sx={{
+                  height: '100%',
+                  borderRadius: { xs: '20px', md: '24px' },
+                  border: `1px solid ${MONO.border}`,
+                  bgcolor: '#e8e8e8',
+                  p: 2.25,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'flex-end',
+                  minHeight: { xs: 140, md: '100%' },
+                }}
+              >
+                <Typography sx={{ fontSize: { xs: 22, md: 24 }, lineHeight: 1.1, color: '#111', fontFamily: FONT_BRAND, fontWeight: 600, letterSpacing: '-.02em', mb: 0.6 }}>
+                  Governed decisions
                 </Typography>
-                <Typography sx={{ color: MONO.muted, lineHeight: 1.4, fontSize: 13, fontWeight: 400 }}>
-                  A single source of truth for daily operations.
-                </Typography>
-              </Box>
-            </Box>
-
-            {/* Card D — Dark */}
-            <Box sx={{ gridArea: { md: 'd' } }}>
-              <Box sx={{ height: '100%', borderRadius: '16px', border: '1px solid rgba(255,255,255,.1)', bgcolor: MONO.darkSoft, p: 2, display: 'flex', flexDirection: 'column' }}>
-                <Typography sx={{ color: '#fff', fontFamily: FONT_BRAND, fontSize: { xs: 24, md: 26 }, fontWeight: 500, lineHeight: 1.05, mb: 0.6 }}>
-                  Industry-ready workflows
-                </Typography>
-                <Typography sx={{ color: 'rgba(255,255,255,.55)', lineHeight: 1.5, fontSize: 13, fontWeight: 400 }}>
-                  Built for healthcare and hospitality where coordination matters most.
-                </Typography>
-              </Box>
-            </Box>
-
-            {/* Card E */}
-            <Box sx={{ gridArea: { md: 'e' } }}>
-              <Box className="flat-card" sx={{ height: '100%', borderRadius: '16px', border: `1px solid ${MONO.border}`, bgcolor: MONO.surface, p: 2, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                <Typography sx={{ fontSize: { xs: 24, md: 26 }, lineHeight: 1, color: '#111', fontFamily: FONT_BRAND, fontWeight: 500, mb: 0.3 }}>
-                  Unified sync
-                </Typography>
-                <Typography sx={{ color: MONO.muted, lineHeight: 1.4, fontSize: 13, fontWeight: 400 }}>
-                  Front office, service, and finance — fewer handoffs.
+                <Typography sx={{ color: 'rgba(17,17,17,.52)', lineHeight: 1.5, fontSize: 14, fontWeight: 400 }}>
+                  Audit trails, approvals, and role-based data—so leadership and compliance see the same truth.
                 </Typography>
               </Box>
             </Box>
 
-            {/* Card F — Image */}
-            <Box sx={{ gridArea: { md: 'f' } }}>
-              <Box sx={{ height: '100%', position: 'relative', borderRadius: '16px', overflow: 'hidden', border: `1px solid ${MONO.borderSoft}`, bgcolor: '#6f6f6f' }}>
-                <Typography sx={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'rgba(255,255,255,.4)', fontSize: 11, fontWeight: 500, letterSpacing: '.06em', textTransform: 'uppercase' }}>
-                  Case study visual
+            {/* D — Dark copy → industries */}
+            <Box sx={{ gridArea: 'd', minHeight: { xs: 160, md: 0 } }}>
+              <Box
+                component={RouterLink}
+                to="/industries"
+                sx={{
+                  height: '100%',
+                  minHeight: { xs: 160, md: '100%' },
+                  borderRadius: { xs: '20px', md: '24px' },
+                  border: '1px solid rgba(255,255,255,.12)',
+                  bgcolor: MONO.darkSoft,
+                  p: 2.5,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  textDecoration: 'none',
+                  color: 'inherit',
+                  transition: 'transform .22s ease, border-color .22s ease',
+                  '&:hover': { transform: 'translateY(-3px)', borderColor: 'rgba(255,255,255,.22)' },
+                }}
+              >
+                <Typography sx={{ color: '#fff', fontFamily: FONT_BRAND, fontSize: { xs: 24, md: 28 }, fontWeight: 500, lineHeight: 1.08, letterSpacing: '-.02em', mb: 1 }}>
+                  Industry depth, same core
                 </Typography>
-                <Box sx={{ position: 'absolute', left: 0, right: 0, bottom: 0, p: 2, bgcolor: 'rgba(0,0,0,.65)' }}>
-                  <Typography sx={{ color: '#fff', fontFamily: FONT_BRAND, fontSize: { xs: 20, md: 22 }, fontWeight: 500, lineHeight: 1.05 }}>
-                    Seamless operations
+                <Typography sx={{ color: 'rgba(255,255,255,.58)', lineHeight: 1.55, fontSize: 14, fontWeight: 400 }}>
+                  Healthcare, retail, services, education, manufacturing, and public programs—workflows mapped to how each sector operates.
+                </Typography>
+              </Box>
+            </Box>
+
+            {/* E — White panel */}
+            <Box sx={{ gridArea: 'e', minHeight: { xs: 140, md: 0 } }}>
+              <Box
+                className="flat-card"
+                sx={{
+                  height: '100%',
+                  borderRadius: { xs: '20px', md: '24px' },
+                  border: `1px solid ${MONO.border}`,
+                  bgcolor: MONO.surface,
+                  p: 2.25,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  minHeight: { xs: 140, md: '100%' },
+                }}
+              >
+                <Typography sx={{ fontSize: { xs: 22, md: 26 }, lineHeight: 1.08, color: '#111', fontFamily: FONT_BRAND, fontWeight: 600, letterSpacing: '-.02em', mb: 0.6 }}>
+                  Fewer handoffs
+                </Typography>
+                <Typography sx={{ color: MONO.muted, lineHeight: 1.5, fontSize: 14, fontWeight: 400 }}>
+                  Sales, finance, HR, and operations share one record layer—integrations and automation replace spreadsheet bridges.
+                </Typography>
+              </Box>
+            </Box>
+
+            {/* F — Outcomes / proof (grey media) → contact */}
+            <Box sx={{ gridArea: 'f', minHeight: { xs: 280, md: 0 } }}>
+              <Box
+                component={RouterLink}
+                to="/contact"
+                sx={{
+                  height: '100%',
+                  minHeight: { xs: 280, md: '100%' },
+                  display: 'flex',
+                  flexDirection: 'column',
+                  borderRadius: { xs: '20px', md: '24px' },
+                  overflow: 'hidden',
+                  border: `1px solid ${MONO.borderSoft}`,
+                  textDecoration: 'none',
+                  color: 'inherit',
+                  transition: 'transform .22s ease, box-shadow .22s ease',
+                  '&:hover': { transform: 'translateY(-3px)', boxShadow: '0 24px 56px rgba(17,17,17,.1)' },
+                }}
+              >
+                <Box
+                  sx={{
+                    flex: { md: '1 1 58%' },
+                    minHeight: { xs: 180, md: 0 },
+                    bgcolor: '#7c7c7c',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      color: 'rgba(255,255,255,.42)',
+                      fontSize: 11,
+                      fontWeight: 600,
+                      letterSpacing: '.14em',
+                      textTransform: 'uppercase',
+                    }}
+                  >
+                    Impact snapshot
+                  </Typography>
+                </Box>
+                <Box sx={{ flex: { md: '0 0 auto' }, p: 2.25, bgcolor: 'rgba(0,0,0,.78)' }}>
+                  <Typography sx={{ color: '#fff', fontFamily: FONT_BRAND, fontSize: { xs: 20, md: 24 }, fontWeight: 500, lineHeight: 1.1, letterSpacing: '-.02em' }}>
+                    Outcomes you can measure
+                  </Typography>
+                  <Typography sx={{ color: 'rgba(255,255,255,.65)', fontSize: 13, mt: 0.6, fontWeight: 400, lineHeight: 1.45 }}>
+                    Faster cycles, cleaner data, clearer ownership—talk to us about benchmarks for your use case.
                   </Typography>
                 </Box>
               </Box>

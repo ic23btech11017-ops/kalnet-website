@@ -85,24 +85,42 @@ export default function SolutionsPage() {
 
       <Box component="main" sx={{ flexGrow: 1, pt: { xs: 16, md: 22 }, pb: { xs: 8, md: 14 } }}>
         <Container maxWidth="lg">
-          <Box sx={{ maxWidth: 800, mb: { xs: 8, md: 10 } }}>
-            <SectionLabel>Kalnet solutions</SectionLabel>
-            <Typography
-              component="h1"
-              sx={{
-                fontFamily: FONT_BRAND,
-                fontSize: { xs: 40, md: 64 },
-                fontWeight: 500,
-                lineHeight: 1.05,
-                letterSpacing: '-.03em',
-                mb: 3,
-              }}
-            >
-              Complete platform ecosystem
-            </Typography>
-            <Typography sx={{ color: MONO.muted, fontSize: { xs: 16, md: 20 }, lineHeight: 1.6, maxWidth: 680 }}>
-              {moduleCount}+ integrated modules across {PLATFORM_SOLUTIONS.length} categories—each with its own detail page. Pick a module to learn how it fits your stack.
-            </Typography>
+          <Box sx={{ mb: { xs: 8, md: 10 } }}>
+            <Stack direction={{ xs: 'column', md: 'row' }} spacing={8} alignItems="center">
+              <Box sx={{ flex: 1, maxWidth: 800 }}>
+                <SectionLabel>Kalnet solutions</SectionLabel>
+                <Typography
+                  component="h1"
+                  sx={{
+                    fontFamily: FONT_BRAND,
+                    fontSize: { xs: 40, md: 64 },
+                    fontWeight: 500,
+                    lineHeight: 1.05,
+                    letterSpacing: '-.03em',
+                    mb: 3,
+                  }}
+                >
+                  Complete platform ecosystem
+                </Typography>
+                <Typography sx={{ color: MONO.muted, fontSize: { xs: 16, md: 20 }, lineHeight: 1.6, maxWidth: 680 }}>
+                  {moduleCount}+ integrated modules across {PLATFORM_SOLUTIONS.length} categories—each with its own detail page. Pick a module to learn how it fits your stack.
+                </Typography>
+              </Box>
+              <Box sx={{ flex: 1, display: { xs: 'none', md: 'block' } }}>
+                <Box
+                  component="img"
+                  src="/images/undraw_data_25jw.svg"
+                  alt="Kalnet Solutions Ecosystem"
+                  sx={{
+                    width: '100%',
+                    height: 'auto',
+                    maxWidth: 500,
+                    display: 'block',
+                    margin: '0 auto',
+                  }}
+                />
+              </Box>
+            </Stack>
           </Box>
 
           <Box sx={{ mb: { xs: 12, md: 16 } }}>
