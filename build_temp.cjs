@@ -1,4 +1,6 @@
-import { Box, Button, Container, Typography } from '@mui/material'
+const fs = require('fs');
+
+const ind = `import { Box, Button, Container, Stack, Typography } from '@mui/material'
 import { ArrowRight } from 'lucide-react'
 import { Link as RouterLink } from 'react-router-dom'
 import SiteFooter from '../components/navigation/SiteFooter'
@@ -30,7 +32,7 @@ function MediaSlot({ label, minHeight = 400, dark = false }: { label: string; mi
         width: '100%',
         minHeight,
         borderRadius: 3,
-        border: dark ? '1px solid rgba(255,255,255,.1)' : `1px solid ${MONO.borderSoft}`,
+        border: dark ? '1px solid rgba(255,255,255,.1)' : \`1px solid \${MONO.borderSoft}\`,
         bgcolor: dark ? 'rgba(255,255,255,.03)' : MONO.surfaceSoft,
         display: 'flex',
         alignItems: 'center',
@@ -114,7 +116,7 @@ export default function IndustriesPage() {
                   sx={{
                     textDecoration: 'none',
                     borderRadius: 3,
-                    border: `1px solid ${MONO.border}`,
+                    border: \`1px solid \${MONO.border}\`,
                     bgcolor: MONO.surface,
                     p: { xs: 3, md: 4 },
                     display: 'flex',
@@ -181,3 +183,6 @@ export default function IndustriesPage() {
     </Box>
   )
 }
+`;
+
+fs.writeFileSync('src/pages/IndustriesPage.tsx', ind, 'utf-8');

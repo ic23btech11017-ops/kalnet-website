@@ -1,0 +1,88 @@
+        </Container>
+
+        {/* ═══════════════ 03 — FEATURES ═══════════════ */}
+        <Container data-nav-theme="light" maxWidth="lg" sx={{ mt: { xs: 10, md: 18 } }}>
+          <SectionLabel>03 — Features</SectionLabel>
+          <Typography
+            sx={{
+              fontFamily: FONT_BRAND,
+              fontSize: { xs: 28, md: 40 },
+              fontWeight: 500,
+              lineHeight: 1.05,
+              letterSpacing: '-.02em',
+              mb: 4,
+            }}
+          >
+            Powerful, yet simple
+          </Typography>
+
+          <Box sx={{ display: 'grid', gap: 1.5 }}>
+            {/* Top row — 3 stat cards */}
+            <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(3, 1fr)' }, gap: 1.5 }}>
+              {featureTopCards.map(card => (
+                <Box
+                  key={card.title}
+                  className="flat-card"
+                  sx={{
+                    borderRadius: '16px',
+                    border: `1px solid ${MONO.borderSoft}`,
+                    bgcolor: MONO.surface,
+                    p: 2.5,
+                    minHeight: 220,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                  }}
+                >
+                  <Box
+                    sx={{
+                      width: 72,
+                      height: 72,
+                      borderRadius: '50%',
+                      border: `1px solid ${MONO.border}`,
+                      bgcolor: '#fafafa',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: '#111',
+                      fontSize: 16,
+                      fontWeight: 600,
+                    }}
+                  >
+                    {card.stat}
+                  </Box>
+                  <Box>
+                    <Typography sx={{ fontSize: { xs: 22, md: 26 }, lineHeight: 1.05, fontFamily: FONT_BRAND, fontWeight: 500, mb: 0.5, color: '#111' }}>
+                      {card.title}
+                    </Typography>
+                    <Typography sx={{ color: MONO.muted, lineHeight: 1.5, fontSize: 14, fontWeight: 400 }}>
+                      {card.description}
+                    </Typography>
+                  </Box>
+                </Box>
+              ))}
+            </Box>
+
+            {/* Bottom row — 2 wider cards */}
+            <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 1.5 }}>
+              {featureBottomCards.map(card => (
+                <Box
+                  key={card.title}
+                  className="flat-card"
+                  sx={{
+                    borderRadius: '16px',
+                    border: `1px solid ${MONO.borderSoft}`,
+                    bgcolor: MONO.surface,
+                    minHeight: 220,
+                    display: 'grid',
+                    gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' },
+                    overflow: 'hidden',
+                  }}
+                >
+                  <Box sx={{ p: 2.5, borderRight: { md: `1px solid ${MONO.borderSoft}` }, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                    <Typography sx={{ fontSize: { xs: 24, md: 28 }, lineHeight: 1.05, fontFamily: FONT_BRAND, fontWeight: 500, mb: 0.5, color: '#111' }}>
+                      {card.title}
+                    </Typography>
+                    <Typography sx={{ color: MONO.muted, lineHeight: 1.5, fontSize: 14, fontWeight: 400 }}>
+                      {card.description}
+                    </Typography>

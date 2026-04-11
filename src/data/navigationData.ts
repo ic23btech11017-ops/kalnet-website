@@ -34,17 +34,17 @@ export const solutionsMenuSections: MenuSection[] = [
   {
     label: 'Core Platform',
     items: [
-      { title: 'Integration Hub', description: 'Connect your ecosystem', slug: 'integration-hub', href: '/solutions/integration-hub', icon: Layers },
-      { title: 'Project Management', description: 'Unified workspace for teams', slug: 'project-management', href: '/solutions/project-management', icon: Briefcase },
-      { title: 'AI & Intelligence', description: 'Predictive analytics and insights', slug: 'ai-intelligence', href: '/solutions/ai-intelligence', icon: LineChart },
+      { title: 'Integration Hub', description: 'Connect your ecosystem', slug: 'integration-hub', href: '/solutions/core-platform/integration-hub', icon: Layers },
+      { title: 'Project Management', description: 'Unified workspace for teams', slug: 'project-management', href: '/solutions/core-platform/project-management', icon: Briefcase },
+      { title: 'AI & Intelligence', description: 'Predictive analytics and insights', slug: 'ai-intelligence', href: '/solutions/digital-data/ai-intelligence', icon: LineChart },
     ],
   },
   {
     label: 'Finance & Governance',
     items: [
-      { title: 'Finance & Accounting', description: 'GST, invoicing and reporting', slug: 'finance-accounting', href: '/solutions/finance-accounting', icon: BarChart3 },
-      { title: 'HRMS & Payroll', description: 'Global workforce management', slug: 'hrms-payroll', href: '/solutions/hrms-payroll', icon: Users },
-      { title: 'Compliance & Audit', description: 'Risk mitigation and security', slug: 'compliance-audit', href: '/solutions/compliance-audit', icon: ClipboardCheck },
+      { title: 'Finance & Accounting', description: 'GST, invoicing and reporting', slug: 'finance-accounting', href: '/solutions/finance-governance/finance-accounting', icon: BarChart3 },
+      { title: 'HRMS & Payroll', description: 'Global workforce management', slug: 'hrms-payroll', href: '/solutions/people-workforce/hrms-payroll', icon: Users },
+      { title: 'Compliance & Audit', description: 'Risk mitigation and security', slug: 'compliance-audit', href: '/solutions/finance-governance/compliance-audit', icon: ClipboardCheck },
     ],
   },
 ]

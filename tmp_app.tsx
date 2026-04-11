@@ -578,102 +578,84 @@ export default function App() {
           </Typography>
 
           <Box sx={{ display: 'grid', gap: 1.5 }}>
+            {/* Top row — 3 stat cards */}
             <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(3, 1fr)' }, gap: 1.5 }}>
-                {featureTopCards.map((card, i) => (
+              {featureTopCards.map(card => (
+                <Box
+                  key={card.title}
+                  className="flat-card"
+                  sx={{
+                    borderRadius: '16px',
+                    border: `1px solid ${MONO.borderSoft}`,
+                    bgcolor: MONO.surface,
+                    p: 2.5,
+                    minHeight: 220,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                  }}
+                >
                   <Box
-                    key={card.title}
-                    className="flat-card"
                     sx={{
-                      borderRadius: '16px',
-                      border: '1px solid #111',
-                      bgcolor: '#111',
-                      p: 3,
-                      minHeight: 280,
+                      width: 72,
+                      height: 72,
+                      borderRadius: '50%',
+                      border: `1px solid ${MONO.border}`,
+                      bgcolor: '#fafafa',
                       display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: '#111',
+                      fontSize: 16,
+                      fontWeight: 600,
                     }}
                   >
-                    <Box
-                      sx={{
-                        width: '100%',
-                        height: 140,
-                        mb: 3,
-                        display: 'flex',
-                        alignItems: 'flex-start',
-                        justifyContent: 'center',
-                        color: '#fff',
-                      }}
-                    >
-                      {i === 0 ? (
-                        <Box component="img" src="/images/customizable-100.jpg" sx={{ width: 'auto', height: '100%', objectFit: 'contain' }} alt="100% customizable" />
-                      ) : i === 1 ? (
-                        <Box component="img" src="/images/secure-fingerprint.jpg" sx={{ width: 'auto', height: '100%', objectFit: 'contain' }} alt="Secure by default" />
-                      ) : (
-                        <Box
-                          sx={{
-                            width: 72,
-                            height: 72,
-                            borderRadius: '50%',
-                            border: '1px solid rgba(255,255,255,0.1)',
-                            bgcolor: 'rgba(255,255,255,0.03)',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            color: '#fff',
-                            fontSize: 16,
-                            fontWeight: 600,
-                          }}
-                        >
-                          {card.stat}
-                        </Box>
-                      )}
-                    </Box>
-                    <Box sx={{ textAlign: 'center' }}>
-                      <Typography sx={{ fontSize: { xs: 20, md: 22 }, lineHeight: 1.1, fontFamily: FONT_BRAND, fontWeight: 500, mb: 1, color: '#fff' }}>
-                        {card.title}
-                      </Typography>
-                      <Typography sx={{ color: 'rgba(255,255,255,0.55)', lineHeight: 1.5, fontSize: 13, fontWeight: 400 }}>
-                        {card.description}
-                      </Typography>
-                    </Box>
+                    {card.stat}
                   </Box>
-                ))}
-              </Box>
-
-              <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 1.5 }}>
-                {featureBottomCards.map(card => (
-                  <Box
-                    key={card.title}
-                    className="flat-card"
-                    sx={{
-                      borderRadius: '16px',
-                      border: '1px solid #111',
-                      bgcolor: '#111',
-                      minHeight: 220,
-                      display: 'flex',
-                      flexDirection: 'column',
-                      overflow: 'hidden',
-                    }}
-                  >
-                    <Box sx={{ flexGrow: 1, p: 2, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <Box sx={{ width: '100%', height: 160, border: '1px solid rgba(255,255,255,0.05)', borderRadius: 2, display: 'flex', alignItems: 'center', justifyContent: 'center', bgcolor: 'rgba(255,255,255,0.02)' }}>
-                        <Typography sx={{ color: 'rgba(255,255,255,0.3)', fontSize: 11, textTransform: 'uppercase', letterSpacing: '.06em' }}>{card.mediaLabel}</Typography>
-                      </Box>
-                    </Box>
-                    <Box sx={{ p: 3, pt: 0, textAlign: 'center' }}>
-                      <Typography sx={{ fontSize: { xs: 20, md: 22 }, lineHeight: 1.1, fontFamily: FONT_BRAND, fontWeight: 500, mb: 1, color: '#fff' }}>
-                        {card.title}
-                      </Typography>
-                      <Typography sx={{ color: 'rgba(255,255,255,0.55)', lineHeight: 1.5, fontSize: 13, fontWeight: 400 }}>
-                        {card.description}
-                      </Typography>
-                    </Box>
+                  <Box>
+                    <Typography sx={{ fontSize: { xs: 22, md: 26 }, lineHeight: 1.05, fontFamily: FONT_BRAND, fontWeight: 500, mb: 0.5, color: '#111' }}>
+                      {card.title}
+                    </Typography>
+                    <Typography sx={{ color: MONO.muted, lineHeight: 1.5, fontSize: 14, fontWeight: 400 }}>
+                      {card.description}
+                    </Typography>
                   </Box>
-                ))}
-              </Box>
+                </Box>
+              ))}
             </Box>
-          </Container>
+
+            {/* Bottom row — 2 wider cards */}
+            <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 1.5 }}>
+              {featureBottomCards.map(card => (
+                <Box
+                  key={card.title}
+                  className="flat-card"
+                  sx={{
+                    borderRadius: '16px',
+                    border: `1px solid ${MONO.borderSoft}`,
+                    bgcolor: MONO.surface,
+                    minHeight: 220,
+                    display: 'grid',
+                    gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' },
+                    overflow: 'hidden',
+                  }}
+                >
+                  <Box sx={{ p: 2.5, borderRight: { md: `1px solid ${MONO.borderSoft}` }, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                    <Typography sx={{ fontSize: { xs: 24, md: 28 }, lineHeight: 1.05, fontFamily: FONT_BRAND, fontWeight: 500, mb: 0.5, color: '#111' }}>
+                      {card.title}
+                    </Typography>
+                    <Typography sx={{ color: MONO.muted, lineHeight: 1.5, fontSize: 14, fontWeight: 400 }}>
+                      {card.description}
+                    </Typography>
+                  </Box>
+                  <Box sx={{ p: 1.5, display: 'flex', alignItems: 'stretch' }}>
+                    <MediaSlot label={card.mediaLabel} minHeight={180} />
+                  </Box>
+                </Box>
+              ))}
+            </Box>
+          </Box>
+        </Container>
 
         {/* ═══════════════ DARK POSITIONING ═══════════════ */}
         <Container data-nav-theme="dark" maxWidth="lg" sx={{ mt: { xs: 10, md: 18 } }}>
@@ -747,12 +729,14 @@ export default function App() {
                 className="flat-card"
                 sx={{
                   borderRadius: '14px',
-                  border: '1px solid #111',
+                  border: `1px solid ${MONO.borderSoft}`,
                   bgcolor: MONO.surface,
                   p: 2,
                   minHeight: 180,
                   display: 'flex',
                   flexDirection: 'column',
+                  transition: 'border-color 0.25s ease',
+                  '&:hover': { borderColor: '#111' },
                 }}
               >
                 <Typography
@@ -1082,5 +1066,3 @@ export default function App() {
     </Box>
   )
 }
-
-

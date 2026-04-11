@@ -1,101 +1,11 @@
 import { useState } from 'react'
 import { Box, Typography, Container } from '@mui/material'
 import { motion, AnimatePresence } from 'framer-motion'
-import { 
-  Box as BoxIcon, BarChart3, Users, Factory, 
-  Database, Landmark, Briefcase, Shield, 
-  ArrowRight
-} from 'lucide-react'
+import { Link as RouterLink } from 'react-router-dom'
+import { ArrowRight } from 'lucide-react'
+import { PLATFORM_SOLUTIONS, solutionModulePath } from '../../data/platformSolutionsData'
 
-// --- Data ---
-export const PLATFORM_SOLUTIONS = [
-  {
-    category: "Core Platform",
-    Icon: BoxIcon,
-    accent: '#14FFEC',
-    modules: [
-      { title: "Integration Hub", desc: "Manage APIs, connectors, and real-time data synchronization across disparate systems." },
-      { title: "ERP Core", desc: "Centralize management of orders, inventory levels, and production processes." },
-      { title: "Project Management", desc: "Track project milestones, resource allocation, and risk assessment/mitigation." },
-      { title: "Asset Lifecycle", desc: "Unified tracking for asset maintenance, AMC, and depreciation schedules." },
-      { title: "Procurement & Spend", desc: "Streamline RFQs, Purchase Orders (POs), and multi-level approval workflows." },
-      { title: "Vendor & Partner", desc: "Monitor vendor SLAs, performance metrics, and automated payout calculations." },
-    ]
-  },
-  {
-    category: "Finance & Governance",
-    Icon: Landmark,
-    accent: '#4FD1C5',
-    modules: [
-      { title: "Finance & Accounting", desc: "Comprehensive management of AR, AP, invoicing, and GST compliance." },
-      { title: "Billing & Revenue", desc: "Manage subscription models, retainer-based billing, and recurring revenue streams." },
-      { title: "Compliance & Audit", desc: "Maintain regulatory alignment through automated logs, evidence collection, and policy enforcement." },
-      { title: "Tax & Statutory", desc: "Automated handling of GST, TDS filings, and ROC compliance." },
-    ]
-  },
-  {
-    category: "Sales & Customers",
-    Icon: Users,
-    accent: '#3182CE',
-    modules: [
-      { title: "CRM & Sales Pipeline", desc: "Manage deals, lead qualification, and contact relationships in a unified view." },
-      { title: "Customer Experience", desc: "Integrated support ticketing, feedback collection systems, and self-service portals." },
-      { title: "Partner / Franchise", desc: "Centralized management of partner networks, reporting, and commission payout structures." },
-    ]
-  },
-  {
-    category: "Industry Execution",
-    Icon: Factory,
-    accent: '#2563EB',
-    modules: [
-      { title: "Operations (OMS)", desc: "Industry-specific configured workflows for order management and fulfillment." },
-      { title: "Supply Chain & Inventory", desc: "Comprehensive warehouse management, real-time stock tracking, and logistics." },
-      { title: "Production & Manufacturing", desc: "Detailed Bill of Materials (BOM), MRP, batch tracking, and quality control." },
-      { title: "Facility & Maintenance", desc: "Manage physical sites, utility infrastructure, and service-level maintenance." },
-    ]
-  },
-  {
-    category: "Digital & Data",
-    Icon: Database,
-    accent: '#0D7377',
-    modules: [
-      { title: "Document & Records", desc: "Complete Document Management System (DMS) with versioning and e-signatures." },
-      { title: "Workflow & Automation", desc: "Define complex business logic, approval triggers, and automated SLA tracking." },
-      { title: "Data & Analytics", desc: "Real-time dashboards, KPI tracking, and custom business intelligence reporting." },
-      { title: "AI & Intelligence", desc: "Advanced forecasting capabilities, AI-driven recommendations, and predictive analytics." },
-    ]
-  },
-  {
-    category: "Public Sector & Impact",
-    Icon: BarChart3,
-    accent: '#0ea5e9',
-    modules: [
-      { title: "Grants & Fund", desc: "Tracking of fund allocation, disbursement cycles, and financial utilization metrics." },
-      { title: "Scheme / Program", desc: "Manage scheme implementation, beneficiary tracking, and Direct Benefit Transfer workflows." },
-      { title: "Monitoring & Evaluation", desc: "Track program outcomes, collection of field data, and impact analytics." },
-    ]
-  },
-  {
-    category: "People & Workforce",
-    Icon: Briefcase,
-    accent: '#38A169',
-    modules: [
-      { title: "HRMS & Payroll", desc: "End-to-end employee lifecycle management, automated salary, and statutory tax compliance." },
-      { title: "Resource & Capacity", desc: "Strategic resource planning, internal booking systems, and utilization rate monitoring." },
-      { title: "Field Force", desc: "Real-time GPS tracking, mobile apps for field staff, and automated field reporting." },
-    ]
-  },
-  {
-    category: "Security & Platform",
-    Icon: Shield,
-    accent: '#085255',
-    modules: [
-      { title: "Identity & Security", desc: "Role-Based Access Control (RBAC), comprehensive audit logs, and multi-factor authentication." },
-      { title: "Mobile & Portals", desc: "Purpose-built mobile interfaces and secure portals for staff, partners, and customers." },
-      { title: "Platform Admin", desc: "Multi-tenant environment management, global system configurations, and settings." },
-    ]
-  }
-];
+export { PLATFORM_SOLUTIONS } from '../../data/platformSolutionsData'
 
 export default function PlatformCapabilities() {
   const [activeIdx, setActiveIdx] = useState(0)
@@ -179,21 +89,26 @@ export default function PlatformCapabilities() {
                 </Box>
 
                 <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' }, gap: 3 }}>
-                  {PLATFORM_SOLUTIONS[activeIdx].modules.map((mod, i) => (
-                    <Box key={i} sx={{
-                      p: 3, bgcolor: '#141414', borderRadius: 4, border: '1px solid #222',
-                      transition: 'all .2s ease', '&:hover': { borderColor: '#444', bgcolor: '#1a1a1a', transform: 'translateY(-2px)' }
-                    }}>
-                      <Typography sx={{ fontSize: 16, fontWeight: 600, mb: 1.5, color: '#f5f5f7' }}>
-                        {mod.title}
-                      </Typography>
-                      <Typography sx={{ fontSize: 13, color: 'rgba(255,255,255,.4)', lineHeight: 1.6 }}>
-                        {mod.desc}
-                      </Typography>
-                      
-                      <Box sx={{ mt: 3, display: 'flex', alignItems: 'center', gap: 1, cursor: 'pointer', '&:hover .arrow': { transform: 'translateX(4px)' }, '&:hover .text': { color: PLATFORM_SOLUTIONS[activeIdx].accent } }}>
+                  {PLATFORM_SOLUTIONS[activeIdx].modules.map(mod => (
+                    <Box
+                      key={mod.slug}
+                      component={RouterLink}
+                      to={solutionModulePath(PLATFORM_SOLUTIONS[activeIdx].categorySlug, mod.slug)}
+                      sx={{
+                        p: 3,
+                        bgcolor: '#141414',
+                        borderRadius: 4,
+                        border: '1px solid #222',
+                        textDecoration: 'none',
+                        transition: 'all .2s ease',
+                        '&:hover': { borderColor: '#444', bgcolor: '#1a1a1a', transform: 'translateY(-2px)' },
+                      }}
+                    >
+                      <Typography sx={{ fontSize: 16, fontWeight: 600, mb: 1.5, color: '#f5f5f7' }}>{mod.title}</Typography>
+                      <Typography sx={{ fontSize: 13, color: 'rgba(255,255,255,.4)', lineHeight: 1.6 }}>{mod.desc}</Typography>
+                      <Box sx={{ mt: 3, display: 'flex', alignItems: 'center', gap: 1, '&:hover .arrow': { transform: 'translateX(4px)' }, '&:hover .text': { color: PLATFORM_SOLUTIONS[activeIdx].accent } }}>
                         <Typography className="text" sx={{ fontSize: 13, fontWeight: 500, color: '#888', transition: 'color .2s' }}>
-                          Explore
+                          Learn more
                         </Typography>
                         <ArrowRight className="arrow" size={14} color="#888" style={{ transition: 'transform .2s' }} />
                       </Box>
